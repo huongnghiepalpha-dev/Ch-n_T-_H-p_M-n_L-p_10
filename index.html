@@ -3,10 +3,21 @@
 <!--
 =======================================================================
   HƯỚNG NGHIỆP ALPHA — Công cụ tra cứu tổ hợp môn lớp 10
-  Phiên bản: 2.7  |  Ngày: 2026-06-12
+  Phiên bản: 2.8  |  Ngày: 2026-06-25
   Tác giả: HNA (Trần Văn Đăng) — 096 937 4411
   Website: www.huongnghiepalpha.vn
 =======================================================================
+
+  CHANGELOG 2.8 (2026-06-25):
+    - Tái cân bằng NGANH.traits: dùng đủ 20 đặc điểm (bieu-dat/lanh-dao/
+      thuyet-phuc trước đây bị 'mồ côi' nay đã gắn vào ngành phù hợp);
+      giảm 'kien-nhan' từ 25/36 → 2 ngành để tăng độ phân biệt.
+    - Sửa lỗi trait không tồn tại 'xa-hoi' ở ngành van-hoa.
+    - Mỗi ngành nay đủ 4 trait (tkdh/nlts/nt/quan-doi trước chỉ có 3).
+    - Xoá dữ liệu chết TRAITS[].cats (không được code dùng).
+    - Sửa TO_HOP_MAP: 'ly-gdktpl' không còn map nhầm sang X06.
+    - TH_MON_MAP2 bổ sung mã năng khiếu (C01,V00,T00,T01,H00,N00,Q00).
+    - Thống nhất năm tổ hợp X06 = 'chính thức 2026'.
 
   LUỒNG 4 BƯỚC:
     B1. Hiểu mình  → chọn đặc điểm bản thân (20 mô tả Holland+Gardner)
@@ -755,26 +766,26 @@ a.footer-hl:hover{text-decoration:underline}
 
 <script>
 const TRAITS=[
-  {id:'may-moc',    label:'Thích làm việc với máy móc, công cụ, thiết bị',     cats:['cokhi','cntt','xd','quan-doi']},
-  {id:'thuc-hanh',  label:'Thích thực hành hơn lý thuyết, học qua làm',        cats:['cokhi','yd','nlts','quan-doi']},
-  {id:'chinh-xac',  label:'Cẩn thận, tỉ mỉ, coi trọng sự chính xác',          cats:['kt-tc','yd','cokhi','spg']},
-  {id:'phan-tich',  label:'Thích phân tích, tìm hiểu nguyên nhân sự việc',     cats:['cntt','khtn','kt-tc','tl']},
-  {id:'khoa-hoc',   label:'Tò mò khoa học, thích thử nghiệm và khám phá',      cats:['khtn','yd','nlts','cntt']},
-  {id:'so-lieu',    label:'Nhạy với số liệu, dữ liệu và thống kê',             cats:['kt-tc','cntt','khtn','kt-qtkd']},
-  {id:'sang-tao',   label:'Sáng tạo, có gu thẩm mỹ, thích cái mới lạ',        cats:['tkdh','nt','xd','bao-chi']},
-  {id:'hinh-anh',   label:'Tư duy hình ảnh, dễ hình dung cấu trúc không gian', cats:['xd','tkdh','cntt','khtn']},
-  {id:'bieu-dat',   label:'Thích biểu đạt cảm xúc qua nghệ thuật, ngôn ngữ',  cats:['nt','bao-chi','tl','ngoai-giao']},
-  {id:'giup-do',    label:'Thích giúp đỡ, chăm sóc và hỗ trợ người khác',     cats:['yd','spg','tl','quan-doi']},
-  {id:'giao-tiep',  label:'Giao tiếp tốt, dễ kết nối và tạo niềm tin',        cats:['bao-chi','du-lich','ngoai-giao','kt-qtkd']},
-  {id:'dong-cam',   label:'Đồng cảm sâu, biết lắng nghe và thấu hiểu',        cats:['tl','spg','yd','ngoai-giao']},
-  {id:'lanh-dao',   label:'Thích tổ chức, lên kế hoạch và dẫn dắt nhóm',      cats:['kt-qtkd','bao-chi','ngoai-giao','quan-doi']},
-  {id:'kinh-doanh', label:'Tư duy kinh doanh, nhạy bén cơ hội thị trường',    cats:['kt-qtkd','kt-tc','bao-chi']},
-  {id:'thuyet-phuc',label:'Giỏi thuyết phục, tranh luận, bảo vệ quan điểm',   cats:['luat','bao-chi','ngoai-giao','kt-qtkd']},
-  {id:'ky-luat',    label:'Kỷ luật cao, làm việc theo quy trình và tiêu chuẩn',cats:['kt-tc','quan-doi','spg','cokhi']},
-  {id:'kien-nhan',  label:'Kiên nhẫn, bền bỉ với mục tiêu dài hạn',           cats:['yd','spg','nlts','khtn']},
-  {id:'tu-nhien',   label:'Yêu thiên nhiên, thích sinh vật và môi trường sống',cats:['nlts','khtn','tl','xd']},
-  {id:'ngon-ngu',   label:'Yêu ngôn ngữ, ngoại ngữ, đọc viết và diễn đạt tốt',cats:['ngoai-giao','bao-chi','luat','spg']},
-  {id:'noi-tam',    label:'Hướng nội, thích tự suy ngẫm và hiểu rõ bản thân', cats:['tl','khtn','spg','yd']},
+  {id:'may-moc',    label:'Thích làm việc với máy móc, công cụ, thiết bị'},
+  {id:'thuc-hanh',  label:'Thích thực hành hơn lý thuyết, học qua làm'},
+  {id:'chinh-xac',  label:'Cẩn thận, tỉ mỉ, coi trọng sự chính xác'},
+  {id:'phan-tich',  label:'Thích phân tích, tìm hiểu nguyên nhân sự việc'},
+  {id:'khoa-hoc',   label:'Tò mò khoa học, thích thử nghiệm và khám phá'},
+  {id:'so-lieu',    label:'Nhạy với số liệu, dữ liệu và thống kê'},
+  {id:'sang-tao',   label:'Sáng tạo, có gu thẩm mỹ, thích cái mới lạ'},
+  {id:'hinh-anh',   label:'Tư duy hình ảnh, dễ hình dung cấu trúc không gian'},
+  {id:'bieu-dat',   label:'Thích biểu đạt cảm xúc qua nghệ thuật, ngôn ngữ'},
+  {id:'giup-do',    label:'Thích giúp đỡ, chăm sóc và hỗ trợ người khác'},
+  {id:'giao-tiep',  label:'Giao tiếp tốt, dễ kết nối và tạo niềm tin'},
+  {id:'dong-cam',   label:'Đồng cảm sâu, biết lắng nghe và thấu hiểu'},
+  {id:'lanh-dao',   label:'Thích tổ chức, lên kế hoạch và dẫn dắt nhóm'},
+  {id:'kinh-doanh', label:'Tư duy kinh doanh, nhạy bén cơ hội thị trường'},
+  {id:'thuyet-phuc',label:'Giỏi thuyết phục, tranh luận, bảo vệ quan điểm'},
+  {id:'ky-luat',    label:'Kỷ luật cao, làm việc theo quy trình và tiêu chuẩn'},
+  {id:'kien-nhan',  label:'Kiên nhẫn, bền bỉ với mục tiêu dài hạn'},
+  {id:'tu-nhien',   label:'Yêu thiên nhiên, thích sinh vật và môi trường sống'},
+  {id:'ngon-ngu',   label:'Yêu ngôn ngữ, ngoại ngữ, đọc viết và diễn đạt tốt'},
+  {id:'noi-tam',    label:'Hướng nội, thích tự suy ngẫm và hiểu rõ bản thân'},
 ];
 
 const NGANH=[
@@ -791,12 +802,12 @@ const NGANH=[
   {id:'cntt',     icon:'💻',ten:'Công nghệ thông tin – AI',
    mo:'Người logic, kiên nhẫn, tò mò công nghệ. Thích lập trình, dữ liệu, trí tuệ nhân tạo.',
    tomtat:'Phù hợp với người logic, kiên nhẫn, thích công nghệ và sẵn sàng học liên tục để xây dựng và vận hành hệ thống số.',
-   dh:['A01: Toán – Vật lý – Tiếng Anh','A00: Toán – Vật lý – Hóa học','X06: Toán – Vật lý – Tin học (mới 2025)'],
+   dh:['A01: Toán – Vật lý – Tiếng Anh','A00: Toán – Vật lý – Hóa học','X06: Toán – Vật lý – Tin học (chính thức 2026)'],
    mon_txt:['Vật lý (cốt lõi)','Tiếng Anh hoặc Tin học'],
-   tohop_l10:['A01 → cần: Vật lý + Tiếng Anh','A00 → cần: Vật lý + Hóa học','X06 → cần: Vật lý + Tin học (MỚI 2025)'],
+   tohop_l10:['A01 → cần: Vật lý + Tiếng Anh','A00 → cần: Vật lý + Hóa học','X06 → cần: Vật lý + Tin học (chính thức 2026)'],
    truong:'ĐH Bách Khoa HN, ĐH Bách Khoa TP.HCM, ĐH CNTT TP.HCM, ĐH Công Nghệ – ĐHQG HN, FPT University, ĐH Lạc Hồng (Đồng Nai)',
    warn:'Vật lý là môn nền tảng CNTT — bắt buộc phải chọn ở lớp 10. 🤖 2026: AI & bán dẫn đang bùng nổ — CNTT, Khoa học dữ liệu, An toàn mạng là nhóm ngành có nhu cầu tuyển dụng cao nhất.',
-   traits:['phan-tich','thuc-hanh','so-lieu','may-moc']},
+   traits:['phan-tich','may-moc','so-lieu','thuc-hanh']},
 
   {id:'kt-tc',    icon:'🏦',ten:'Tài chính – Ngân hàng – Kế toán',
    mo:'Người logic, cẩn thận, nhạy số liệu. Quan tâm tiền tệ, đầu tư, rủi ro, báo cáo tài chính.',
@@ -806,7 +817,7 @@ const NGANH=[
    tohop_l10:['Ưu tiên 1: Toán + Tiếng Anh (áp dụng cho A01, D01, D07)','Chọn thêm Hóa học → mở thêm A00, D07','Chọn thêm Vật lý → mở thêm A00, A01','Chọn thêm Tin học / GDKT&PL → theo tổ hợp trường mục tiêu'],
    truong:'HV Tài chính, HV Ngân hàng, ĐH Kinh Tế Quốc Dân (NEU), ĐH Kinh Tế TP.HCM (UEH), ĐH Ngoại Thương, ĐH Đồng Nai',
    warn:'D07 (Toán–Hóa–Anh) là tổ hợp đáng cân nhắc cho ngành này, nhưng không phải tổ hợp riêng — nhiều ngành khác cũng dùng D07. Nên kiểm tra đề án tuyển sinh năm đó của trường ĐH mục tiêu.',
-   traits:['phan-tich','so-lieu','chinh-xac','kinh-doanh']},
+   traits:['so-lieu','chinh-xac','phan-tich','kinh-doanh']},
 
   {id:'kt-qtkd',  icon:'📊',ten:'Kinh tế – QTKD – Thương mại',
    mo:'Người năng động, tư duy tổ chức, quan sát thị trường, thích quản lý doanh nghiệp.',
@@ -815,7 +826,7 @@ const NGANH=[
    mon_txt:['Tiếng Anh (quan trọng nhất)'],
    tohop_l10:['D01 → cần: Tiếng Anh (phổ biến nhất)','A01 → cần: Vật lý + Tiếng Anh','A00 → cần: Vật lý + Hóa học'],
    truong:'ĐH Kinh Tế Quốc Dân (NEU), ĐH Kinh Tế TP.HCM (UEH), ĐH Ngoại Thương, ĐH Kinh Tế – ĐHQG HN, ĐH Văn Lang, ĐH Đồng Nai',
-   warn:'',traits:['giao-tiep','kinh-doanh','phan-tich','so-lieu']},
+   warn:'',traits:['lanh-dao','kinh-doanh','giao-tiep','thuyet-phuc']},
 
   {id:'spg',      icon:'📚',ten:'Sư phạm – Giáo dục',
    mo:'Người kiên nhẫn, yêu thích chia sẻ kiến thức, quan tâm sự phát triển người khác.',
@@ -825,7 +836,7 @@ const NGANH=[
    tohop_l10:['SP Toán/Lý/Hóa → A00: Vật lý + Hóa học','SP Sinh/Hóa → B00: Hóa học + Sinh học','SP Tiếng Anh → D01: Tiếng Anh ≥ 8 điểm','SP Văn/Sử/Địa → C00: không cần môn KHTN'],
    truong:'ĐH Sư Phạm Hà Nội, ĐH Sư Phạm TP.HCM, ĐH Sư Phạm Huế, ĐH Đồng Nai (SP), ĐH Ngoại Ngữ – ĐHQG HN',
    warn:'Tổ hợp tùy chuyên ngành SP — A00 cho KHTN, C00 cho KHXH. Điểm sàn SP tối thiểu 19 điểm.',
-   traits:['giup-do','kien-nhan','giao-tiep','dong-cam']},
+   traits:['giup-do','giao-tiep','ngon-ngu','dong-cam']},
 
   {id:'bao-chi',  icon:'📰',ten:'Báo chí – Marketing – Truyền thông',
    mo:'Người nhạy thông tin, sáng tạo, giao tiếp tốt. Thích nội dung, thương hiệu, mạng xã hội.',
@@ -834,7 +845,7 @@ const NGANH=[
    mon_txt:['Tiếng Anh','Địa lý + Lịch sử (nếu học C00)'],
    tohop_l10:['D01 → cần: Tiếng Anh mạnh (phổ biến nhất)','C00 → cần: Địa lý + Lịch sử (báo chí KHXH truyền thống)','A01 → cần: Vật lý + Tiếng Anh'],
    truong:'HV Báo Chí & Tuyên Truyền, ĐH KHXH&NV HN, ĐH KHXH&NV TP.HCM, ĐH Văn Lang, ĐH HUTECH, FPT University',
-   warn:'',traits:['giao-tiep','sang-tao','ngon-ngu','dong-cam']},
+   warn:'',traits:['bieu-dat','giao-tiep','ngon-ngu','thuyet-phuc']},
 
   {id:'luat',     icon:'⚖️',ten:'Luật – Tòa án',
    mo:'Người logic, yêu công bằng, phân tích nhiều góc nhìn. Thích pháp luật và tranh luận.',
@@ -844,7 +855,7 @@ const NGANH=[
    tohop_l10:['X70 → cần: Lịch sử + GDKTPL (★ rất phù hợp — học sẵn kiến thức pháp luật từ lớp 10)','D01 → cần: Tiếng Anh (Luật quốc tế)','C00 → cần: Địa lý + Lịch sử (Luật truyền thống)'],
    truong:'ĐH Luật Hà Nội, ĐH Luật TP.HCM, ĐH Kinh Tế Luật – ĐHQG TP.HCM, Khoa Luật – ĐHQG HN, ĐH Ngoại Thương',
    warn:'GDKTPL là môn học trực tiếp về pháp luật trong chương trình 2018 — chọn tổ hợp có GDKTPL từ lớp 10 giúp làm quen sớm với tư duy pháp lý.',
-   traits:['phan-tich','dong-cam','chinh-xac','kien-nhan']},
+   traits:['thuyet-phuc','ngon-ngu','phan-tich','ky-luat']},
 
   {id:'cokhi',    icon:'⚙️',ten:'Ô tô – Cơ khí – Điện – Tự động hóa',
    mo:'Người thích máy móc, kỹ thuật. Muốn thiết kế – lắp ráp – cải tiến hệ thống, động cơ.',
@@ -854,7 +865,7 @@ const NGANH=[
    tohop_l10:['A00 → cần: Vật lý + Hóa học (tổ hợp phổ biến nhất)','A01 → cần: Vật lý + Tiếng Anh','Vật lý là ưu tiên số 1 cho mọi ngành kỹ thuật'],
    truong:'ĐH Bách Khoa HN, ĐH Bách Khoa TP.HCM, ĐH SP Kỹ Thuật TP.HCM, ĐH Công Nghiệp HN, ĐH Công Nghiệp TP.HCM, ĐH Lạc Hồng (Đồng Nai)',
    warn:'Vật lý là môn BẮT BUỘC cho tất cả ngành Kỹ thuật – Cơ khí – Điện – Ô tô.',
-   traits:['may-moc','phan-tich','chinh-xac','khoa-hoc']},
+   traits:['may-moc','thuc-hanh','chinh-xac','ky-luat']},
 
   {id:'xd',       icon:'🏛️',ten:'Xây dựng – Kiến trúc – Giao thông',
    mo:'Người có tư duy không gian, thích thiết kế – tính toán, quan tâm hạ tầng đô thị.',
@@ -864,7 +875,7 @@ const NGANH=[
    tohop_l10:['A00 → cần: Vật lý + Hóa học (Xây dựng — chủ lực)','V00 → CẦN luyện Vẽ kỹ thuật riêng (Kiến trúc — không có trong chương trình THPT)','A01 → cần: Vật lý + Tiếng Anh','D01 → hướng Quản lý dự án/Kinh tế xây dựng (không cần Vẽ)'],
    truong:'ĐH Kiến Trúc HN, ĐH Kiến Trúc TP.HCM, ĐH Xây Dựng HN, ĐH Giao Thông Vận Tải, ĐH Bách Khoa HN/HCM',
    warn:'Kiến trúc (V00) cần môn Vẽ kỹ thuật — không có trong chương trình THPT, phải luyện thêm bên ngoài. Xây dựng/Giao thông (A00/A01) không cần Vẽ.',
-   traits:['may-moc','sang-tao','phan-tich','chinh-xac']},
+   traits:['hinh-anh','may-moc','phan-tich','sang-tao']},
 
   {id:'tkdh',     icon:'🎨',ten:'Thiết kế đồ họa – Game – Đa phương tiện',
    mo:'Người sáng tạo, nhạy hình ảnh, màu sắc. Thích thiết kế, animation, game, giao diện số.',
@@ -874,7 +885,7 @@ const NGANH=[
    tohop_l10:['D01 → cần: Tiếng Anh tốt','X01 → cần: GDKTPL lớp 10','CẦN thi NĂNG KHIẾU Vẽ riêng — luyện từ lớp 10'],
    truong:'ĐH Mỹ Thuật VN, ĐH Mỹ Thuật TP.HCM, FPT University (Design), ĐH Văn Lang, ĐH Kiến Trúc (TKNT)',
    warn:'Thiết kế đồ họa yêu cầu thi năng khiếu Vẽ riêng — cần chuẩn bị từ sớm ngay lớp 10.',
-   traits:['sang-tao','thuc-hanh','phan-tich']},
+   traits:['sang-tao','hinh-anh','bieu-dat','thuc-hanh']},
 
   {id:'du-lich',  icon:'✈️',ten:'Du lịch – Khách sạn – Sự kiện',
    mo:'Người cởi mở, giao tiếp tốt, yêu dịch vụ. Thích tạo trải nghiệm tích cực cho người khác.',
@@ -884,7 +895,7 @@ const NGANH=[
    tohop_l10:['D01 → cần: Tiếng Anh tốt (quan trọng nhất)','C00 → cần: Lịch sử + Địa lý','C04 → cần: Địa lý (không cần Lịch sử)'],
    truong:'ĐH Khoa học Xã hội & Nhân văn HN/HCM, ĐH Đà Lạt, ĐH Hoa Sen, ĐH Văn Lang, ĐH Tôn Đức Thắng',
    warn:'Tiếng Anh giỏi là lợi thế cạnh tranh số 1 trong ngành Du lịch – Khách sạn.',
-   traits:['giao-tiep','ngon-ngu','kien-nhan','dong-cam']},
+   traits:['giao-tiep','ngon-ngu','lanh-dao','sang-tao']},
 
   {id:'nlts',     icon:'🌱',ten:'Nông – Lâm – Thủy sản',
    mo:'Người yêu thiên nhiên, thích cây trồng, vật nuôi. Quan tâm nông nghiệp bền vững.',
@@ -893,7 +904,7 @@ const NGANH=[
    mon_txt:['Hóa học','Sinh học'],
    tohop_l10:['B00 → cần: Hóa học + Sinh học (tổ hợp chủ lực)','B03 → cần: Sinh học','Môn CN Nông nghiệp lớp 10 là lợi thế đặc thù'],
    truong:'ĐH Nông Lâm TP.HCM, ĐH Nông Nghiệp HN, ĐH Cần Thơ, ĐH Nha Trang (Thủy sản), ĐH Lâm Nghiệp',
-   warn:'',traits:['tu-nhien','kien-nhan','khoa-hoc']},
+   warn:'',traits:['tu-nhien','thuc-hanh','khoa-hoc','kien-nhan']},
 
   {id:'tl',       icon:'💙',ten:'Tâm lý – Công tác xã hội',
    mo:'Người đồng cảm, biết lắng nghe, nhạy cảm cảm xúc. Thích hỗ trợ sức khỏe tinh thần.',
@@ -902,7 +913,7 @@ const NGANH=[
    mon_txt:['Tiếng Anh','Địa lý + Lịch sử (nếu học C00)'],
    tohop_l10:['D01 → cần: Tiếng Anh tốt','C00 → cần: Địa lý + Lịch sử','C03 → cần: Lịch sử'],
    truong:'ĐH KHXH&NV HN, ĐH KHXH&NV TP.HCM, ĐH SP HN (Tâm lý GD), ĐH Văn Hiến, ĐH Mở TP.HCM',
-   warn:'',traits:['giup-do','dong-cam','kien-nhan','giao-tiep']},
+   warn:'',traits:['dong-cam','giup-do','noi-tam','ngon-ngu']},
 
   {id:'ngoai-giao',icon:'🌐',ten:'Ngoại giao – Ngoại ngữ – Ngoại thương',
    mo:'Người yêu ngôn ngữ, nhạy văn hóa. Thích kết nối quốc tế, xuất nhập khẩu, kinh tế toàn cầu.',
@@ -912,7 +923,7 @@ const NGANH=[
    tohop_l10:['D01 → cần: Tiếng Anh ≥ 8.5 điểm','D15 → cần: Địa lý + Tiếng Anh','D14 → cần: Lịch sử + Tiếng Anh'],
    truong:'HV Ngoại Giao, ĐH Ngoại Thương, ĐH Ngoại Ngữ – ĐHQG HN, ĐH KHXH&NV HN/HCM, ĐH Hà Nội',
    warn:'Tiếng Anh ≥ 8.5/10 là yêu cầu thực tế cho Ngoại ngữ – Ngoại giao tại các trường top.',
-   traits:['ngon-ngu','dong-cam','giao-tiep','kien-nhan']},
+   traits:['ngon-ngu','giao-tiep','thuyet-phuc','lanh-dao']},
 
   {id:'nt',       icon:'🎵',ten:'Mỹ thuật – Âm nhạc – Nghệ thuật',
    mo:'Người giàu cảm xúc, nhạy cái đẹp, muốn thể hiện qua hội họa, âm nhạc, biểu diễn.',
@@ -922,7 +933,7 @@ const NGANH=[
    tohop_l10:['H00 → CẦN luyện năng khiếu Vẽ từ lớp 10','N00 → CẦN luyện Âm nhạc chuyên sâu (★ khớp tên ngành Âm nhạc)','D01 → hướng quản lý/lý luận nghệ thuật (không cần năng khiếu)'],
    truong:'HV Âm Nhạc Quốc Gia VN, ĐH Mỹ Thuật VN, ĐH Sân Khấu Điện Ảnh HN/HCM, ĐH Văn Hóa HN/HCM',
    warn:'Cần luyện năng khiếu chuyên sâu từ sớm — không thể bổ sung ngắn hạn trước kỳ thi.',
-   traits:['sang-tao','kien-nhan','dong-cam']},
+   traits:['bieu-dat','sang-tao','hinh-anh','dong-cam']},
 
   {id:'khtn',     icon:'🔬',ten:'Khoa học tự nhiên – Công nghệ sinh–hóa',
    mo:'Người tò mò, thích khám phá bản chất sự vật. Quan tâm Vật lý, Hóa học, Sinh học nghiên cứu.',
@@ -931,7 +942,7 @@ const NGANH=[
    mon_txt:['Hóa học','Sinh học','Vật lý'],
    tohop_l10:['B00 → cần: Hóa học + Sinh học (CN Sinh–Hóa, Thực phẩm)','A00 → cần: Vật lý + Hóa học','Nên học ít nhất 3 môn KHTN để linh hoạt'],
    truong:'ĐH Khoa học TN HN, ĐH Khoa học TN TP.HCM, ĐH Bách Khoa HN/HCM, ĐH Cần Thơ, ĐH Nông Lâm HCM',
-   warn:'',traits:['khoa-hoc','phan-tich','kien-nhan','so-lieu']},
+   warn:'',traits:['khoa-hoc','phan-tich','so-lieu','noi-tam']},
 
   {id:'quan-doi', icon:'🎖️',ten:'Công an – Quân đội – An ninh',
    mo:'Người kỷ luật, bản lĩnh, trách nhiệm cao. Sẵn sàng phục vụ Tổ quốc, giữ trật tự xã hội.',
@@ -941,7 +952,7 @@ const NGANH=[
    tohop_l10:['A01 → cần: Vật lý + Tiếng Anh','A00 → cần: Vật lý + Hóa học','Ngoài học lực: sức khỏe tốt + sơ tuyển thể lực riêng'],
    truong:'HV Cảnh Sát Nhân Dân, HV An Ninh Nhân Dân, HV Kỹ Thuật Quân Sự, ĐH Phòng Cháy Chữa Cháy, ĐH Trần Quốc Tuấn',
    warn:'Ngoài học lực, cần sức khỏe tốt, lý lịch trong sáng và vượt sơ tuyển thể lực riêng.',
-   traits:['ky-luat','kien-nhan','dong-cam']},
+   traits:['ky-luat','lanh-dao','thuc-hanh','giup-do']},
 
   // ── NHÓM NGÀNH BỔ SUNG (từ 36 chân dung HNA) ──────────────────────
 
@@ -952,17 +963,17 @@ const NGANH=[
    mon_txt:['Toán (cốt lõi)','Tiếng Anh'],
    tohop_l10:['D01 → cần: Tiếng Anh tốt (phổ biến nhất)','D07 → cần: Hóa học + Tiếng Anh (★ dùng chung nhiều ngành Kinh tế)','A00 → cần: Vật lý + Hóa học'],
    truong:'HV Tài Chính, ĐH Kinh Tế Quốc Dân, ĐH Kinh Tế TP.HCM (UEH), ĐH Thăng Long, ĐH Đồng Nai',
-   warn:'',traits:['chinh-xac','so-lieu','kien-nhan','ky-luat']},
+   warn:'',traits:['chinh-xac','so-lieu','ky-luat','phan-tich']},
 
   {id:'ban-dan',   icon:'💡',ten:'Công nghiệp bán dẫn',
    mo:'Người có tư duy logic–kỹ thuật tốt, thích tìm hiểu cách thiết bị điện tử vận hành và kiên trì với vấn đề phức tạp.',
    tomtat:'Phù hợp với người giỏi tư duy logic, thích công nghệ lõi, kiên trì và muốn tham gia lĩnh vực công nghệ cao mang tính chiến lược.',
    dh:['A00: Toán – Vật lý – Hóa học','A01: Toán – Vật lý – Tiếng Anh','X06: Toán – Vật lý – Tin học'],
    mon_txt:['Vật lý (bắt buộc)','Toán nền tảng vững'],
-   tohop_l10:['A00 → cần: Vật lý + Hóa học','A01 → cần: Vật lý + Tiếng Anh','X06 → cần: Vật lý + Tin học (MỚI 2025)'],
+   tohop_l10:['A00 → cần: Vật lý + Hóa học','A01 → cần: Vật lý + Tiếng Anh','X06 → cần: Vật lý + Tin học (chính thức 2026)'],
    truong:'ĐH Bách Khoa HN/HCM, ĐH Công Nghệ ĐHQG HN, ĐH RMIT, FPT University',
    warn:'🤖 Bán dẫn là ngành chiến lược quốc gia 2026 — nhu cầu nhân lực rất cao, học bổng nhiều.',
-   traits:['phan-tich','may-moc','khoa-hoc','kien-nhan']},
+   traits:['phan-tich','may-moc','khoa-hoc','chinh-xac']},
 
   {id:'ngoai-thuong',icon:'🌍',ten:'Ngoại thương – Xuất nhập khẩu',
    mo:'Người năng động, thích môi trường quốc tế và có tư duy kinh doanh xuyên biên giới.',
@@ -971,7 +982,7 @@ const NGANH=[
    mon_txt:['Tiếng Anh (quan trọng nhất)'],
    tohop_l10:['D01 → cần: Tiếng Anh ≥ 8.0','A01 → cần: Vật lý + Tiếng Anh'],
    truong:'ĐH Ngoại Thương HN/HCM, ĐH Kinh Tế Quốc Dân, ĐH Kinh Tế TP.HCM (UEH)',
-   warn:'',traits:['ngon-ngu','giao-tiep','kinh-doanh','phan-tich']},
+   warn:'',traits:['kinh-doanh','ngon-ngu','giao-tiep','thuyet-phuc']},
 
   {id:'dien-tu',   icon:'⚡',ten:'Điện – Điện tử – Tự động hóa',
    mo:'Người thích kỹ thuật, mạch điện, thiết bị điện và muốn hiểu cách các hệ thống vận hành.',
@@ -990,7 +1001,7 @@ const NGANH=[
    tohop_l10:['A00 → cần: Vật lý + Hóa học','A01 → cần: Vật lý + Tiếng Anh'],
    truong:'HV Hàng Không VN, ĐH Bách Khoa HN, ĐH Công Nghệ ĐHQG HN, ĐH Giao Thông Vận Tải',
    warn:'Điểm chuẩn rất cao, yêu cầu sức khỏe đặc biệt (phi công), hoặc nền tảng KHTN rất vững.',
-   traits:['khoa-hoc','ky-luat','chinh-xac','kien-nhan']},
+   traits:['khoa-hoc','ky-luat','chinh-xac','may-moc']},
 
   {id:'vat-lieu',  icon:'🔩',ten:'Công nghệ vật liệu',
    mo:'Người thích khoa học ứng dụng, tò mò về cấu tạo của vật chất và muốn tạo ra vật liệu mới phục vụ sản xuất và công nghệ cao.',
@@ -999,7 +1010,7 @@ const NGANH=[
    mon_txt:['Hóa học (cốt lõi)','Vật lý'],
    tohop_l10:['A00 → cần: Vật lý + Hóa học','B00 → cần: Hóa học + Sinh học (CN vật liệu sinh học)'],
    truong:'ĐH Bách Khoa HN/HCM, ĐH Khoa học TN HN/HCM, ĐH Công Nghệ ĐHQG HN',
-   warn:'',traits:['khoa-hoc','phan-tich','chinh-xac','kien-nhan']},
+   warn:'',traits:['khoa-hoc','phan-tich','chinh-xac','thuc-hanh']},
 
   {id:'thuc-pham', icon:'🍽️',ten:'Công nghệ thực phẩm – Dinh dưỡng',
    mo:'Người thích khoa học ứng dụng, quan tâm đến thực phẩm, dinh dưỡng và quy trình sản xuất.',
@@ -1008,7 +1019,7 @@ const NGANH=[
    mon_txt:['Hóa học (bắt buộc)','Sinh học'],
    tohop_l10:['B00 → cần: Hóa học + Sinh học (chủ lực thực phẩm–dinh dưỡng)','A00 → cần: Vật lý + Hóa học'],
    truong:'ĐH Bách Khoa HN/HCM, ĐH Nông Lâm HCM, ĐH Công Nghiệp HCM, ĐH Cần Thơ',
-   warn:'',traits:['khoa-hoc','chinh-xac','kien-nhan','thuc-hanh']},
+   warn:'',traits:['khoa-hoc','chinh-xac','thuc-hanh','tu-nhien']},
 
   {id:'hang-hai',  icon:'⚓',ten:'Hàng hải – Thủy lợi – Thời tiết',
    mo:'Người thích thiên nhiên, kỹ thuật, môi trường nước và khí hậu. Quan tâm đến tàu biển, cảng biển, đê điều, thủy lợi, dự báo thời tiết.',
@@ -1017,7 +1028,7 @@ const NGANH=[
    mon_txt:['Vật lý (bắt buộc — nền tảng kỹ thuật)','Hóa học (A00)','Tiếng Anh (A01 — xu hướng nhiều trường)'],
    tohop_l10:['A00 → cần: Vật lý + Hóa học (chủ lực)','A01 → cần: Vật lý + Tiếng Anh (xu hướng 2025–2026)','C01 → cần: Vật lý (Hàng hải–Thủy lợi)'],
    truong:'ĐH Hàng Hải VN (Hải Phòng), ĐH Thủy Lợi HN, ĐH Tài Nguyên & Môi Trường HN/HCM, ĐH Bách Khoa HN/HCM',
-   warn:'A01 (Toán–Lý–Anh) đang được nhiều trường kỹ thuật mở rộng và ưu tiên hơn A00 — nên cân nhắc giữ Tiếng Anh tốt.',traits:['tu-nhien','may-moc','thuc-hanh','kien-nhan']},
+   warn:'A01 (Toán–Lý–Anh) đang được nhiều trường kỹ thuật mở rộng và ưu tiên hơn A00 — nên cân nhắc giữ Tiếng Anh tốt.',traits:['tu-nhien','may-moc','thuc-hanh','ky-luat']},
 
   {id:'mo-dia',    icon:'⛏️',ten:'Mỏ – Địa chất',
    mo:'Người thích khám phá tự nhiên, đất đá, tài nguyên và bản đồ địa hình.',
@@ -1026,7 +1037,7 @@ const NGANH=[
    mon_txt:['Vật lý','Hóa học','Địa lý'],
    tohop_l10:['A00 → cần: Vật lý + Hóa học','Môn Địa lý lớp 10 là lợi thế'],
    truong:'ĐH Mỏ–Địa Chất HN, ĐH Tài Nguyên & Môi Trường HN/HCM, ĐH Khoa học TN HN/HCM',
-   warn:'',traits:['tu-nhien','thuc-hanh','kien-nhan','phan-tich']},
+   warn:'',traits:['tu-nhien','thuc-hanh','phan-tich','khoa-hoc']},
 
   {id:'toan-tk',   icon:'📐',ten:'Toán học – Thống kê – Khoa học dữ liệu',
    mo:'Người có tư duy logic tốt, thích tìm quy luật và giải quyết vấn đề bằng con số–mô hình–lập luận chặt chẽ.',
@@ -1035,7 +1046,7 @@ const NGANH=[
    mon_txt:['Toán (nền tảng tuyệt đối)','Tin học (Khoa học dữ liệu)'],
    tohop_l10:['A00 → cần: Vật lý + Hóa học','A01 → cần: Vật lý + Tiếng Anh','Nên chọn Tin học → hướng Data Science'],
    truong:'ĐH Khoa học TN HN/HCM, ĐH Bách Khoa HN, ĐH Kinh Tế Quốc Dân, ĐH Sư Phạm HN',
-   warn:'',traits:['so-lieu','phan-tich','kien-nhan','noi-tam']},
+   warn:'',traits:['so-lieu','phan-tich','noi-tam','khoa-hoc']},
 
   {id:'nhan-su',   icon:'👥',ten:'Nhân sự – Hành chính – Quản trị văn phòng',
    mo:'Người cẩn thận, có trách nhiệm và thích làm việc với con người. Quan tâm đến tuyển dụng, đào tạo, văn hóa doanh nghiệp.',
@@ -1044,7 +1055,7 @@ const NGANH=[
    mon_txt:['Tiếng Anh','GDKTPL (luật lao động, quản trị hành chính)','Giao tiếp – Văn bản hành chính'],
    tohop_l10:['D01 → cần: Tiếng Anh tốt (phổ biến nhất)','X01 → cần: GDKTPL (hỗ trợ luật lao động, hành chính)','C00 → cần: Địa lý + Lịch sử'],
    truong:'ĐH Kinh Tế QD, ĐH Kinh Tế HCM (UEH), ĐH Lao Động Xã Hội, ĐH Văn Lang, ĐH HUTECH',
-   warn:'',traits:['giao-tiep','kien-nhan','chinh-xac','dong-cam']},
+   warn:'',traits:['giao-tiep','lanh-dao','dong-cam','chinh-xac']},
 
   {id:'van-hoa',   icon:'🏛️',ten:'Văn hóa – Chính trị – Khoa học xã hội',
    mo:'Người quan tâm đến con người, xã hội, lịch sử và văn hóa. Thích tìm hiểu về hành vi xã hội, chính sách, cộng đồng.',
@@ -1053,7 +1064,7 @@ const NGANH=[
    mon_txt:['Lịch sử (cốt lõi)','GDKTPL (chính trị, chính sách, pháp luật)','Địa lý','Ngữ văn'],
    tohop_l10:['C00 → cần: Địa lý + Lịch sử (chủ lực)','X70 → cần: Lịch sử + GDKTPL (rất hợp hướng Chính trị – Chính sách)','D01 → cần: Tiếng Anh tốt'],
    truong:'ĐH KHXH&NV HN/HCM, HV Báo Chí & TT, ĐH Văn Hóa HN/HCM, HV Chính Trị QG HCM',
-   warn:'',traits:['ngon-ngu','dong-cam','noi-tam','xa-hoi']},
+   warn:'',traits:['ngon-ngu','dong-cam','noi-tam','thuyet-phuc']},
 
   {id:'the-thao',  icon:'🏆',ten:'Thể dục – Thể thao',
    mo:'Người yêu vận động, có tinh thần kỷ luật, sức bền tốt và thích rèn luyện cơ thể nghiêm túc.',
@@ -1063,7 +1074,7 @@ const NGANH=[
    tohop_l10:['T00/T01 → CẦN thi năng khiếu TDTT riêng tại trường','D01 → hướng Quản lý thể thao, Giáo dục thể chất'],
    truong:'ĐH SP TDTT HN, ĐH SP TDTT TP.HCM, ĐH SP TDTT Đà Nẵng',
    warn:'Cần có thành tích thi đấu thể thao hoặc vượt qua bài thi năng khiếu TDTT.',
-   traits:['ky-luat','kien-nhan','thuc-hanh','giup-do']},
+   traits:['ky-luat','thuc-hanh','lanh-dao','giup-do']},
 
   {id:'thoi-trang',icon:'👗',ten:'Thời trang – May mặc',
    mo:'Người nhạy với cái đẹp, màu sắc, chất liệu và thích tạo ra sản phẩm mang tính thẩm mỹ–ứng dụng.',
@@ -1073,7 +1084,7 @@ const NGANH=[
    tohop_l10:['H00 → CẦN luyện năng khiếu Vẽ từ lớp 10','D01 → hướng Thiết kế + Kinh doanh thời trang'],
    truong:'ĐH Mỹ Thuật Công Nghiệp HN, ĐH Công Nghiệp Dệt May HN, ĐH Kiến Trúc TP.HCM',
    warn:'Cần luyện năng khiếu vẽ và tư duy thẩm mỹ từ lớp 10.',
-   traits:['sang-tao','chinh-xac','hinh-anh','kien-nhan']},
+   traits:['sang-tao','hinh-anh','chinh-xac','bieu-dat']},
 
   {id:'in-giay',   icon:'🖨️',ten:'Công nghệ In – Giấy – Bao bì',
    mo:'Người cẩn thận, thực tế và quan tâm đến vật liệu, màu sắc, bao bì và các sản phẩm in ấn.',
@@ -1082,7 +1093,7 @@ const NGANH=[
    mon_txt:['Hóa học (mực in, vật liệu)','Vật lý'],
    tohop_l10:['A00 → cần: Vật lý + Hóa học'],
    truong:'ĐH Bách Khoa HN, ĐH Sư Phạm Kỹ Thuật TP.HCM, ĐH Công Nghiệp HN/HCM',
-   warn:'',traits:['chinh-xac','thuc-hanh','sang-tao','kien-nhan']},
+   warn:'',traits:['chinh-xac','thuc-hanh','sang-tao','may-moc']},
 
   {id:'tai-nguyen',icon:'🌿',ten:'Tài nguyên – Môi trường',
    mo:'Người quan tâm đến thiên nhiên, đất, nước, không khí và các vấn đề ô nhiễm–biến đổi khí hậu–phát triển bền vững.',
@@ -1091,7 +1102,7 @@ const NGANH=[
    mon_txt:['Hóa học','Sinh học','Địa lý'],
    tohop_l10:['A00 → cần: Vật lý + Hóa học','B00 → cần: Hóa học + Sinh học (KH môi trường)','Môn Địa lý lớp 10 rất có ích'],
    truong:'ĐH Tài Nguyên & Môi Trường HN/HCM, ĐH Khoa học TN HN/HCM, ĐH Nông Lâm HCM',
-   warn:'',traits:['tu-nhien','khoa-hoc','phan-tich','kien-nhan']},
+   warn:'',traits:['tu-nhien','khoa-hoc','phan-tich','giup-do']},
 
   {id:'cham-soc',  icon:'💆',ten:'Chăm sóc sắc đẹp – Gia đình',
    mo:'Người khéo léo, tinh tế và thích chăm sóc con người. Hứng thú với làm đẹp, da–tóc–móng, spa, trang điểm, dinh dưỡng.',
@@ -1101,7 +1112,7 @@ const NGANH=[
    tohop_l10:['D01 → cần: Tiếng Anh tốt (phổ biến nhất)','B00 → cần: Hóa học + Sinh học (★ khớp trực tiếp với môn lớp 10 — hướng dinh dưỡng, mỹ phẩm)'],
    truong:'ĐH Công Nghệ TP.HCM (HUTECH), ĐH Văn Lang, ĐH Nguyễn Tất Thành, Cao đẳng nghề thẩm mỹ',
    warn:'Nhiều trường đào tạo hệ Cao đẳng nghề — nhanh ra nghề, chi phí thấp.',
-   traits:['giup-do','dong-cam','chinh-xac','sang-tao']},
+   traits:['giup-do','dong-cam','sang-tao','chinh-xac']},
 
   {id:'cong-tac-xa-hoi',icon:'🤝',ten:'Công tác xã hội – Xã hội học',
    mo:'Người quan tâm đến cộng đồng, bảo trợ xã hội, trẻ em, người yếu thế và mong muốn góp phần cải thiện đời sống xã hội.',
@@ -1111,7 +1122,7 @@ const NGANH=[
    tohop_l10:['C00 → cần: Địa lý + Lịch sử','X70 → cần: Lịch sử + GDKTPL (rất phù hợp — chính sách & pháp luật xã hội)','D01 → cần: Tiếng Anh tốt (CTXH quốc tế)'],
    truong:'ĐH KHXH&NV HN/HCM, ĐH Lao Động Xã Hội HN/HCM, ĐH Đà Lạt',
    warn:'GDKTPL (Kinh tế & Pháp luật) là môn rất phù hợp với CTXH — giúp hiểu chính sách xã hội, luật bảo trợ, quyền trẻ em.',
-   traits:['giup-do','dong-cam','ngon-ngu','kien-nhan']},
+   traits:['giup-do','dong-cam','ngon-ngu','giao-tiep']},
 
   {id:'bac-si-thu-y',icon:'🐾',ten:'Bác sĩ thú y',
    mo:'Người yêu động vật, cẩn thận, kiên nhẫn và có tinh thần trách nhiệm cao với sức khỏe vật nuôi và cộng đồng.',
@@ -1121,7 +1132,7 @@ const NGANH=[
    tohop_l10:['B00 → PHẢI có: Hóa học + Sinh học (tổ hợp chủ lực)','B03 → cần: Sinh học','Sinh học là môn cốt lõi không thể thiếu'],
    truong:'ĐH Nông Lâm TP.HCM, ĐH Nông Nghiệp HN, ĐH Cần Thơ, ĐH Nha Trang',
    warn:'Sinh học là môn BẮT BUỘC cho ngành Bác sĩ thú y.',
-   traits:['giup-do','tu-nhien','khoa-hoc','kien-nhan']},
+   traits:['giup-do','tu-nhien','khoa-hoc','chinh-xac']},
 ];
 
 const SCHOOLS={
@@ -2079,7 +2090,7 @@ const TO_HOP_MAP={
   'hoa-sinh':'B00','hoa-gdktpl':'X25',
   'dia-su':'C00','dia-gdktpl':'X74',
   'su-gdktpl':'X70',
-  'ly-gdktpl':'X06','hoa-tin':'',
+  'ly-gdktpl':'','hoa-tin':'',
   'sinh-tin':'','sinh-dia':'','sinh-su':'B03','sinh-gdktpl':'X26',
 };
 
@@ -2130,6 +2141,7 @@ function renderTnResult(){
     'D07':['hoa'],'C00':['dia','su'],'D01':[],'X06':['ly','tin'],
     'B03':['sinh'],'C04':['dia'],'D14':['su'],'D15':['dia'],'C03':['su'],
     'X70':['su','gdktpl'],'X35':['su','gdktpl'],'X01':['gdktpl'],
+    'C01':['ly'],'V00':['ly'],'T00':['sinh'],'T01':[],'H00':[],'N00':[],'Q00':[],
   };
   const tnIds=selTnMons.map(m=>m.id);
   let targetTH='';
