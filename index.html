@@ -3,10 +3,17 @@
 <!--
 =======================================================================
   HƯỚNG NGHIỆP ALPHA — Công cụ tra cứu tổ hợp môn lớp 10
-  Phiên bản: 2.14  |  Ngày: 2026-06-26
+  Phiên bản: 2.15  |  Ngày: 2026-06-26
   Tác giả: Alpha (Trần Văn Đăng) — 096 937 4411
   Website: www.huongnghiepalpha.vn
 =======================================================================
+
+  CHANGELOG 2.15 (2026-06-26): Tối ưu hồ sơ định hướng
+    - Lộ trình hành động theo lớp 10-11-12 (mục 5), tự tô đậm lớp hiện tại,
+      gợi ý theo ngành (tiếng Anh / năng khiếu).
+    - Lưu hồ sơ tự động vào máy (mở lại không mất dữ liệu) + nút "Bắt đầu lại"
+      xoá sạch. Nút "Gửi hồ sơ về Alpha" (SĐT) và "Sao chép hồ sơ" gửi Zalo/Email.
+    - Cho chọn lại NGÀNH MỤC TIÊU ngay trong hồ sơ (đổi mục tiêu trong 5 đề xuất).
 
   CHANGELOG 2.14 (2026-06-26): Hoàn thiện hồ sơ theo góp ý
     - Đổi "Alpha" → "Alpha" trong toàn bộ chữ hiển thị.
@@ -630,6 +637,28 @@ a.footer-hl:hover{text-decoration:underline}
 .pf-strengths{font-size:11.5px;color:var(--text2);background:var(--amber-light);border-radius:8px;padding:9px 12px;margin-bottom:10px;line-height:1.7}
 .pf-str-h{font-weight:700;color:var(--navy)}
 .pf-str-chip{display:inline-block;background:#fff;border:1px solid var(--border-strong);border-radius:6px;padding:2px 8px;margin:2px 3px 0 0;font-size:11px;color:var(--navy)}
+
+/* ── Đổi ngành mục tiêu ── */
+.pf-target-pick{margin:8px 0 4px;font-size:11.5px;line-height:1.9}
+.pf-tp-label{font-weight:700;color:var(--text2)}
+.pf-tgt-chip{display:inline-block;margin:2px 4px 0 0;padding:4px 9px;border:1.5px solid var(--border-strong);border-radius:7px;background:var(--card);font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit}
+.pf-tgt-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+/* ── Lộ trình theo lớp ── */
+.pf-road{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.pf-road-card{border:1.5px solid var(--border);border-radius:9px;padding:11px;background:#f7f8fc}
+.pf-road-card.cur{border-color:var(--amber);background:var(--amber-light);box-shadow:0 0 0 2px rgba(246,177,21,.18)}
+.pf-road-grade{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:7px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.pf-road-card.cur .pf-road-grade{color:#8a5a00}
+.pf-road-li{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:6px;padding-left:13px;position:relative}
+.pf-road-li::before{content:'›';position:absolute;left:2px;color:var(--navy);font-weight:700}
+/* ── Gửi hồ sơ ── */
+.hs-send{background:var(--card);border:1.5px solid var(--border-strong);border-radius:12px;padding:16px;margin:1rem 0}
+.hs-send-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.hs-send-status{margin-top:9px;font-size:12px;border-radius:8px;padding:9px 12px;line-height:1.5}
+.hs-send-status.ok{background:var(--green-light);color:#1a6e2e}
+.hs-send-status.err{background:#fff0f0;color:#a32d2d}
+@media(max-width:560px){.pf-road{grid-template-columns:1fr}}
+@media print{.pf-road{grid-template-columns:1fr 1fr 1fr}.pf-road-card.cur{box-shadow:none}}
 </style>
 </head>
 <body>
@@ -947,6 +976,16 @@ a.footer-hl:hover{text-decoration:underline}
 
     <!-- PHẦN IN -->
     <div id="profile-print"><div id="profile-output"></div></div>
+
+    <div class="hs-send no-print">
+      <div class="hs-send-title">📨 Gửi hồ sơ về Alpha để được đồng hành miễn phí</div>
+      <div class="hs-grid2" style="align-items:end">
+        <div><label class="hs-lbl">Số điện thoại liên hệ</label><input type="tel" id="hs-phone" class="hs-input" placeholder="VD: 0901 234 567" style="margin-bottom:0"></div>
+        <button class="btn btn-primary" style="height:40px" onclick="submitProfile()">Gửi hồ sơ →</button>
+      </div>
+      <button class="btn" style="width:100%;margin-top:8px" onclick="copyProfileText()">📋 Sao chép hồ sơ (gửi qua Zalo / Email)</button>
+      <div class="hs-send-status" id="hs-send-status" style="display:none"></div>
+    </div>
 
     <div class="btn-row no-print">
       <button class="btn" onclick="goStep(4)">← Môn lớp 10</button>
@@ -2249,6 +2288,8 @@ function goStep(s){
 
 function resetAll(){
   selT.clear();selN=null;selMons=[];saOpenId=null;
+  profileTargetId=null;try{localStorage.removeItem('alpha_hoso')}catch(e){}
+  ['hs-name','hs-dob','hs-school','hs-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('sel'));
   document.getElementById('sbar-txt').textContent='Chưa chọn gì — hãy chọn ít nhất 2 mô tả bản thân';
   document.getElementById('sbar-cnt').textContent='0';
@@ -2766,6 +2807,7 @@ function startTool(){
 }
 
 buildTraits();
+try{loadProfile();}catch(e){}
 
 /* ===================== HỒ SƠ ĐỊNH HƯỚNG ===================== */
 /* ===== BƯỚC 5 — HỒ SƠ ĐỊNH HƯỚNG ===== */
@@ -2807,7 +2849,9 @@ function genProfile(){
   const ranked=scoreNganh();
   const hasTraits=selT.size>=2;
   const top5=ranked.slice(0,5);
-  const target=selN?NGANH.find(n=>n.id===selN):top5[0];
+  let target=profileTargetId?NGANH.find(n=>n.id===profileTargetId):(selN?NGANH.find(n=>n.id===selN):top5[0]);
+  if(!target)target=top5[0];
+  const tgtOpts=[target,...top5.filter(n=>n.id!==target.id)].slice(0,6);
 
   // Tổ hợp thi tốt nghiệp THPT (Toán+Văn bắt buộc + 2 môn tự chọn từ tổ hợp chủ lực)
   const chu=target.dh[0];
@@ -2860,6 +2904,7 @@ function genProfile(){
 
     <div class="pf-sec">
       <div class="pf-sec-h">2 · Ngành mục tiêu: <span class="pf-target">${target.icon} ${target.ten}</span></div>
+      <div class="pf-target-pick no-print"><span class="pf-tp-label">Đổi ngành mục tiêu:</span> ${tgtOpts.map(n=>`<button class="pf-tgt-chip${n.id===target.id?' active':''}" onclick="setProfileTarget('${n.id}')">${n.icon} ${n.ten}</button>`).join('')}</div>
       <div class="pf-2col">
         <div class="pf-box">
           <div class="pf-box-h">📘 Tổ hợp môn HỌC ở lớp 10</div>
@@ -2888,15 +2933,102 @@ function genProfile(){
       <div class="pf-skills">${allSkills.map(s=>`<div class="pf-skill"><span class="pf-skill-tick">✓</span>${s}</div>`).join('')}</div>
     </div>
 
+    <div class="pf-sec">
+      <div class="pf-sec-h">5 · Lộ trình hành động theo lớp (để đạt ngành mục tiêu)</div>
+      ${roadmapHTML(target,profileGrade)}
+    </div>
+
     <div class="pf-foot">
       <div>Hồ sơ lập ngày ${td} · <b>Hướng Nghiệp Alpha</b></div>
       <div>Hotline: 096 937 4411 | huongnghiepalpha@gmail.com | www.huongnghiepalpha.vn</div>
       <div class="pf-sign">Chữ ký học sinh: ……………………… &nbsp;&nbsp; Phụ huynh: ……………………… &nbsp;&nbsp; Tư vấn viên Alpha: ………………………</div>
     </div>
   </div>`;
+  lastProfileText=buildProfileText(name,dob,school,target,top5,tnText,allSkills,mien);
+  saveProfile();
 }
 
 function printProfile(){genProfile();setTimeout(()=>window.print(),120);}
+
+/* ===== BƯỚC 5 — NÂNG CẤP v2.15 ===== */
+let profileTargetId=null;
+let lastProfileText='';
+
+function setProfileTarget(id){profileTargetId=id;genProfile();}
+
+function roadmapHTML(target,grade){
+  const dhStr=(target.dh||[]).join(' ');
+  const needEng=/Tiếng Anh|Ngoại ngữ/.test(dhStr)||['ngoai-giao','ngoai-thuong','du-lich','bao-chi'].includes(target.id);
+  const needNK=['nt','tkdh','the-thao','thoi-trang'].includes(target.id)||/^[HVMNRST]/.test((target.dh&&target.dh[0])||'');
+  const g10=['Chọn đúng 4 môn tự chọn theo tổ hợp ngành — quyết định cả 3 năm, chọn sai rất khó sửa.','Giữ điểm học bạ tốt ngay từ học kỳ 1 (xét tuyển tính cả 6 học kỳ).','Tìm hiểu sâu về ngành: đọc, hỏi người trong nghề, trải nghiệm thực tế.'];
+  if(needNK)g10.push('Bắt đầu rèn năng khiếu đều đặn mỗi tuần (vẽ / âm nhạc / thể thao…).');
+  const g11=['Duy trì học bạ ổn định, nâng dần điểm các môn trong tổ hợp xét tuyển.','Ôn và thi thử ĐGNL/ĐGTD ít nhất 1 lần để biết sức mình.'];
+  if(needEng)g11.push('Ôn và thi chứng chỉ tiếng Anh (IELTS/TOEFL) — lợi thế lớn khi xét tuyển.');
+  g11.push('Tham gia CLB / hoạt động liên quan ngành để có trải nghiệm và làm đẹp hồ sơ.');
+  const g12=['Chốt danh sách trường Ước mơ – Phù hợp – An toàn (xem mục 3).','Thi ĐGNL/ĐGTD chính thức (ưu tiên đợt sớm) và ôn thi tốt nghiệp THPT.','Theo dõi mốc đăng ký nguyện vọng (tháng 7) và đăng ký đúng hạn.'];
+  const card=(lop,items)=>`<div class="pf-road-card${grade==lop?' cur':''}"><div class="pf-road-grade">Lớp ${lop}${grade==lop?' · em đang ở đây':''}</div>${items.map(x=>`<div class="pf-road-li">${x}</div>`).join('')}</div>`;
+  const pre=(grade<10)?`<div class="pf-note" style="margin-bottom:8px">Em đang chuẩn bị bước vào lớp 10 — đây là lộ trình phía trước để đạt ngành mục tiêu.</div>`:'';
+  return pre+`<div class="pf-road">${card(10,g10)}${card(11,g11)}${card(12,g12)}</div>`;
+}
+
+function buildProfileText(name,dob,school,target,top5,tnText,allSkills,mien){
+  const regNames={B:'Miền Bắc',T:'Miền Trung',N:'Miền Nam'};
+  const regionPlain=['B','T','N'].map(k=>{const list=((mien&&mien[k])?mien[k]:[]).filter(s=>s.diem>0).sort((a,b)=>b.diem-a.diem);return list.length?`  - ${regNames[k]}: ${list[0].t} (ĐC 2025 ${list[0].diem.toFixed(2)}, khối ${list[0].th})`:'';}).filter(Boolean).join('\n');
+  return `HỒ SƠ ĐỊNH HƯỚNG NGHỀ NGHIỆP — Hướng Nghiệp Alpha
+Họ tên: ${name||'...'} | Ngày sinh: ${fmtDob(dob)} | Lớp ${profileGrade} | Trường: ${school||'...'}
+
+NGÀNH MỤC TIÊU: ${target.ten}
+5 ngành phù hợp: ${top5.map(n=>n.ten).join('; ')}
+Tổ hợp HỌC lớp 10: ${target.tohop_l10.join(' | ')}
+Tổ hợp thi TN THPT: ${tnText.replace(/<[^>]+>/g,'')}
+Tổ hợp xét tuyển ĐH: ${target.dh.map(d=>d.split(':')[0].trim()).join(', ')}
+Trường tiêu biểu theo miền:
+${regionPlain||'  (đang cập nhật)'}
+Kỹ năng cần rèn: ${allSkills.join('; ')}
+
+Liên hệ Alpha: 096 937 4411 | huongnghiepalpha@gmail.com | www.huongnghiepalpha.vn`;
+}
+
+function saveProfile(){try{localStorage.setItem('alpha_hoso',JSON.stringify({
+  name:(document.getElementById('hs-name')||{}).value||'',
+  dob:(document.getElementById('hs-dob')||{}).value||'',
+  school:(document.getElementById('hs-school')||{}).value||'',
+  grade:profileGrade,traits:[...selT],selN:selN,targetId:profileTargetId
+}));}catch(e){}}
+
+function loadProfile(){try{
+  const d=JSON.parse(localStorage.getItem('alpha_hoso')||'null');if(!d)return;
+  const setV=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+  setV('hs-name',d.name);setV('hs-dob',d.dob);setV('hs-school',d.school);
+  if(d.grade){profileGrade=d.grade;document.querySelectorAll('.hs-grade').forEach(b=>b.classList.toggle('active',b.textContent.trim()==='Lớp '+d.grade));}
+  if(Array.isArray(d.traits)){d.traits.forEach(id=>{if(!selT.has(id)){selT.add(id);const b=document.getElementById('tb-'+id);if(b)b.classList.add('sel');}});
+    const n=selT.size;const st=document.getElementById('sbar-txt');if(st)st.textContent=n===0?'Chưa chọn gì — hãy chọn ít nhất 2 mô tả bản thân':`Đã chọn ${n} mô tả bản thân`;
+    const sc=document.getElementById('sbar-cnt');if(sc)sc.textContent=n;const b12=document.getElementById('btn12');if(b12)b12.disabled=n<2;}
+  if(d.selN)selN=d.selN;
+  if(d.targetId)profileTargetId=d.targetId;
+}catch(e){}}
+
+function fallbackCopy(t){try{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}catch(e){}}
+function copyProfileText(){
+  const st=document.getElementById('hs-send-status');
+  const ok=()=>{if(st){st.className='hs-send-status ok';st.style.display='block';st.textContent='✅ Đã sao chép hồ sơ — dán vào Zalo / Email gửi cho Alpha hoặc lưu lại.';}};
+  const txt=lastProfileText||'';
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok).catch(()=>{fallbackCopy(txt);ok();});}else{fallbackCopy(txt);ok();}}catch(e){fallbackCopy(txt);ok();}
+}
+
+function submitProfile(){
+  const phone=((document.getElementById('hs-phone')||{}).value||'').trim();
+  const name=((document.getElementById('hs-name')||{}).value||'').trim();
+  const school=((document.getElementById('hs-school')||{}).value||'').trim();
+  const st=document.getElementById('hs-send-status');
+  if(!phone){if(st){st.className='hs-send-status err';st.style.display='block';st.textContent='Vui lòng nhập số điện thoại để Alpha liên hệ đồng hành cùng em.';}return;}
+  const tg=profileTargetId?NGANH.find(n=>n.id===profileTargetId):(selN?NGANH.find(n=>n.id===selN):scoreNganh()[0]);
+  const entry={timestamp:new Date().toLocaleString('vi-VN'),name,phone,school,grade:'Lớp '+profileGrade,nganh:(tg||{}).ten||'',traits:[...selT].join(', ')};
+  console.log('[Alpha Hoso]',JSON.stringify(entry));
+  if(st){st.className='hs-send-status ok';st.style.display='block';
+    st.innerHTML=`✅ <strong>Đã gửi hồ sơ!</strong> Alpha sẽ liên hệ <strong>${phone}</strong> để đồng hành cùng em.<br><span style="font-size:11px;color:var(--text3)">Hoặc gọi ngay: <a href="tel:0969374411" style="color:var(--navy)">096 937 4411</a></span>`;}
+}
+
 
 </script>
 </body>
