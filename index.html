@@ -3,10 +3,44 @@
 <!--
 =======================================================================
   HƯỚNG NGHIỆP ALPHA — Công cụ tra cứu tổ hợp môn lớp 10
-  Phiên bản: 2.8  |  Ngày: 2026-06-25
+  Phiên bản: 2.13  |  Ngày: 2026-06-26
   Tác giả: HNA (Trần Văn Đăng) — 096 937 4411
   Website: www.huongnghiepalpha.vn
 =======================================================================
+
+  CHANGELOG 2.13 (2026-06-26): BƯỚC 5 — HỒ SƠ ĐỊNH HƯỚNG
+    - Thêm Bước 5: học sinh nhập Họ tên / Ngày sinh / Lớp (8–12) / Trường,
+      hệ thống TỰ TỔNG HỢP từ Bước 1–4 thành 1 hồ sơ in được gồm:
+      5 ngành đề xuất · tổ hợp học lớp 10 · tổ hợp thi TN THPT ·
+      tổ hợp xét tuyển ĐH · trường Ước mơ/Phù hợp/An toàn · kỹ năng cần rèn.
+    - Nút "In / Lưu PDF hồ sơ" (window.print) với CSS in riêng (chỉ in hồ sơ).
+
+  CHANGELOG 2.12 (2026-06-26): Tối ưu trải nghiệm HS & phụ huynh
+    - Phương thức xét tuyển bấm-mở-rộng (bản đầy đủ) trong tra cứu 207 trường.
+    - Link đề án 2026 gắn vào CẢ bảng trường-theo-ngành (mỗi trường).
+    - Bảng GIẢI THÍCH THUẬT NGỮ (ĐGNL, ĐGTD, CCQT, học bạ, TSA, HSA…)
+      ngay trên ô tra cứu trường — phụ huynh dễ hiểu phương thức.
+
+  CHANGELOG 2.11 (2026-06-26):
+    - Tích hợp Danh sách ĐH Tuyển sinh 2026 (207 trường):
+      + Gắn LINK ĐỀ ÁN TUYỂN SINH 2026 (tuyensinh247) vào từng trường
+        trong ô "Tra cứu 207 trường" (Bước 3 > Trường & điểm).
+      + Thêm bộ lọc LOẠI HÌNH: Công lập / Tư thục / Quân sự-CA
+        (lọc kết hợp với lọc Miền).
+
+  CHANGELOG 2.10 (2026-06-26):
+    - Đối chiếu với bộ ảnh "Danh sách tổ hợp khối A–V": bổ sung 67 mã tổ
+      hợp còn thiếu vào ô tra cứu TO_HOP_FULL (63 mã mới + 4 mã A00/C14/
+      D01/D07 trước đây chỉ có ở mục phổ biến). Tổng tra cứu: 309 mã.
+    - Mã thiếu số ngành (từ ảnh) hiển thị nhãn "Khối X" thay cho số.
+
+  CHANGELOG 2.9 (2026-06-26):
+    - Tích hợp dữ liệu từ Bảng Tổng hợp Tổ Hợp–Ngành–Trường (HNA):
+      + NGANH_CHI_TIET: 499 ngành đào tạo cụ thể thuộc 34/36 nhóm ngành
+        → hiển thị trong Bước 2 ("Ngành cụ thể trong nhóm").
+      + TO_HOP_FULL: 242 tổ hợp xét tuyển 2026 (kèm số ngành) — tra cứu
+        có ô tìm kiếm trong Bước 3.
+      + TO_HOP_PHO_BIEN: 20 tổ hợp phổ biến nhất kèm nhóm ngành mục tiêu.
 
   CHANGELOG 2.8 (2026-06-25):
     - Tái cân bằng NGANH.traits: dùng đủ 20 đặc điểm (bieu-dat/lanh-dao/
@@ -465,6 +499,119 @@ a.footer-hl:hover{text-decoration:underline}
   .mien-grid{grid-template-columns:1fr;gap:6px}
   .mien-list{max-height:200px}
 }
+
+/* ── NGÀNH CỤ THỂ (chip) ── */
+.nct-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.nct-chip{font-size:11px;color:var(--navy);background:#eef2fa;border:1px solid var(--border-strong);border-radius:6px;padding:3px 8px;line-height:1.3}
+/* ── TRA CỨU TỔ HỢP (Bước 3) ── */
+.tohop-lk-search{width:100%;padding:9px 12px;border:1.5px solid var(--border-strong);border-radius:8px;font-size:13px;font-family:inherit;margin-bottom:8px;color:var(--text)}
+.tohop-lk-search:focus{outline:none;border-color:var(--navy)}
+.tohop-lk-hint{font-size:11px;color:var(--text3);margin:6px 0;line-height:1.4}
+.tohop-lk-results{max-height:340px;overflow-y:auto;border:0.5px solid var(--border);border-radius:8px}
+.tohop-lk-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:0.5px solid var(--border);font-size:12px}
+.tohop-lk-row:last-child{border-bottom:none}
+.tohop-lk-row.pho-bien{background:var(--amber-light)}
+.tohop-lk-code{flex-shrink:0;min-width:62px;font-weight:700;color:var(--navy);font-size:12px}
+.tohop-lk-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.tohop-lk-mon{color:var(--text2);line-height:1.3}
+.tohop-lk-nhom{color:#854f0b;font-size:11px;line-height:1.3}
+.tohop-lk-sn{flex-shrink:0;font-size:11px;font-weight:600;color:var(--green);white-space:nowrap}
+.tohop-lk-kh{color:var(--navy)!important;background:#eef2fa;border:1px solid var(--border-strong);border-radius:5px;padding:1px 7px;font-weight:700}
+
+
+.sch207-dean{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11.5px;font-weight:600;color:#1565C0;text-decoration:none;background:#e8f0fe;border:1px solid #c6dafc;border-radius:6px;padding:4px 9px;transition:all .15s}
+.sch207-dean:hover{background:#1565C0;color:white;border-color:#1565C0}
+
+/* ── ĐỀ ÁN trong bảng trường-theo-ngành ── */
+.mien-dean{display:inline-flex;align-items:center;gap:3px;margin-top:5px;font-size:10.5px;font-weight:600;color:#1565C0;text-decoration:none;background:#e8f0fe;border:1px solid #c6dafc;border-radius:5px;padding:2px 7px}
+.mien-dean:hover{background:#1565C0;color:#fff}
+/* ── Phương thức bấm-mở-rộng ── */
+.sch207-pt.has-full{cursor:pointer}
+.sch207-pt-toggle{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;color:var(--navy);white-space:nowrap}
+.sch207-pt-full{display:none;margin-top:6px;padding:8px 10px;background:#f7f8fc;border-left:2px solid var(--navy);border-radius:0 6px 6px 0;font-size:11.5px;color:var(--text2);line-height:1.55}
+.sch207-pt.open .sch207-pt-full{display:block}
+.sch207-pt.open .sch207-pt-toggle::after{content:' (thu gọn)'}
+/* ── Bảng giải thích thuật ngữ ── */
+.dh-glossary{margin:.25rem 1.25rem 1rem;border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;background:var(--amber-light)}
+.dh-glossary summary{cursor:pointer;padding:10px 14px;font-size:12.5px;font-weight:700;color:var(--navy);list-style:none;user-select:none}
+.dh-glossary summary::-webkit-details-marker{display:none}
+.dh-glossary[open] summary{border-bottom:1px solid var(--border-strong)}
+.dh-gloss-body{padding:10px 14px;display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--text2);line-height:1.5;background:#fff}
+.dh-gloss-body b{color:var(--navy);font-weight:700}
+
+/* ===== HỒ SƠ ĐỊNH HƯỚNG — FORM ===== */
+.hs-form{background:var(--card);border:1.5px solid var(--border-strong);border-radius:12px;padding:16px;margin-bottom:1rem}
+.hs-form-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.hs-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.hs-lbl{display:block;font-size:11.5px;font-weight:600;color:var(--text2);margin-bottom:4px}
+.hs-input{width:100%;padding:9px 11px;border:1.5px solid var(--border-strong);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);margin-bottom:10px}
+.hs-input:focus{outline:none;border-color:var(--navy)}
+.hs-grade-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.hs-grade{flex:1;min-width:58px;padding:8px 4px;border:1.5px solid var(--border-strong);border-radius:8px;background:var(--card);font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit}
+.hs-grade.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.hs-hint{font-size:11.5px;color:var(--text3);line-height:1.5;background:var(--amber-light);border-radius:8px;padding:8px 11px;margin-bottom:10px}
+
+/* ===== HỒ SƠ — TÀI LIỆU ===== */
+.pf-doc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;color:var(--text);box-shadow:var(--shadow)}
+.pf-head{text-align:center;border-bottom:3px solid var(--navy);padding-bottom:12px;margin-bottom:14px}
+.pf-brand{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--amber)}
+.pf-title{font-size:19px;font-weight:700;color:var(--navy);margin:3px 0}
+.pf-sub{font-size:11px;color:var(--text3)}
+.pf-info{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:12.5px;background:#f7f8fc;border-radius:8px;padding:11px 14px;margin-bottom:16px}
+.pf-k{color:var(--text3)}
+.pf-sec{margin-bottom:16px}
+.pf-sec-h{font-size:13px;font-weight:700;color:#fff;background:var(--navy);border-radius:7px;padding:7px 12px;margin-bottom:9px}
+.pf-target{color:var(--amber-light);background:rgba(255,255,255,.12);padding:1px 7px;border-radius:5px}
+.pf-warn{font-size:11.5px;color:#a32d2d;background:#fff0f0;border-left:2px solid #e24b4a;border-radius:0 7px 7px 0;padding:8px 11px;line-height:1.5;margin-bottom:8px}
+.pf-nganh-list{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:6px}
+.pf-nganh-list li{counter-increment:n;display:flex;align-items:center;gap:9px;background:#f7f8fc;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px}
+.pf-nganh-list li::before{content:counter(n);flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.pf-ng-icon{font-size:17px}
+.pf-ng-name{flex:1;font-weight:600;color:var(--navy)}
+.pf-ng-match{font-size:10.5px;font-weight:700;color:var(--green);background:var(--green-light);border-radius:5px;padding:2px 7px}
+.pf-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.pf-box{background:#f7f8fc;border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-bottom:10px}
+.pf-box-h{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.pf-li{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:3px}
+.pf-must{color:#a32d2d;font-weight:600}.pf-pick{color:#854f0b;font-weight:600}
+.pf-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pf-pill{display:flex;flex-direction:column;border:1.5px solid var(--border-strong);border-radius:7px;padding:5px 9px;font-size:11.5px;font-weight:700;color:var(--text2)}
+.pf-pill.star{border-color:var(--navy);background:#eef2fa;color:var(--navy)}
+.pf-pill-sub{font-size:9.5px;font-weight:400;color:var(--text3)}
+.pf-sch-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.pf-sch{border:1.5px solid var(--border);border-radius:9px;padding:11px;background:#fff}
+.pf-sch-dream{border-color:#e0a500;background:#fffbf0}
+.pf-sch-match{border-color:#1a7a1a;background:#f1f9f1}
+.pf-sch-safe{border-color:#1565C0;background:#f0f6ff}
+.pf-sch-label{font-size:11px;font-weight:700;margin-bottom:5px}
+.pf-sch-dream .pf-sch-label{color:#b07d00}.pf-sch-match .pf-sch-label{color:#1a7a1a}.pf-sch-safe .pf-sch-label{color:#1565C0}
+.pf-sch-name{font-size:12.5px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:4px}
+.pf-sch-meta{font-size:11px;color:var(--text2);line-height:1.5}
+.pf-sch-link{color:#1565C0;text-decoration:none;font-weight:600}
+.pf-sch-note{font-size:10.5px;color:var(--text3);margin-top:5px;font-style:italic}
+.pf-note{font-size:10.5px;color:var(--text3);margin-top:7px}
+.pf-skills{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pf-skill{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--text);background:#f7f8fc;border-radius:7px;padding:8px 11px;line-height:1.4}
+.pf-skill-tick{color:var(--green);font-weight:700;flex-shrink:0}
+.pf-foot{border-top:2px solid var(--navy);margin-top:16px;padding-top:11px;font-size:11px;color:var(--text2);line-height:1.7;text-align:center}
+.pf-sign{margin-top:10px;font-size:11px;color:var(--text2)}
+
+@media(max-width:560px){
+  .hs-grid2,.pf-info,.pf-2col,.pf-sch-grid,.pf-skills{grid-template-columns:1fr}
+}
+
+/* ===== IN HỒ SƠ ===== */
+@media print{
+  @page{margin:12mm}
+  body *{visibility:hidden!important}
+  #profile-print,#profile-print *{visibility:visible!important}
+  #profile-print{position:absolute;left:0;top:0;width:100%}
+  .no-print{display:none!important}
+  .pf-doc{border:none;box-shadow:none;padding:0}
+  .pf-sec{break-inside:avoid}
+  .pf-sch-grid,.pf-2col,.pf-info,.pf-skills{grid-template-columns:1fr 1fr 1fr}
+  .pf-2col,.pf-info,.pf-skills{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
@@ -620,6 +767,7 @@ a.footer-hl:hover{text-decoration:underline}
     <div class="flow-step" id="fs2" onclick="goStep(2)"><span class="fn">2</span>Nhóm ngành</div>
     <div class="flow-step" id="fs3" onclick="goStep(3)"><span class="fn">3</span>Tổ hợp ĐH</div>
     <div class="flow-step" id="fs4" onclick="goStep(4)"><span class="fn">4</span>Môn lớp 10</div>
+    <div class="flow-step" id="fs5" onclick="goStep(5)"><span class="fn">5</span>Hồ sơ</div>
   </div>
 
   <!-- PANEL 1 -->
@@ -750,6 +898,40 @@ a.footer-hl:hover{text-decoration:underline}
     <div id="chung-result"></div>
     <div class="btn-row">
       <button class="btn" onclick="goStep(3)">← Tổ hợp ĐH</button>
+      <button class="btn btn-primary" onclick="goStep(5)">Tạo hồ sơ định hướng →</button>
+      <button class="btn" onclick="resetAll()">Bắt đầu lại</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- PANEL 5 — HỒ SƠ ĐỊNH HƯỚNG -->
+  <div class="panel" id="panel5">
+    <div class="slabel">Bước 5 — Hồ sơ định hướng nghề nghiệp (in / lưu để theo dõi từ lớp 10)</div>
+
+    <div class="hs-form no-print">
+      <div class="hs-form-title">Thông tin học sinh</div>
+      <div class="hs-grid2">
+        <div><label class="hs-lbl">Họ và tên</label><input type="text" id="hs-name" class="hs-input" placeholder="VD: Trần Văn An" oninput="genProfile()"></div>
+        <div><label class="hs-lbl">Ngày sinh</label><input type="date" id="hs-dob" class="hs-input" oninput="genProfile()"></div>
+      </div>
+      <div><label class="hs-lbl">Trường THPT đang học</label><input type="text" id="hs-school" class="hs-input" placeholder="VD: THPT Ngô Quyền" oninput="genProfile()"></div>
+      <label class="hs-lbl">Lớp hiện tại</label>
+      <div class="hs-grade-row" id="hs-grade-row">
+        <button class="hs-grade" onclick="setGrade(8,this)">Lớp 8</button>
+        <button class="hs-grade" onclick="setGrade(9,this)">Lớp 9</button>
+        <button class="hs-grade active" onclick="setGrade(10,this)">Lớp 10</button>
+        <button class="hs-grade" onclick="setGrade(11,this)">Lớp 11</button>
+        <button class="hs-grade" onclick="setGrade(12,this)">Lớp 12</button>
+      </div>
+      <div class="hs-hint">💡 Hồ sơ tự tổng hợp từ lựa chọn của bạn ở Bước 1–4. Hãy hoàn thành Bước 1 (chọn đặc điểm) và chọn 1 ngành ở Bước 2 để có đề xuất chính xác nhất.</div>
+      <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="printProfile()">🖨️ In / Lưu PDF hồ sơ</button>
+    </div>
+
+    <!-- PHẦN IN -->
+    <div id="profile-print"><div id="profile-output"></div></div>
+
+    <div class="btn-row no-print">
+      <button class="btn" onclick="goStep(4)">← Môn lớp 10</button>
       <button class="btn" onclick="resetAll()">Bắt đầu lại</button>
     </div>
   </div>
@@ -1247,6 +1429,10 @@ function buildNganh(){
             <div class="sa-blabel">Trường đào tạo tiêu biểu</div>
             <div class="sa-truong-list">${n.truong.split(',').map(t=>`<div class="sa-truong-item">${t.trim()}</div>`).join('')}</div>
           </div>
+          ${(NGANH_CHI_TIET[n.id]&&NGANH_CHI_TIET[n.id].length)?`<div class="sa-box full">
+            <div class="sa-blabel">Ngành cụ thể trong nhóm (${NGANH_CHI_TIET[n.id].length})</div>
+            <div class="nct-wrap">${NGANH_CHI_TIET[n.id].map(x=>`<span class="nct-chip">${x}</span>`).join('')}</div>
+          </div>`:''}
         </div>
         <div class="sa-foot">
           <button class="sa-btn-sel${isSel?' selected-state':''}" onclick="saSelect('${n.id}',event)">
@@ -1324,217 +1510,218 @@ const CO_HOI={
   'bac-si-thu-y':{jobs:['Bác sĩ thú y tại trạm thú y, phòng khám thú cảnh','Chuyên viên kiểm dịch động vật, an toàn thực phẩm','Kỹ sư chăn nuôi, quản lý trang trại, thú y nông trại','Chuyên viên kinh doanh thuốc-vật tư thú y'],luong:'10–25 tr/tháng',nhu:'Tăng — nhu cầu thú cảnh tại đô thị và chăn nuôi quy mô lớn đều tăng'},
 };
 const ALL_207_SCHOOLS=[
-{t:'Đại Học Kinh Tế Quốc Dân',m:'KHA',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; ĐGNL/ĐGTD+CCQT; Thi TN THPT 2026. Không xét học bạ.'},
-{t:'Đại Học Bách Khoa Hà Nội',m:'BKA',r:'Bắc',l:'Công lập',p:'Xét tuyển tài năng; ĐGTD (TSA); CCQT (SAT/ACT/A-Level); Thi TN THPT. Không xét học bạ.'},
-{t:'Đại Học Ngoại Thương',m:'NTH',r:'Bắc',l:'Công lập',p:'7 PT: ĐGNL/ĐGTD; Kết hợp CCQT+Học bạ/Thi THPT; Thi TN THPT.'},
-{t:'Đại Học Thương Mại',m:'TMU',r:'Bắc',l:'Công lập',p:'Thi TN THPT; Học bạ; ĐGNL. Mở 6 ngành mới + 4 tổ hợp mới.'},
-{t:'Đại Học Công Nghiệp Hà Nội',m:'DCN',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; HSG/CCQT+Học bạ; Thi TN THPT; ĐGNL(ĐHQGHN)/ĐGTD(BKHN).'},
-{t:'Học Viện Công Nghệ Bưu Chính Viễn Thông',m:'BVH',r:'Bắc',l:'Công lập',p:'Tài năng; CCQT(SAT/ACT); ĐGNL/ĐGTD(HSA,V-ACT,TSA,SPT); CCAnh+Học bạ; Thi THPT. Không học bạ độc lập.'},
-{t:'Đại Học Công Nghệ-ĐHQG Hà Nội',m:'QHI',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT; ĐGNL(HSA); CCQT(SAT). Không học bạ.'},
-{t:'Đại Học KHXH&NV Hà Nội',m:'QHX',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; ĐGNL(HSA); Thi TN THPT.'},
-{t:'Học Viện Ngân Hàng',m:'NHH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Học bạ+ĐGNL/CCQT; Thi TN THPT 2026.'},
-{t:'Học Viện Báo Chí và Tuyên Truyền',m:'HBT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT; CCQT(IELTS,SAT)+Học bạ.'},
-{t:'Đại Học Kinh Tế-ĐHQG Hà Nội',m:'QHE',r:'Bắc',l:'Công lập',p:'Thi TN THPT+CC ngoại ngữ; ĐGNL(ĐHQGHN); Tuyển thẳng.'},
-{t:'Đại Học Việt Nhật-ĐHQG Hà Nội',m:'VJU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT; ĐGNL(ĐHQGHN); SAT; CCNN+Thi THPT; Phỏng vấn+ĐGNL.'},
-{t:'Đại Học Sư Phạm Hà Nội',m:'SPH',r:'Bắc',l:'Công lập',p:'Thi TN THPT; Năng lực/thành tích vượt trội; ĐGNL(SPT).'},
-{t:'Đại Học Luật-ĐHQGHN',m:'QHL',r:'Bắc',l:'Công lập',p:'Thi TN THPT+CCQT; Tuyển thẳng/Ưu tiên; ĐGNL(ĐHQGHN); Dự bị ĐH.'},
-{t:'Đại Học KHTN-ĐHQGHN',m:'QHT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT; ĐGNL(HSA); SAT; Kết hợp; Hiệp định/dự bị.'},
-{t:'Đại Học Giao Thông Vận Tải',m:'GHA',r:'Bắc',l:'Công lập',p:'Thi THPT+tuyển thẳng; Học bạ+Thi THPT; ĐGNL(ĐHQGHN/HCM); ĐGTD(BKHN).'},
-{t:'Học Viện Tài Chính',m:'HTC',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Kết hợp; Thi TN THPT 2026.'},
-{t:'Đại Học Y Hà Nội',m:'YHB',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026.'},
-{t:'Đại Học Y Dược-ĐHQGHN',m:'QHY',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT+CCNN; ĐGNL(HSA); Dự bị dân tộc.'},
-{t:'Đại Học Mở Hà Nội',m:'MHN',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng; ĐGNL/ĐGTD; Kết hợp; Dự bị.'},
-{t:'Đại Học Sư Phạm Hà Nội 2',m:'SP2',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT; Học bạ(đặc thù); Năng khiếu/ĐGNL.'},
-{t:'Đại học Huế (các trường thành viên)',m:'DHD',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT; Học bạ; ĐGNL; Kết hợp.'},
-{t:'Đại học Hàng Hải Việt Nam',m:'HHA',r:'Bắc',l:'Công lập',p:'Thi THPT; Kết hợp; Học bạ; ĐGNL/ĐGTD; CCAnh+Học bạ; Tuyển thẳng.'},
-{t:'Trường Khoa Học Liên Ngành và Nghệ Thuật-ĐHQGHN',m:'QHQ',r:'Bắc',l:'Công lập',p:'ĐGNL(HSA); Thi THPT; Kết hợp Thi+Năng khiếu/CCQT; Tuyển thẳng.'},
-{t:'Học Viện Chính Sách và Phát Triển',m:'HCP',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Kết hợp(HSG/CCQT/Học bạ+Thi); ĐGNL(HSA/SPT)/ĐGTD(TSA); Thi TN THPT.'},
-{t:'Đại Học Sư Phạm-ĐH Thái Nguyên',m:'DTS',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; ĐGNL(ĐHSPHN); Thi TN THPT; Năng khiếu/CCQT; Dự bị.'},
-{t:'Đại học KH&CN Hà Nội',m:'KCN',r:'Bắc',l:'Công lập',p:'ĐGNL riêng; Năng lực+phỏng vấn; Tuyển thẳng; Thi TN THPT.'},
-{t:'Đại Học Tài Nguyên Môi Trường HN',m:'DMT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN).'},
-{t:'Đại Học Tân Trào',m:'TQU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Thi THPT trước 2026; Học bạ.'},
-{t:'Đại Học Kiểm Sát',m:'DKS',r:'Bắc',l:'Công lập',p:'11 tổ hợp, 4 ngành (đang cập nhật).'},
-{t:'Đại học Công nghiệp Việt Trì',m:'VUI',r:'Bắc',l:'Công lập',p:'Học bạ; Thi TN THPT 2026; ĐGNL(ĐHQGHN)/ĐGTD(BKHN); Tuyển thẳng.'},
-{t:'Đại học QL&CN Hải Phòng',m:'DHP',r:'Bắc',l:'Công lập',p:'Thi THPT(PT100); Học bạ 12(PT200); Tuyển thẳng.'},
-{t:'Khoa Quốc tế-ĐH Thái Nguyên',m:'DTQ',r:'Bắc',l:'Công lập',p:'Thi THPT 2026; Học bạ; V-SAT(ĐHTN); ĐGNL/ĐGTD; Tuyển thẳng.'},
-{t:'Đại học Hải Dương',m:'DKT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT; Học bạ; Kết hợp CC Tiếng Anh.'},
-{t:'Đại học KT-KT Công nghiệp',m:'DKK',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGTD(BKHN); ĐGNL(ĐHQGHN).'},
-{t:'Đại học SP TDTT Hà Nội',m:'TDH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi+năng khiếu; Học bạ+năng khiếu; Thi năng khiếu.'},
-{t:'Đại học Thái Bình',m:'DTB',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ 3 năm; ĐGNL(ĐHQGHN); ĐGTD(BKHN); ĐGNL(ĐHSPHN).'},
-{t:'Đại học Hải Phòng',m:'THP',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ; CCQT; ĐGNL/ĐGTD; Tuyển thẳng.'},
-{t:'Đại học Hà Nội',m:'NHF',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Kết hợp; Thi TN THPT 2026.'},
-{t:'Đại học Khoa học-ĐH Thái Nguyên',m:'DTZ',r:'Bắc',l:'Công lập',p:'Thi THPT 2026; Học bạ; V-SAT(ĐHTN); ĐGNL/ĐGTD; Tuyển thẳng; Cử tuyển/dự bị; Kết hợp.'},
-{t:'Đại học KT-QTKD-ĐH Thái Nguyên',m:'DTE',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN/SPHN); V-SAT-TNU.'},
-{t:'Đại học Công nghiệp Quảng Ninh',m:'DDM',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ(TB 3 năm); ĐGNL(ĐHQGHN)/ĐGTD(BKHN).'},
-{t:'Đại học SP Kỹ thuật Nam Định',m:'SKN',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ(6 kỳ); ĐGNL(ĐHQGHN/SPHN)/ĐGTD(BKHN); Tuyển thẳng.'},
-{t:'Đại học TDTT Bắc Ninh',m:'TDB',r:'Bắc',l:'Công lập',p:'Học bạ+năng khiếu; Thi THPT+năng khiếu; Tuyển thẳng.'},
-{t:'Đại học SP Kỹ thuật Hưng Yên',m:'SKH',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; ĐTB lớp 10,11,12; Tuyển thẳng; V-SAT/ĐGNL/ĐGTD.'},
-{t:'Đại học Y dược-ĐH Thái Nguyên',m:'DTY',r:'Bắc',l:'Công lập',p:'Thi TN THPT; Tuyển thẳng; Học bạ; ĐGNL(HSA)/V-SAT; PT khác(500).'},
-{t:'Đại học Nông Lâm Thái Nguyên',m:'DTN',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ 12; V-SAT(ĐHTN); Tuyển thẳng.'},
-{t:'Đại học Sao Đỏ',m:'SDU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD; Kết hợp.'},
-{t:'Đại học CN Giao thông vận tải',m:'GTA',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Đại học Văn hoá Hà Nội',m:'VHH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; Kết hợp năng khiếu.'},
-{t:'Đại học Y dược Thái Bình',m:'YTB',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Dự bị ĐH; Thi TN THPT; ĐGNL(ĐHSPHN).'},
-{t:'Đại học Điện Lực',m:'DDL',r:'Bắc',l:'Công lập',p:'Học bạ; Học bạ+CCQT; Thi TN THPT; Tuyển thẳng.'},
-{t:'Đại học CNTT&TT-ĐH Thái Nguyên',m:'DTC',r:'Bắc',l:'Công lập',p:'Học bạ; Thi TN THPT; ĐGNL V-SAT-TNU; Tuyển thẳng.'},
-{t:'Đại Học Luật Hà Nội',m:'HLU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ(1 số ngành); ĐGNL/ĐGTD.'},
-{t:'Đại Học Ngoại Ngữ-ĐHQGHN',m:'QHF',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; ĐGNL(HSA); Thi TN THPT 2026+CCNN.'},
-{t:'Đại Học Dược Hà Nội',m:'DHN',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Học bạ+CCQT; Thi TN THPT 2026.'},
-{t:'Đại Học Y Tế Công Cộng',m:'YTC',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Học bạ; Thi TN THPT 2026; ĐGNL.'},
-{t:'Học Viện Hành Chính Quốc Gia',m:'HAQ',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Đại Học Xây Dựng Hà Nội',m:'XDH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Đại Học Thuỷ Lợi',m:'TLU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN/HCM).'},
-{t:'Đại Học Lâm Nghiệp Việt Nam',m:'LNV',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Học Viện Nông Nghiệp Việt Nam',m:'HVN',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; V-SAT/ĐGNL.'},
-{t:'Đại Học Mỏ Địa Chất',m:'MDC',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Đại Học Kiến Trúc Hà Nội',m:'KTH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT 2026+năng khiếu; Học bạ+năng khiếu.'},
-{t:'Đại Học Lao Động Xã Hội',m:'LDX',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Học Viện Phụ Nữ Việt Nam',m:'PNV',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL.'},
-{t:'Đại Học Mỹ Thuật Việt Nam',m:'MTV',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi năng khiếu mỹ thuật; Kết hợp.'},
-{t:'Đại Học Sân Khấu Điện Ảnh Hà Nội',m:'SKD',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi năng khiếu; Thi THPT+năng khiếu.'},
-{t:'Học Viện Âm Nhạc Quốc Gia VN',m:'ANQ',r:'Bắc',l:'Công lập',p:'Tuyển thẳng(thi năng khiếu âm nhạc).'},
-{t:'Học Viện Ngoại Giao',m:'HNG',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ+CCQT(IELTS/SAT); Tuyển thẳng.'},
-{t:'Học Viện Quản Lý Giáo Dục',m:'QGD',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ THPT; Tuyển thẳng; ĐGNL/ĐGTD.'},
-{t:'Học Viện Thanh Thiếu Niên VN',m:'TTN',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ 12; Tuyển thẳng.'},
-{t:'Học Viện Tòa Án',m:'HTA',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ THPT; Tuyển thẳng.'},
-{t:'Học Viện Y Dược Học Cổ Truyền VN',m:'YCT',r:'Bắc',l:'Công lập',p:'Thi THPT 2026; Tuyển thẳng theo quy định.'},
-{t:'Học Viện Dân Tộc',m:'HDT',r:'Bắc',l:'Công lập',p:'Dự bị; Tuyển thẳng; ĐGNL; Học bạ; Thi THPT.'},
-{t:'Học Viện Kỹ Thuật Mật Mã',m:'KMM',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT 2026.'},
-{t:'Học Viện Ngân Hàng-PV Bắc Ninh',m:'NHB',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; V-SAT; ĐGNL(ĐHQGHN); Tuyển thẳng.'},
-{t:'Đại Học Hạ Long',m:'DHL',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ THPT; Tuyển thẳng.'},
-{t:'Đại Học Thủ Đô Hà Nội',m:'HNM',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Y Dược Hải Phòng',m:'YPB',r:'Bắc',l:'Công lập',p:'Thi THPT; ĐGNL ĐHQGHN; Tuyển thẳng.'},
-{t:'Đại Học Giáo Dục-ĐHQGHN',m:'QHS',r:'Bắc',l:'Công lập',p:'Thi THPT; ĐGNL ĐHQGHN; Tuyển thẳng.'},
-{t:'Trường Quốc Tế-ĐHQGHN',m:'QHQ2',r:'Bắc',l:'Công lập',p:'Thi THPT; CCQT; ĐGNL ĐHQGHN; Tuyển thẳng.'},
-{t:'Đại Học Hùng Vương',m:'HVP',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Tây Bắc',m:'DTB2',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng; Dự bị ĐH.'},
-{t:'Đại Học SP Nghệ Thuật TW',m:'SNA',r:'Bắc',l:'Công lập',p:'Thi THPT+năng khiếu; Tuyển thẳng.'},
-{t:'Học Viện Âm Nhạc Quân Đội',m:'ANQ2',r:'Bắc',l:'Công lập',p:'Thi THPT+năng khiếu âm nhạc; Tuyển thẳng.'},
-{t:'Đại Học Nội Vụ Hà Nội',m:'NVH',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQGHN; Tuyển thẳng.'},
-{t:'Đại Học Điều Dưỡng Nam Định',m:'DDN',r:'Bắc',l:'Công lập',p:'Thi THPT; Tuyển thẳng.'},
-{t:'Học Viện Chính Trị Quốc Gia HCM',m:'CTQ',r:'Bắc',l:'Công lập',p:'Thi THPT; Tuyển thẳng; Theo chỉ tiêu.'},
-{t:'Học Viện Quân Y',m:'YQH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQGHN&HCM; Thi THPT; ĐGNL Bộ QP.'},
-{t:'Học Viện Kỹ Thuật Quân Sự',m:'KQH',r:'Bắc',l:'Quân sự/CA',p:'Tổ hợp A00,A01,AOT. Hệ dân sự PT riêng công bố sau.'},
-{t:'Trường SQ Tăng Thiết Giáp',m:'TGH',r:'Bắc',l:'Quân sự/CA',p:'Tổ hợp A00,A01,C01.'},
-{t:'Học Viện Biên Phòng',m:'BPH',r:'Bắc',l:'Quân sự/CA',p:'Dự kiến C03,C04,D01.'},
-{t:'Trường SQ Chính Trị',m:'LCH',r:'Bắc',l:'Quân sự/CA',p:'C01,C03,C04,D01.'},
-{t:'Đại học PCCC',m:'PCH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; CCNN+Thi đánh giá BCA; Thi THPT+Thi đánh giá BCA.'},
-{t:'Trường SQ Phòng hóa',m:'HGH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng/Ưu tiên; ĐGNL(ĐHQGHN/HCM); Thi TN THPT 2026; ĐGNL Bộ QP.'},
-{t:'Học Viện An Ninh Nhân Dân',m:'ANH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; CCNN+Thi BCA; Thi THPT+Thi BCA.'},
-{t:'Học Viện Cảnh Sát Nhân Dân',m:'CSH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; CCNN+Thi BCA; Thi THPT+Thi BCA.'},
-{t:'Học Viện Phòng Không Không Quân',m:'PKH',r:'Bắc',l:'Quân sự/CA',p:'Tổ hợp môn Thi TN THPT; ĐGNL Bộ QP.'},
-{t:'Học Viện Chính Trị CAND',m:'CTH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng theo QC BCA; CCNN+Thi BCA; Thi THPT.'},
-{t:'Học Viện Hậu Cần-Hệ Dân Sự',m:'HCH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng theo QC tuyển sinh(Điều 8).'},
-{t:'Học Viện KH Quân Sự-Hệ Quân Sự',m:'KQS',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng/ưu tiên giải QG,QT; Thi THPT.'},
-{t:'Học Viện KT Quân Sự-Hệ Dân Sự',m:'KDS',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQGHN&HCM; Thi THPT.'},
-{t:'Học Viện Quân Y-Hệ Dân Sự',m:'YQD',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQGHN&HCM; Thi THPT.'},
-{t:'Đại Học Thăng Long',m:'DTL',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Kết hợp Thi+CCNN; ĐGNL/ĐGTD; Học bạ; Học bạ+năng khiếu; Tuyển thẳng.'},
-{t:'Đại Học FPT',m:'FPT',r:'Bắc',l:'Tư thục',p:'Tuyển thẳng; Kết hợp(Thi THPT+Học bạ); Ưu tiên xét tuyển.'},
-{t:'Đại Học Nguyễn Trãi',m:'NTU',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Học bạ 12; Tuyển thẳng; Kết hợp năng khiếu.'},
-{t:'Đại học Phương Đông',m:'DPD',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Học bạ; Tuyển thẳng; ĐGNL(ĐHQGHN)/ĐGTD(BKHN); Kết hợp năng khiếu.'},
-{t:'Đại học CN&QL Hữu Nghị',m:'DCQ',r:'Bắc',l:'Tư thục',p:'Thi THPT QG; Học bạ(6 kỳ); ĐGNL các trường.'},
-{t:'Đại học Hòa Bình',m:'ETU',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Học bạ/Văn bằng TC-CĐ; Tuyển thẳng; Học bạ+năng khiếu.'},
-{t:'Đại Học Phenikaa',m:'PHE',r:'Bắc',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN)/ĐGTD(BKHN)/V-SAT.'},
-{t:'Đại Học VinUni',m:'VIN',r:'Bắc',l:'Tư thục',p:'Học bạ xuất sắc; CCQT(SAT/ACT/IB/AP); Phỏng vấn năng lực.'},
-{t:'Đại học Hà Tĩnh',m:'HHT',r:'Trung',l:'Công lập',p:'Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD; Tốt nghiệp nước ngoài; Tuyển thẳng.'},
-{t:'Đại học Hồng Đức',m:'HDT2',r:'Trung',l:'Công lập',p:'Thi TN THPT 2026; Học bạ(trừ SP); ĐGNL/ĐGTD; Tuyển thẳng/Cử tuyển/Dự bị.'},
-{t:'Đại học VHTTDL Thanh Hóa',m:'DVD',r:'Trung',l:'Công lập',p:'Thi TN THPT 2026(+năng khiếu đặc thù); Học bạ(ngoài SP); Tuyển thẳng; ĐGNL/ĐGTD.'},
-{t:'Đại học Tây Nguyên',m:'TTN2',r:'Trung',l:'Công lập',p:'Thi TN THPT; Học bạ; Tuyển thẳng; ĐGNL ĐHQG HCM; Kết hợp năng khiếu; Dự bị.'},
-{t:'Đại học KT Y dược Đà Nẵng',m:'YDN',r:'Trung',l:'Công lập',p:'Thi THPT; Thi THPT+CCQT; Học bạ(trừ Y khoa); ĐGNL; Tuyển thẳng; Dự bị.'},
-{t:'Đại Học Bách Khoa-ĐH Đà Nẵng',m:'DDT',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; V-SAT; ĐGNL/ĐGTD. Không học bạ độc lập.'},
-{t:'Đại Học Kinh Tế-ĐH Đà Nẵng',m:'DDK',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; V-SAT; ĐGNL/ĐGTD.'},
-{t:'Đại Học Sư Phạm-ĐH Đà Nẵng',m:'DDS',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Kết hợp năng khiếu(đặc thù).'},
-{t:'Đại Học Vinh',m:'VIU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD; Dự bị ĐH.'},
-{t:'Đại Học Quy Nhơn',m:'QNU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM); Dự bị ĐH.'},
-{t:'Đại Học Nha Trang',m:'NTU2',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL; Kết hợp.'},
-{t:'Đại Học Đà Lạt',m:'DLU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM).'},
-{t:'Đại Học Phú Yên',m:'PYU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; Dự bị ĐH.'},
-{t:'Đại Học Phạm Văn Đồng',m:'PVD',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; Dự bị ĐH.'},
-{t:'Đại Học Quảng Nam',m:'QNM',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; Dự bị ĐH.'},
-{t:'Học Viện Âm Nhạc Huế',m:'ANH2',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Năng khiếu âm nhạc+Thi THPT.'},
-{t:'Đại Học Y Dược-ĐH Huế',m:'YDH',r:'Trung',l:'Công lập',p:'Thi THPT; Tuyển thẳng theo QC.'},
-{t:'Đại Học Khoa Học-ĐH Huế',m:'KHH',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL; Tuyển thẳng.'},
-{t:'HV Ngân Hàng-PV Phú Yên',m:'NHY',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; V-SAT; Tuyển thẳng.'},
-{t:'PH ĐH Đà Nẵng tại Kon Tum',m:'DDK2',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi THPT; Học bạ; Dự bị ĐH.'},
-{t:'PH ĐH Huế tại Quảng Trị',m:'DHQ',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi THPT; Học bạ THPT.'},
-{t:'Đại Học Bình Định',m:'BDI',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Quảng Bình',m:'QBU',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'HV KT Quân Sự-CS Phía Nam',m:'KPN',r:'Trung',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQG HCM; Thi THPT.'},
-{t:'Đại Học Mỹ Thuật Huế',m:'MTH',r:'Trung',l:'Công lập',p:'Thi THPT+thi năng khiếu; Tuyển thẳng.'},
-{t:'Đại Học Xây Dựng Miền Trung',m:'XMT',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Học Viện Lục Quân',m:'LQH',r:'Trung',l:'Quân sự/CA',p:'Tổ hợp môn Thi TN THPT; ĐGNL Bộ QP.'},
-{t:'Học Viện Hải Quân',m:'HQH',r:'Trung',l:'Quân sự/CA',p:'Tổ hợp môn Thi TN THPT; ĐGNL Bộ QP.'},
-{t:'Đại Học Duy Tân',m:'DTU',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ 12; ĐGNL(ĐHQG HCM); V-SAT.'},
-{t:'Đại Học Đông Á',m:'DAD',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.'},
-{t:'Đại Học Yersin Đà Lạt',m:'YDL',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ 12.'},
-{t:'Đại Học Phan Thiết',m:'DPT',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT.'},
-{t:'Đại Học Fulbright VN',m:'FUV',r:'Trung',l:'Tư thục',p:'Hồ sơ toàn diện(học bạ,luận,thư GT,ngoại khóa); Phỏng vấn.'},
-{t:'Đại Học Phan Châu Trinh',m:'PCT',r:'Trung',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'ĐH KHXH&NV-ĐHQG HCM',m:'QSX',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Tổng hợp(Thi+ĐGNL+Học bạ 3 năm+CCNN).'},
-{t:'ĐH Sư Phạm TPHCM',m:'SPS',r:'Nam',l:'Công lập',p:'ĐGNL chuyên biệt(H-SCA)+Học bạ/năng khiếu; Tuyển thẳng.'},
-{t:'ĐHQG TPHCM(Mô hình tích hợp)',m:'QSB',r:'Nam',l:'Công lập',p:'Tích hợp: ĐGNL(trụ cột)+Thi THPT+Học tập THPT.'},
-{t:'Đại Học Bách Khoa TPHCM',m:'BKH',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+ĐGNL V-ACT); Tuyển thẳng/Ưu tiên. Không học bạ độc lập.'},
-{t:'Đại Học Công Nghiệp TPHCM',m:'DIC',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng. Không học bạ độc lập.'},
-{t:'Đại Học Kinh Tế TPHCM(UEH)',m:'UEH',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Tốt nghiệp nước ngoài/CCQT; Học tập tốt; ĐGNL+Anh; Thi THPT+Anh.'},
-{t:'Đại Học Ngân Hàng TPHCM',m:'BUH',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Học bạ+CCQT; ĐGNL(ĐHQG HCM); Thi TN THPT 2026.'},
-{t:'Đại Học SP Kỹ Thuật TPHCM',m:'SKS',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM); V-SAT.'},
-{t:'Đại Học Tài Chính-Marketing',m:'DFM',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; ĐGNL(ĐHQG HCM); Học bạ 3 năm.'},
-{t:'Đại Học Mở TPHCM',m:'OMH',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM).'},
-{t:'Đại Học Luật TPHCM',m:'HCL',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học tập THPT+ĐGNL; ĐGNL(ĐHQG HCM).'},
-{t:'ĐH CNTT-ĐHQG TPHCM',m:'QSI',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng.'},
-{t:'ĐH KHTN-ĐHQG TPHCM',m:'QST2',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng.'},
-{t:'Đại Học Quốc Tế-ĐHQG TPHCM',m:'QSG',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; SAT/ACT; ĐGNL(V-ACT).'},
-{t:'ĐH Kinh Tế-Luật ĐHQG TPHCM',m:'QSL',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng.'},
-{t:'ĐH Y Khoa Phạm Ngọc Thạch',m:'PNT',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026. Không học bạ độc lập.'},
-{t:'Đại Học Cần Thơ',m:'CTU',r:'Nam',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT 2026; Học bạ; V-SAT; CT tiên tiến/CLC.'},
-{t:'Đại Học Y Dược Cần Thơ',m:'YCT2',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Dự bị ĐH; Thi TN THPT 2026; ĐGNL(ĐHQG HCM).'},
-{t:'Đại Học An Giang-ĐHQG TPHCM',m:'AGU',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ+CCNN); Tuyển thẳng.'},
-{t:'ĐH KT-KT Bình Dương',m:'BDU2',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).'},
-{t:'Đại Học Thủ Dầu Một',m:'TDM',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ 3 năm; ĐGNL(ĐHQG HCM).'},
-{t:'Học Viện Cán Bộ TPHCM',m:'HVB',r:'Nam',l:'Công lập',p:'Thi TN THPT 2026; Học bạ 6 kỳ; Tuyển thẳng; ĐGNL(ĐHQGHN/HCM).'},
-{t:'Đại Học Y Dược TPHCM',m:'YDS',r:'Nam',l:'Công lập',p:'Thi THPT 2026 duy nhất. Không bảo lưu, không học bạ, không CCQT.'},
-{t:'Đại Học Tôn Đức Thắng',m:'DTT',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+Học bạ); Thi THPT; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'Đại Học Nông Lâm TPHCM',m:'NLS',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'Đại Học Kiến Trúc TPHCM',m:'KTS',r:'Nam',l:'Công lập',p:'Thi THPT+năng khiếu; Học bạ+năng khiếu; Tuyển thẳng.'},
-{t:'Học Viện Hàng Không VN',m:'HKV',r:'Nam',l:'Công lập',p:'Tuyển thẳng/ưu tiên; Thi THPT; Học bạ; ĐGNL ĐHQG HCM&HN.'},
-{t:'Đại Học Đồng Tháp',m:'DTH',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL; Tuyển thẳng.'},
-{t:'ĐH Bà Rịa-Vũng Tàu',m:'BVU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'ĐH Tài Nguyên Môi Trường TPHCM',m:'TMT',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'Đại Học Sài Gòn',m:'SGU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'Nhạc Viện TPHCM',m:'NVS',r:'Nam',l:'Công lập',p:'Thi THPT+thi tuyển năng khiếu âm nhạc.'},
-{t:'Đại Học Trà Vinh',m:'TVU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'Đại Học Đồng Nai',m:'DNU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng; ĐGNL ĐHQG HCM.'},
-{t:'Đại Học Long An',m:'LAU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Tiền Giang',m:'TGU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Kiên Giang',m:'KGU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'ĐH SP Kỹ Thuật Vĩnh Long',m:'SVL',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Bạc Liêu',m:'BLU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Học Viện Mekong',m:'MKG',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'ĐH Công Nghệ Miền Đông',m:'CMD',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'HV Chính Trị Khu Vực II',m:'CK2',r:'Nam',l:'Công lập',p:'Thi THPT; Tuyển thẳng; Theo chỉ tiêu.'},
-{t:'ĐH Công Nghệ Đồng Nai',m:'DNH',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; Kết hợp ĐGNL.'},
-{t:'Đại Học Lạc Hồng',m:'LHU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT.'},
-{t:'Đại Học Hoa Sen',m:'HSU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).'},
-{t:'Đại Học Văn Lang',m:'VLU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).'},
-{t:'ĐH Nguyễn Tất Thành',m:'NTT',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL.'},
-{t:'ĐH Công Nghệ TPHCM(HUTECH)',m:'HTC2',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).'},
-{t:'Đại Học Gia Định',m:'GDU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT.'},
-{t:'Đại Học RMIT VN',m:'RMT',r:'Nam',l:'Tư thục',p:'Tiêu chí riêng RMIT; Học bạ quốc tế; CCQT.'},
-{t:'Đại Học Việt Đức',m:'VGU',r:'Nam',l:'Tư thục',p:'Thi THPT; Phỏng vấn; CCQT.'},
-{t:'ĐH Quốc Tế Miền Đông',m:'EIU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'ĐH Kinh Tế-Tài Chính TPHCM(UEF)',m:'UEF',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.'},
-{t:'Đại Học Tây Đô',m:'TDU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'ĐH KT-CN Cần Thơ',m:'KCT',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Văn Hiến',m:'VHU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Cửu Long',m:'MCU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Nam Cần Thơ',m:'NCT',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Bình Dương',m:'BDU3',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Võ Trường Toản',m:'VTT',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'},
-{t:'Đại Học Tân Tạo',m:'TTU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.'}
+{t:'Đại Học Kinh Tế Quốc Dân',m:'KHA',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; ĐGNL/ĐGTD+CCQT; Thi TN THPT 2026. Không xét học bạ.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-quoc-dan-KHA.html'},
+{t:'Đại Học Bách Khoa Hà Nội',m:'BKA',r:'Bắc',l:'Công lập',p:'Xét tuyển tài năng; ĐGTD (TSA); CCQT (SAT/ACT/A-Level); Thi TN THPT. Không xét học bạ.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bach-khoa-ha-noi-BKA.html'},
+{t:'Đại Học Ngoại Thương',m:'NTH',r:'Bắc',l:'Công lập',p:'7 PT: ĐGNL/ĐGTD; Kết hợp CCQT+Học bạ/Thi THPT; Thi TN THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ngoai-thuong-NTH.html'},
+{t:'Đại Học Thương Mại',m:'TMU',r:'Bắc',l:'Công lập',p:'Thi TN THPT; Học bạ; ĐGNL. Mở 6 ngành mới + 4 tổ hợp mới.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thuong-mai-TMU.html'},
+{t:'Đại Học Công Nghiệp Hà Nội',m:'DCN',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; HSG/CCQT+Học bạ; Thi TN THPT; ĐGNL(ĐHQGHN)/ĐGTD(BKHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-ha-noi-DCN.html'},
+{t:'Học Viện Công Nghệ Bưu Chính Viễn Thông',m:'BVH',r:'Bắc',l:'Công lập',p:'Tài năng; CCQT(SAT/ACT); ĐGNL/ĐGTD(HSA,V-ACT,TSA,SPT); CCAnh+Học bạ; Thi THPT. Không học bạ độc lập.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-cong-nghe-buu-chinh-vien-thong-BVH.html'},
+{t:'Đại Học Công Nghệ-ĐHQG Hà Nội',m:'QHI',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT; ĐGNL(HSA); CCQT(SAT). Không học bạ.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-dh-quoc-gia-ha-noi-QHI.html'},
+{t:'Đại Học KHXH&NV Hà Nội',m:'QHX',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; ĐGNL(HSA); Thi TN THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-xa-hoi-va-nhan-van-ha-noi-QHX.html'},
+{t:'Học Viện Ngân Hàng',m:'NHH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Học bạ+ĐGNL/CCQT; Thi TN THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngan-hang-NHH.html'},
+{t:'Học Viện Báo Chí và Tuyên Truyền',m:'HBT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT; CCQT(IELTS,SAT)+Học bạ.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-bao-chi-va-tuyen-truyen-HBT.html'},
+{t:'Đại Học Kinh Tế-ĐHQG Hà Nội',m:'QHE',r:'Bắc',l:'Công lập',p:'Thi TN THPT+CC ngoại ngữ; ĐGNL(ĐHQGHN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-dh-quoc-gia-ha-noi-QHE.html'},
+{t:'Đại Học Việt Nhật-ĐHQG Hà Nội',m:'VJU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT; ĐGNL(ĐHQGHN); SAT; CCNN+Thi THPT; Phỏng vấn+ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-viet-nhat-dhqg-ha-noi-VJU.html'},
+{t:'Đại Học Sư Phạm Hà Nội',m:'SPH',r:'Bắc',l:'Công lập',p:'Thi TN THPT; Năng lực/thành tích vượt trội; ĐGNL(SPT).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ha-noi-SPH.html'},
+{t:'Đại Học Luật-ĐHQGHN',m:'QHL',r:'Bắc',l:'Công lập',p:'Thi TN THPT+CCQT; Tuyển thẳng/Ưu tiên; ĐGNL(ĐHQGHN); Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-luat-dhqghn-QHL.html'},
+{t:'Đại Học KHTN-ĐHQGHN',m:'QHT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT; ĐGNL(HSA); SAT; Kết hợp; Hiệp định/dự bị.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-tu-nhien-dhqghn-QHT.html'},
+{t:'Đại Học Giao Thông Vận Tải',m:'GHA',r:'Bắc',l:'Công lập',p:'Thi THPT+tuyển thẳng; Học bạ+Thi THPT; ĐGNL(ĐHQGHN/HCM); ĐGTD(BKHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-giao-thong-van-tai-GHA.html'},
+{t:'Học Viện Tài Chính',m:'HTC',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Kết hợp; Thi TN THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-tai-chinh-HTC.html'},
+{t:'Đại Học Y Hà Nội',m:'YHB',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-ha-noi-YHB.html'},
+{t:'Đại Học Y Dược-ĐHQGHN',m:'QHY',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT+CCNN; ĐGNL(HSA); Dự bị dân tộc.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-dhqghn-QHY.html'},
+{t:'Đại Học Mở Hà Nội',m:'MHN',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng; ĐGNL/ĐGTD; Kết hợp; Dự bị.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-mo-ha-noi-MHN.html'},
+{t:'Đại Học Sư Phạm Hà Nội 2',m:'SP2',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT; Học bạ(đặc thù); Năng khiếu/ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ha-noi-2-SP2.html'},
+{t:'Đại học Huế (các trường thành viên)',m:'DHD',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT; Học bạ; ĐGNL; Kết hợp.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hue-bao-gom-cac-truong-thanh-vien-DHD.html'},
+{t:'Đại học Hàng Hải Việt Nam',m:'HHA',r:'Bắc',l:'Công lập',p:'Thi THPT; Kết hợp; Học bạ; ĐGNL/ĐGTD; CCAnh+Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hang-hai-viet-nam-HHA.html'},
+{t:'Trường Khoa Học Liên Ngành và Nghệ Thuật-ĐHQGHN',m:'QHQ',r:'Bắc',l:'Công lập',p:'ĐGNL(HSA); Thi THPT; Kết hợp Thi+Năng khiếu/CCQT; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-quoc-te-dai-hoc-quoc-gia-ha-noi-QHQ.html'},
+{t:'Học Viện Chính Sách và Phát Triển',m:'HCP',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Kết hợp(HSG/CCQT/Học bạ+Thi); ĐGNL(HSA/SPT)/ĐGTD(TSA); Thi TN THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-sach-va-phat-trien-HCP.html'},
+{t:'Đại Học Sư Phạm-ĐH Thái Nguyên',m:'DTS',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; ĐGNL(ĐHSPHN); Thi TN THPT; Năng khiếu/CCQT; Dự bị.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-dh-thai-nguyen-DTS.html'},
+{t:'Đại học KH&CN Hà Nội',m:'KCN',r:'Bắc',l:'Công lập',p:'ĐGNL riêng; Năng lực+phỏng vấn; Tuyển thẳng; Thi TN THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-va-cong-nghe-ha-noi-KCN.html'},
+{t:'Đại Học Tài Nguyên Môi Trường HN',m:'DMT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tai-nguyen-va-moi-truong-ha-noi-DMT.html'},
+{t:'Đại Học Tân Trào',m:'TQU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Thi THPT trước 2026; Học bạ.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-tan-trao-TQU.html'},
+{t:'Đại Học Kiểm Sát',m:'DKS',r:'Bắc',l:'Công lập',p:'11 tổ hợp, 4 ngành (đang cập nhật).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kiem-sat-DKS.html'},
+{t:'Đại học Công nghiệp Việt Trì',m:'VUI',r:'Bắc',l:'Công lập',p:'Học bạ; Thi TN THPT 2026; ĐGNL(ĐHQGHN)/ĐGTD(BKHN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-viet-tri-VUI.html'},
+{t:'Đại học QL&CN Hải Phòng',m:'DHP',r:'Bắc',l:'Công lập',p:'Thi THPT(PT100); Học bạ 12(PT200); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quan-ly-va-cong-nghe-hai-phong-DHP.html'},
+{t:'Khoa Quốc tế-ĐH Thái Nguyên',m:'DTQ',r:'Bắc',l:'Công lập',p:'Thi THPT 2026; Học bạ; V-SAT(ĐHTN); ĐGNL/ĐGTD; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/khoa-quoc-te-dh-thai-nguyen-DTQ.html'},
+{t:'Đại học Hải Dương',m:'DKT',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT; Học bạ; Kết hợp CC Tiếng Anh.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hai-duong-DKT.html'},
+{t:'Đại học KT-KT Công nghiệp',m:'DKK',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGTD(BKHN); ĐGNL(ĐHQGHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-ky-thuat-cong-nghiep-DKK.html'},
+{t:'Đại học SP TDTT Hà Nội',m:'TDH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi+năng khiếu; Học bạ+năng khiếu; Thi năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-the-duc-the-thao-ha-noi-TDH.html'},
+{t:'Đại học Thái Bình',m:'DTB',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ 3 năm; ĐGNL(ĐHQGHN); ĐGTD(BKHN); ĐGNL(ĐHSPHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-bac-DTB.html'},
+{t:'Đại học Hải Phòng',m:'THP',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ; CCQT; ĐGNL/ĐGTD; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hai-phong-THP.html'},
+{t:'Đại học Hà Nội',m:'NHF',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Kết hợp; Thi TN THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ha-noi-NHF.html'},
+{t:'Đại học Khoa học-ĐH Thái Nguyên',m:'DTZ',r:'Bắc',l:'Công lập',p:'Thi THPT 2026; Học bạ; V-SAT(ĐHTN); ĐGNL/ĐGTD; Tuyển thẳng; Cử tuyển/dự bị; Kết hợp.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-dh-thai-nguyen-DTZ.html'},
+{t:'Đại học KT-QTKD-ĐH Thái Nguyên',m:'DTE',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN/SPHN); V-SAT-TNU.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-quan-tri-kinh-doanh-dh-thai-nguyen-DTE.html'},
+{t:'Đại học Công nghiệp Quảng Ninh',m:'DDM',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ(TB 3 năm); ĐGNL(ĐHQGHN)/ĐGTD(BKHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-quang-ninh-DDM.html'},
+{t:'Đại học SP Kỹ thuật Nam Định',m:'SKN',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ(6 kỳ); ĐGNL(ĐHQGHN/SPHN)/ĐGTD(BKHN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-nam-dinh-SKN.html'},
+{t:'Đại học TDTT Bắc Ninh',m:'TDB',r:'Bắc',l:'Công lập',p:'Học bạ+năng khiếu; Thi THPT+năng khiếu; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-the-duc-the-thao-bac-ninh-TDB.html'},
+{t:'Đại học SP Kỹ thuật Hưng Yên',m:'SKH',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; ĐTB lớp 10,11,12; Tuyển thẳng; V-SAT/ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-hung-yen-SKH.html'},
+{t:'Đại học Y dược-ĐH Thái Nguyên',m:'DTY',r:'Bắc',l:'Công lập',p:'Thi TN THPT; Tuyển thẳng; Học bạ; ĐGNL(HSA)/V-SAT; PT khác(500).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-dh-thai-nguyen-DTY.html'},
+{t:'Đại học Nông Lâm Thái Nguyên',m:'DTN',r:'Bắc',l:'Công lập',p:'Thi TN THPT 2026; Học bạ 12; V-SAT(ĐHTN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nong-lam-thai-nguyen-DTN.html'},
+{t:'Đại học Sao Đỏ',m:'SDU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD; Kết hợp.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-sao-do-SDU.html'},
+{t:'Đại học CN Giao thông vận tải',m:'GTA',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-giao-thong-van-tai-GTA.html'},
+{t:'Đại học Văn hoá Hà Nội',m:'VHH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; Kết hợp năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-hoa-ha-noi-VHH.html'},
+{t:'Đại học Y dược Thái Bình',m:'YTB',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Dự bị ĐH; Thi TN THPT; ĐGNL(ĐHSPHN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-thai-binh-YTB.html'},
+{t:'Đại học Điện Lực',m:'DDL',r:'Bắc',l:'Công lập',p:'Học bạ; Học bạ+CCQT; Thi TN THPT; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dien-luc-DDL.html'},
+{t:'Đại học CNTT&TT-ĐH Thái Nguyên',m:'DTC',r:'Bắc',l:'Công lập',p:'Học bạ; Thi TN THPT; ĐGNL V-SAT-TNU; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-thong-tin-va-truyen-thong-dh-thai-nguyen-DTC.html'},
+{t:'Đại Học Luật Hà Nội',m:'HLU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ(1 số ngành); ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-luat-ha-noi-HLU.html'},
+{t:'Đại Học Ngoại Ngữ-ĐHQGHN',m:'QHF',r:'Bắc',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; ĐGNL(HSA); Thi TN THPT 2026+CCNN.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ngoai-ngu-dhqghn-QHF.html'},
+{t:'Đại Học Dược Hà Nội',m:'DHN',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Học bạ+CCQT; Thi TN THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-duoc-ha-noi-DHN.html'},
+{t:'Đại Học Y Tế Công Cộng',m:'YTC',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Học bạ; Thi TN THPT 2026; ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-te-cong-cong-YTC.html'},
+{t:'Học Viện Hành Chính Quốc Gia',m:'HAQ',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hanh-chinh-quoc-gia-HAQ.html'},
+{t:'Đại Học Xây Dựng Hà Nội',m:'XDH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-xay-dung-ha-noi-XDH.html'},
+{t:'Đại Học Thuỷ Lợi',m:'TLU',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN/HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thuy-loi-TLU.html'},
+{t:'Đại Học Lâm Nghiệp Việt Nam',m:'LNV',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-lam-nghiep-viet-nam-LNV.html'},
+{t:'Học Viện Nông Nghiệp Việt Nam',m:'HVN',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; V-SAT/ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-nong-nghiep-viet-nam-HVN.html'},
+{t:'Đại Học Mỏ Địa Chất',m:'MDC',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-mo-dia-chat-MDC.html'},
+{t:'Đại Học Kiến Trúc Hà Nội',m:'KTH',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT 2026+năng khiếu; Học bạ+năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kien-truc-ha-noi-KTH.html'},
+{t:'Đại Học Lao Động Xã Hội',m:'LDX',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-lao-dong-xa-hoi-LDX.html'},
+{t:'Học Viện Phụ Nữ Việt Nam',m:'PNV',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-phu-nu-viet-nam-PNV.html'},
+{t:'Đại Học Mỹ Thuật Việt Nam',m:'MTV',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi năng khiếu mỹ thuật; Kết hợp.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-my-thuat-viet-nam-MTV.html'},
+{t:'Đại Học Sân Khấu Điện Ảnh Hà Nội',m:'SKD',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi năng khiếu; Thi THPT+năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-san-khau-dien-anh-ha-noi-SKD.html'},
+{t:'Học Viện Âm Nhạc Quốc Gia VN',m:'ANQ',r:'Bắc',l:'Công lập',p:'Tuyển thẳng(thi năng khiếu âm nhạc).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-am-nhac-quan-doi-ANQ.html'},
+{t:'Học Viện Ngoại Giao',m:'HNG',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ+CCQT(IELTS/SAT); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngoai-giao-HNG.html'},
+{t:'Học Viện Quản Lý Giáo Dục',m:'QGD',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ THPT; Tuyển thẳng; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-quan-ly-giao-duc-QGD.html'},
+{t:'Học Viện Thanh Thiếu Niên VN',m:'TTN',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ 12; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-nguyen-TTN.html'},
+{t:'Học Viện Tòa Án',m:'HTA',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ THPT; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-toa-an-HTA.html'},
+{t:'Học Viện Y Dược Học Cổ Truyền VN',m:'YCT',r:'Bắc',l:'Công lập',p:'Thi THPT 2026; Tuyển thẳng theo quy định.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-can-tho-YCT.html'},
+{t:'Học Viện Dân Tộc',m:'HDT',r:'Bắc',l:'Công lập',p:'Dự bị; Tuyển thẳng; ĐGNL; Học bạ; Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hong-duc-HDT.html'},
+{t:'Học Viện Kỹ Thuật Mật Mã',m:'KMM',r:'Bắc',l:'Công lập',p:'Tuyển thẳng; Thi THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-mat-ma-KMM.html'},
+{t:'Học Viện Ngân Hàng-PV Bắc Ninh',m:'NHB',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; V-SAT; ĐGNL(ĐHQGHN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngan-hang-phan-vien-bac-ninh-NHB.html'},
+{t:'Đại Học Hạ Long',m:'DHL',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ THPT; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ha-long-DHL.html'},
+{t:'Đại Học Thủ Đô Hà Nội',m:'HNM',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thu-do-ha-noi-HNM.html'},
+{t:'Đại Học Y Dược Hải Phòng',m:'YPB',r:'Bắc',l:'Công lập',p:'Thi THPT; ĐGNL ĐHQGHN; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-hai-phong-YPB.html'},
+{t:'Đại Học Giáo Dục-ĐHQGHN',m:'QHS',r:'Bắc',l:'Công lập',p:'Thi THPT; ĐGNL ĐHQGHN; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-giao-duc-ha-noi-QHS.html'},
+{t:'Trường Quốc Tế-ĐHQGHN',m:'QHQ2',r:'Bắc',l:'Công lập',p:'Thi THPT; CCQT; ĐGNL ĐHQGHN; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-quoc-te-dai-hoc-quoc-gia-ha-noi-QHQ.html'},
+{t:'Đại Học Hùng Vương',m:'HVP',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hung-vuong-HVP.html'},
+{t:'Đại Học Tây Bắc',m:'DTB2',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng; Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-bac-DTB.html'},
+{t:'Đại Học SP Nghệ Thuật TW',m:'SNA',r:'Bắc',l:'Công lập',p:'Thi THPT+năng khiếu; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-nghe-thuat-tw-SNA.html'},
+{t:'Học Viện Âm Nhạc Quân Đội',m:'ANQ2',r:'Bắc',l:'Công lập',p:'Thi THPT+năng khiếu âm nhạc; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-am-nhac-quan-doi-ANQ.html'},
+{t:'Đại Học Nội Vụ Hà Nội',m:'NVH',r:'Bắc',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQGHN; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-noi-vu-ha-noi-NVH.html'},
+{t:'Đại Học Điều Dưỡng Nam Định',m:'DDN',r:'Bắc',l:'Công lập',p:'Thi THPT; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dieu-duong-nam-dinh-DDN.html'},
+{t:'Học Viện Chính Trị Quốc Gia HCM',m:'CTQ',r:'Bắc',l:'Công lập',p:'Thi THPT; Tuyển thẳng; Theo chỉ tiêu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-quoc-gia-ho-chi-minh-CTQ.html'},
+{t:'Học Viện Quân Y',m:'YQH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQGHN&HCM; Thi THPT; ĐGNL Bộ QP.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-quan-y-YQH.html'},
+{t:'Học Viện Kỹ Thuật Quân Sự',m:'KQH',r:'Bắc',l:'Quân sự/CA',p:'Tổ hợp A00,A01,AOT. Hệ dân sự PT riêng công bố sau.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-quan-su-KQH.html'},
+{t:'Trường SQ Tăng Thiết Giáp',m:'TGH',r:'Bắc',l:'Quân sự/CA',p:'Tổ hợp A00,A01,C01.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-si-quan-tang-thiet-giap-TGH.html'},
+{t:'Học Viện Biên Phòng',m:'BPH',r:'Bắc',l:'Quân sự/CA',p:'Dự kiến C03,C04,D01.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-bien-phong-BPH.html'},
+{t:'Trường SQ Chính Trị',m:'LCH',r:'Bắc',l:'Quân sự/CA',p:'C01,C03,C04,D01.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-si-quan-chinh-tri-LCH.html'},
+{t:'Đại học PCCC',m:'PCH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; CCNN+Thi đánh giá BCA; Thi THPT+Thi đánh giá BCA.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phong-chay-chua-chay-PCH.html'},
+{t:'Trường SQ Phòng hóa',m:'HGH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng/Ưu tiên; ĐGNL(ĐHQGHN/HCM); Thi TN THPT 2026; ĐGNL Bộ QP.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-si-quan-phong-hoa-HGH.html'},
+{t:'Học Viện An Ninh Nhân Dân',m:'ANH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; CCNN+Thi BCA; Thi THPT+Thi BCA.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-an-ninh-nhan-dan-ANH.html'},
+{t:'Học Viện Cảnh Sát Nhân Dân',m:'CSH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; CCNN+Thi BCA; Thi THPT+Thi BCA.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-canh-sat-nhan-dan-CSH.html'},
+{t:'Học Viện Phòng Không Không Quân',m:'PKH',r:'Bắc',l:'Quân sự/CA',p:'Tổ hợp môn Thi TN THPT; ĐGNL Bộ QP.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-phong-khong-khong-quan-PKH.html'},
+{t:'Học Viện Chính Trị CAND',m:'CTH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng theo QC BCA; CCNN+Thi BCA; Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-cong-an-nhan-dan-CTH.html'},
+{t:'Học Viện Hậu Cần-Hệ Dân Sự',m:'HCH',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng theo QC tuyển sinh(Điều 8).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hau-can-he-dan-su-HCH.html'},
+{t:'Học Viện KH Quân Sự-Hệ Quân Sự',m:'KQS',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng/ưu tiên giải QG,QT; Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-khoa-hoc-quan-su-KQS.html'},
+{t:'Học Viện KT Quân Sự-Hệ Dân Sự',m:'KDS',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQGHN&HCM; Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-quan-su-he-dan-su-KDS.html'},
+{t:'Học Viện Quân Y-Hệ Dân Sự',m:'YQD',r:'Bắc',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQGHN&HCM; Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-quan-y-he-dan-su-YQD.html'},
+{t:'Đại Học Thăng Long',m:'DTL',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Kết hợp Thi+CCNN; ĐGNL/ĐGTD; Học bạ; Học bạ+năng khiếu; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thang-long-DTL.html'},
+{t:'Đại Học FPT',m:'FPT',r:'Bắc',l:'Tư thục',p:'Tuyển thẳng; Kết hợp(Thi THPT+Học bạ); Ưu tiên xét tuyển.',d:'https://tuyensinh.fpt.edu.vn/'},
+{t:'Đại Học Nguyễn Trãi',m:'NTU',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Học bạ 12; Tuyển thẳng; Kết hợp năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nguyen-trai-NTU.html'},
+{t:'Đại học Phương Đông',m:'DPD',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Học bạ; Tuyển thẳng; ĐGNL(ĐHQGHN)/ĐGTD(BKHN); Kết hợp năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phuong-dong-DPD.html'},
+{t:'Đại học CN&QL Hữu Nghị',m:'DCQ',r:'Bắc',l:'Tư thục',p:'Thi THPT QG; Học bạ(6 kỳ); ĐGNL các trường.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-va-quan-ly-huu-nghi-DCQ.html'},
+{t:'Đại học Hòa Bình',m:'ETU',r:'Bắc',l:'Tư thục',p:'Thi TN THPT 2026; Học bạ/Văn bằng TC-CĐ; Tuyển thẳng; Học bạ+năng khiếu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hoa-binh-ETU.html'},
+{t:'Đại Học Phenikaa',m:'PHE',r:'Bắc',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQGHN)/ĐGTD(BKHN)/V-SAT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phenikaa-PHE.html'},
+{t:'Đại Học VinUni',m:'VIN',r:'Bắc',l:'Tư thục',p:'Học bạ xuất sắc; CCQT(SAT/ACT/IB/AP); Phỏng vấn năng lực.',d:'https://vinuni.edu.vn/admissions/'},
+{t:'Đại học Hà Tĩnh',m:'HHT',r:'Trung',l:'Công lập',p:'Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD; Tốt nghiệp nước ngoài; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ha-tinh-HHT.html'},
+{t:'Đại học Hồng Đức',m:'HDT2',r:'Trung',l:'Công lập',p:'Thi TN THPT 2026; Học bạ(trừ SP); ĐGNL/ĐGTD; Tuyển thẳng/Cử tuyển/Dự bị.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hong-duc-HDT.html'},
+{t:'Đại học VHTTDL Thanh Hóa',m:'DVD',r:'Trung',l:'Công lập',p:'Thi TN THPT 2026(+năng khiếu đặc thù); Học bạ(ngoài SP); Tuyển thẳng; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-hoa-the-thao-va-du-lich-thanh-hoa-DVD.html'},
+{t:'Đại học Tây Nguyên',m:'TTN2',r:'Trung',l:'Công lập',p:'Thi TN THPT; Học bạ; Tuyển thẳng; ĐGNL ĐHQG HCM; Kết hợp năng khiếu; Dự bị.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-nguyen-TTN.html'},
+{t:'Đại học KT Y dược Đà Nẵng',m:'YDN',r:'Trung',l:'Công lập',p:'Thi THPT; Thi THPT+CCQT; Học bạ(trừ Y khoa); ĐGNL; Tuyển thẳng; Dự bị.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ky-thuat-y-duoc-da-nang-YDN.html'},
+{t:'Đại Học Bách Khoa-ĐH Đà Nẵng',m:'DDT',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; V-SAT; ĐGNL/ĐGTD. Không học bạ độc lập.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bach-khoa-dh-da-nang-DDT.html'},
+{t:'Đại Học Kinh Tế-ĐH Đà Nẵng',m:'DDK',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; V-SAT; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/phan-hieu-dai-hoc-da-nang-tai-kon-tum-DDK.html'},
+{t:'Đại Học Sư Phạm-ĐH Đà Nẵng',m:'DDS',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Kết hợp năng khiếu(đặc thù).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-dh-da-nang-DDS.html'},
+{t:'Đại Học Vinh',m:'VIU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD; Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-vinh-VIU.html'},
+{t:'Đại Học Quy Nhơn',m:'QNU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM); Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quy-nhon-QNU.html'},
+{t:'Đại Học Nha Trang',m:'NTU2',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL; Kết hợp.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nha-trang-NTU2.html'},
+{t:'Đại Học Đà Lạt',m:'DLU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-da-lat-DLU.html'},
+{t:'Đại Học Phú Yên',m:'PYU',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phu-yen-PYU.html'},
+{t:'Đại Học Phạm Văn Đồng',m:'PVD',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-pham-van-dong-PVD.html'},
+{t:'Đại Học Quảng Nam',m:'QNM',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quang-nam-QNM.html'},
+{t:'Học Viện Âm Nhạc Huế',m:'ANH2',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Năng khiếu âm nhạc+Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-am-nhac-hue-ANH2.html'},
+{t:'Đại Học Y Dược-ĐH Huế',m:'YDH',r:'Trung',l:'Công lập',p:'Thi THPT; Tuyển thẳng theo QC.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-dai-hoc-hue-YDH.html'},
+{t:'Đại Học Khoa Học-ĐH Huế',m:'KHH',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-dai-hoc-hue-KHH.html'},
+{t:'HV Ngân Hàng-PV Phú Yên',m:'NHY',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; V-SAT; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngan-hang-phan-vien-phu-yen-NHY.html'},
+{t:'PH ĐH Đà Nẵng tại Kon Tum',m:'DDK2',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi THPT; Học bạ; Dự bị ĐH.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/phan-hieu-dai-hoc-da-nang-tai-kon-tum-DDK.html'},
+{t:'PH ĐH Huế tại Quảng Trị',m:'DHQ',r:'Trung',l:'Công lập',p:'Tuyển thẳng; Thi THPT; Học bạ THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/phan-hieu-dai-hoc-hue-tai-quang-tri-DHQ.html'},
+{t:'Đại Học Bình Định',m:'BDI',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-binh-dinh-BDI.html'},
+{t:'Đại Học Quảng Bình',m:'QBU',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quang-binh-QBU.html'},
+{t:'HV KT Quân Sự-CS Phía Nam',m:'KPN',r:'Trung',l:'Quân sự/CA',p:'Tuyển thẳng; ĐGNL ĐHQG HCM; Thi THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-quan-su-co-so-phia-nam-KPN.html'},
+{t:'Đại Học Mỹ Thuật Huế',m:'MTH',r:'Trung',l:'Công lập',p:'Thi THPT+thi năng khiếu; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-my-thuat-hue-MTH.html'},
+{t:'Đại Học Xây Dựng Miền Trung',m:'XMT',r:'Trung',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-xay-dung-mien-trung-XMT.html'},
+{t:'Học Viện Lục Quân',m:'LQH',r:'Trung',l:'Quân sự/CA',p:'Tổ hợp môn Thi TN THPT; ĐGNL Bộ QP.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-luc-quan-LQH.html'},
+{t:'Học Viện Hải Quân',m:'HQH',r:'Trung',l:'Quân sự/CA',p:'Tổ hợp môn Thi TN THPT; ĐGNL Bộ QP.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hai-quan-HQH.html'},
+{t:'Đại Học Duy Tân',m:'DTU',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ 12; ĐGNL(ĐHQG HCM); V-SAT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-duy-tan-DTU.html'},
+{t:'Đại Học Đông Á',m:'DAD',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL/ĐGTD.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dong-a-DAD.html'},
+{t:'Đại Học Yersin Đà Lạt',m:'YDL',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ 12.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-yersin-da-lat-YDL.html'},
+{t:'Đại Học Phan Thiết',m:'DPT',r:'Trung',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-phan-thiet-DPT.html'},
+{t:'Đại Học Fulbright VN',m:'FUV',r:'Trung',l:'Tư thục',p:'Hồ sơ toàn diện(học bạ,luận,thư GT,ngoại khóa); Phỏng vấn.',d:'https://fulbright.edu.vn/vi/admissions/'},
+{t:'Đại Học Phan Châu Trinh',m:'PCT',r:'Trung',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phan-chau-trinh-PCT.html'},
+{t:'ĐH KHXH&NV-ĐHQG HCM',m:'QSX',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Tổng hợp(Thi+ĐGNL+Học bạ 3 năm+CCNN).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-khoa-hoc-xa-hoi-va-nhan-van-dhqg-hcm-QSX.html'},
+{t:'ĐH Sư Phạm TPHCM',m:'SPS',r:'Nam',l:'Công lập',p:'ĐGNL chuyên biệt(H-SCA)+Học bạ/năng khiếu; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-su-pham-tphcm-SPS.html'},
+{t:'ĐHQG TPHCM(Mô hình tích hợp)',m:'QSB',r:'Nam',l:'Công lập',p:'Tích hợp: ĐGNL(trụ cột)+Thi THPT+Học tập THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-gia-tphcm-mo-hinh-tich-hop-QSB.html'},
+{t:'Đại Học Bách Khoa TPHCM',m:'BKH',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+ĐGNL V-ACT); Tuyển thẳng/Ưu tiên. Không học bạ độc lập.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bach-khoa-tphcm-BKH.html'},
+{t:'Đại Học Công Nghiệp TPHCM',m:'DIC',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng. Không học bạ độc lập.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-tphcm-DIC.html'},
+{t:'Đại Học Kinh Tế TPHCM(UEH)',m:'UEH',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Tốt nghiệp nước ngoài/CCQT; Học tập tốt; ĐGNL+Anh; Thi THPT+Anh.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-tphcm-ueh-UEH.html'},
+{t:'Đại Học Ngân Hàng TPHCM',m:'BUH',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Học bạ+CCQT; ĐGNL(ĐHQG HCM); Thi TN THPT 2026.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ngan-hang-tphcm-BUH.html'},
+{t:'Đại Học SP Kỹ Thuật TPHCM',m:'SKS',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM); V-SAT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-tphcm-SKS.html'},
+{t:'Đại Học Tài Chính-Marketing',m:'DFM',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; ĐGNL(ĐHQG HCM); Học bạ 3 năm.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tai-chinh-marketing-DFM.html'},
+{t:'Đại Học Mở TPHCM',m:'OMH',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-mo-tphcm-OMH.html'},
+{t:'Đại Học Luật TPHCM',m:'HCL',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học tập THPT+ĐGNL; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-luat-tphcm-HCL.html'},
+{t:'ĐH CNTT-ĐHQG TPHCM',m:'QSI',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-thong-tin-dhqg-tp-hcm-QSI.html'},
+{t:'ĐH KHTN-ĐHQG TPHCM',m:'QST2',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-tu-nhien-dhqg-tp-hcm-QST2.html'},
+{t:'Đại Học Quốc Tế-ĐHQG TPHCM',m:'QSG',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; SAT/ACT; ĐGNL(V-ACT).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-te-dhqg-tp-hcm-QSG.html'},
+{t:'ĐH Kinh Tế-Luật ĐHQG TPHCM',m:'QSL',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ 3 năm+CCNN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-luat-dhqg-tp-hcm-QSL.html'},
+{t:'ĐH Y Khoa Phạm Ngọc Thạch',m:'PNT',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026. Không học bạ độc lập.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-y-khoa-pham-ngoc-thach-PNT.html'},
+{t:'Đại Học Cần Thơ',m:'CTU',r:'Nam',l:'Công lập',p:'Tuyển thẳng/Ưu tiên; Thi THPT 2026; Học bạ; V-SAT; CT tiên tiến/CLC.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-can-tho-CTU.html'},
+{t:'Đại Học Y Dược Cần Thơ',m:'YCT2',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Dự bị ĐH; Thi TN THPT 2026; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-can-tho-YCT.html'},
+{t:'Đại Học An Giang-ĐHQG TPHCM',m:'AGU',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+V-ACT+Học bạ+CCNN); Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-an-giang-dhqg-tp-hcm-AGU.html'},
+{t:'ĐH KT-KT Bình Dương',m:'BDU2',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-binh-duong-BDU.html'},
+{t:'Đại Học Thủ Dầu Một',m:'TDM',r:'Nam',l:'Công lập',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ 3 năm; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thu-dau-mot-TDM.html'},
+{t:'Học Viện Cán Bộ TPHCM',m:'HVB',r:'Nam',l:'Công lập',p:'Thi TN THPT 2026; Học bạ 6 kỳ; Tuyển thẳng; ĐGNL(ĐHQGHN/HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-can-bo-tphcm-HVB.html'},
+{t:'Đại Học Y Dược TPHCM',m:'YDS',r:'Nam',l:'Công lập',p:'Thi THPT 2026 duy nhất. Không bảo lưu, không học bạ, không CCQT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-tphcm-YDS.html'},
+{t:'Đại Học Tôn Đức Thắng',m:'DTT',r:'Nam',l:'Công lập',p:'Tổng hợp(Thi+Học bạ); Thi THPT; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ton-duc-thang-DTT.html'},
+{t:'Đại Học Nông Lâm TPHCM',m:'NLS',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nong-lam-tphcm-NLS.html'},
+{t:'Đại Học Kiến Trúc TPHCM',m:'KTS',r:'Nam',l:'Công lập',p:'Thi THPT+năng khiếu; Học bạ+năng khiếu; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kien-truc-tphcm-KTS.html'},
+{t:'Học Viện Hàng Không VN',m:'HKV',r:'Nam',l:'Công lập',p:'Tuyển thẳng/ưu tiên; Thi THPT; Học bạ; ĐGNL ĐHQG HCM&HN.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hang-khong-viet-nam-HKV.html'},
+{t:'Đại Học Đồng Tháp',m:'DTH',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dong-thap-DTH.html'},
+{t:'ĐH Bà Rịa-Vũng Tàu',m:'BVU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ba-ria-vung-tau-BVU.html'},
+{t:'ĐH Tài Nguyên Môi Trường TPHCM',m:'TMT',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tai-nguyen-va-moi-truong-tphcm-TMT.html'},
+{t:'Đại Học Sài Gòn',m:'SGU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-sai-gon-SGU.html'},
+{t:'Nhạc Viện TPHCM',m:'NVS',r:'Nam',l:'Công lập',p:'Thi THPT+thi tuyển năng khiếu âm nhạc.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/nhac-vien-tphcm-NVS.html'},
+{t:'Đại Học Trà Vinh',m:'TVU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tra-vinh-TVU.html'},
+{t:'Đại Học Đồng Nai',m:'DNU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng; ĐGNL ĐHQG HCM.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dong-nai-DNU.html'},
+{t:'Đại Học Long An',m:'LAU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-long-an-LAU.html'},
+{t:'Đại Học Tiền Giang',m:'TGU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tien-giang-TGU.html'},
+{t:'Đại Học Kiên Giang',m:'KGU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kien-giang-KGU.html'},
+{t:'ĐH SP Kỹ Thuật Vĩnh Long',m:'SVL',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-vinh-long-SVL.html'},
+{t:'Đại Học Bạc Liêu',m:'BLU',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bac-lieu-BLU.html'},
+{t:'Học Viện Mekong',m:'MKG',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-mekong-MKG.html'},
+{t:'ĐH Công Nghệ Miền Đông',m:'CMD',r:'Nam',l:'Công lập',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-mien-dong-CMD.html'},
+{t:'HV Chính Trị Khu Vực II',m:'CK2',r:'Nam',l:'Công lập',p:'Thi THPT; Tuyển thẳng; Theo chỉ tiêu.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-khu-vuc-ii-CK2.html'},
+{t:'ĐH Công Nghệ Đồng Nai',m:'DNH',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; Kết hợp ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-dong-nai-DNH.html'},
+{t:'Đại Học Lạc Hồng',m:'LHU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-lac-hong-LHU.html'},
+{t:'Đại Học Hoa Sen',m:'HSU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hoa-sen-HSU.html'},
+{t:'Đại Học Văn Lang',m:'VLU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-lang-VLU.html'},
+{t:'ĐH Nguyễn Tất Thành',m:'NTT',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nguyen-tat-thanh-NTT.html'},
+{t:'ĐH Công Nghệ TPHCM(HUTECH)',m:'HTC2',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT; ĐGNL(ĐHQG HCM).',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-tphcm-hutech-HTC2.html'},
+{t:'Đại Học Gia Định',m:'GDU',r:'Nam',l:'Tư thục',p:'Tuyển thẳng; Thi TN THPT 2026; Học bạ THPT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-gia-dinh-GDU.html'},
+{t:'Đại Học RMIT VN',m:'RMT',r:'Nam',l:'Tư thục',p:'Tiêu chí riêng RMIT; Học bạ quốc tế; CCQT.',d:'https://www.rmit.edu.vn/vi/tuyen-sinh'},
+{t:'Đại Học Việt Đức',m:'VGU',r:'Nam',l:'Tư thục',p:'Thi THPT; Phỏng vấn; CCQT.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-viet-duc-VGU.html'},
+{t:'ĐH Quốc Tế Miền Đông',m:'EIU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-te-mien-dong-EIU.html'},
+{t:'ĐH Kinh Tế-Tài Chính TPHCM(UEF)',m:'UEF',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-tai-chinh-tphcm-UEF.html'},
+{t:'Đại Học Tây Đô',m:'TDU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-do-TDU.html'},
+{t:'ĐH KT-CN Cần Thơ',m:'KCT',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ky-thuat-cong-nghe-can-tho-KCT.html'},
+{t:'Đại Học Văn Hiến',m:'VHU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-hien-VHU.html'},
+{t:'Đại Học Cửu Long',m:'MCU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cuu-long-MCU.html'},
+{t:'Đại Học Nam Cần Thơ',m:'NCT',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nam-can-tho-NCT.html'},
+{t:'Đại Học Bình Dương',m:'BDU3',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-binh-duong-BDU.html'},
+{t:'Đại Học Võ Trường Toản',m:'VTT',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-vo-truong-toan-VTT.html'},
+{t:'Đại Học Tân Tạo',m:'TTU',r:'Nam',l:'Tư thục',p:'Thi THPT; Học bạ; Tuyển thẳng.',d:'https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tan-tao-TTU.html'}
 ];
 
 let schoolSearchQuery='';
 let schoolFilterMien='Tất cả';
+let schoolFilterLoai='Tất cả';
 
 function renderSchoolList(){
   const wrap=document.getElementById('school207-list');
@@ -1542,16 +1729,20 @@ function renderSchoolList(){
   const q=schoolSearchQuery.toLowerCase().trim();
   let list=ALL_207_SCHOOLS;
   if(schoolFilterMien!=='Tất cả') list=list.filter(s=>s.r===schoolFilterMien);
+  if(schoolFilterLoai!=='Tất cả') list=list.filter(s=>s.l===schoolFilterLoai);
   if(q) list=list.filter(s=>s.t.toLowerCase().includes(q)||s.m.toLowerCase().includes(q));
   const shown=list.slice(0,30);
   wrap.innerHTML=shown.map(s=>{
     const isDN=s.t.includes('Đồng Nai')||s.t==='Đại Học Lạc Hồng';
+    const ptf=MA_PTFULL[s.m]||MA_PTFULL[s.m.replace(/\d+$/,'')]||'';
+    const hasFull=ptf&&ptf.replace(/\s+/g,'')!==s.p.replace(/\s+/g,'');
     return`<div class="sch207-row${isDN?' sch207-dn':''}">
       <div class="sch207-main">
         <span class="sch207-name">${isDN?'📍 ':''}${s.t}</span>
         <span class="sch207-meta"><span class="sch207-ma">${s.m}</span><span class="sch207-mien">${s.r}</span><span class="sch207-loai">${s.l}</span></span>
       </div>
-      <div class="sch207-pt">${s.p}</div>
+      <div class="sch207-pt${hasFull?' has-full':''}" ${hasFull?`onclick="this.classList.toggle(\'open\')"`:''}>${s.p}${hasFull?`<span class="sch207-pt-toggle">▾ Xem phương thức đầy đủ</span><span class="sch207-pt-full">${ptf}</span>`:''}</div>
+      ${s.d?`<a href="${s.d}" target="_blank" rel="noopener" class="sch207-dean">📄 Xem đề án tuyển sinh 2026 ↗</a>`:''}
     </div>`;
   }).join('');
   document.getElementById('sch207-count').textContent=`${list.length} / 207 trường`+(list.length>30?' (hiện 30 đầu)':'');
@@ -1559,6 +1750,14 @@ function renderSchoolList(){
 
 function schoolSearchInput(v){schoolSearchQuery=v;renderSchoolList();}
 function schoolFilterClick(mien,el){schoolFilterMien=mien;document.querySelectorAll('.sch207-filter').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderSchoolList();}
+function schoolFilterLoaiClick(loai,el){schoolFilterLoai=loai;document.querySelectorAll('.sch207-filter-loai').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderSchoolList();}
+
+const NGANH_CHI_TIET={"ke-toan":["Quản trị tài chính kế toán","Kế toán","Kiểm toán"],"kt-tc":["Kinh tế và quản lý bất động sản","Tài chính","Ngân hàng","Tài chính - Ngân hàng","Bảo hiểm","Bất động sản","Công nghệ tài chính","Thị trường chứng khoán","Đầu tư tài chính"],"kt-qtkd":["Phân tích dữ liệu kinh doanh","Kinh tế đầu tư","Quản lý tài chính công","Quản trị doanh nghiệp","Quản trị logistics","Thống kê kinh tế","Kinh doanh số","Kinh doanh","Kinh tế","Quản trị kinh doanh","Logistics và chuỗi cung ứng","Kinh tế phát triển","Kinh tế quốc tế","Kinh tế số","Kinh tế vận tải","Phân tích kinh doanh, tài chính","Hệ thống thông tin quản lý","Quản lý, quản trị","Khoa học quản lý","Quản trị và phân tích dữ liệu","Thẩm định giá và quản trị tài sản","Truyền thông doanh nghiệp","Thương mại điện tử"],"cntt":["Tin học","An toàn dữ liệu và an ninh mạng","Công nghệ phần mềm","Hệ thống thông tin quản lý","Công nghệ thông tin","An toàn thông tin","Công nghệ bán dẫn","Công nghệ đa phương tiện","Khoa học Máy tính","Trí tuệ nhân tạo","Công nghệ kỹ thuật điện tử - viễn thông","Công nghệ kỹ thuật máy tính","Công nghệ và đổi mới sáng tạo","Hệ thống nhúng và IoT","Hệ thống thông tin","Khoa học dữ liệu và Trí tuệ nhân tạo","Kỹ thuật dữ liệu","Kỹ thuật điện tử - viễn thông","Kỹ thuật Máy tính","Kỹ thuật phần mềm","Mạng máy tính & truyền thông dữ liệu","Quản lý thông tin","Robot và trí tuệ nhân tạo","Thiết kế vi mạch","Thương mại điện tử","Truyền thông đa phương tiện"],"ban-dan":["Cơ học","Hóa học","Khoa học tính toán","Công nghệ thông tin","An toàn thông tin","Khoa học Máy tính","Trí tuệ nhân tạo","Công nghệ kỹ thuật điện tử - viễn thông","Công nghệ kỹ thuật máy tính","Hệ thống thông tin","Khoa học dữ liệu và Trí tuệ nhân tạo","Kỹ thuật điện tử - viễn thông","Kỹ thuật Máy tính","Kỹ thuật phần mềm","Mạng máy tính & truyền thông dữ liệu","Robot và trí tuệ nhân tạo","Kỹ thuật vật liệu kim loại","An ninh mạng và phòng chống tội phạm công nghệ cao","Công nghệ kỹ thuật cơ khí","Kỹ thuật cơ điện tử","Kỹ thuật cơ khí","Vật lý Kỹ thuật","Cơ Kỹ thuật","Kỹ thuật công nghiệp","Công nghệ kỹ thuật cơ điện tử","Công nghệ kỹ thuật điện, điện tử","Công nghệ kỹ thuật điều khiển và tự động hóa","Kỹ thuật điện","Kỹ thuật Nhiệt","Công nghệ kỹ thuật nhiệt","Kỹ thuật Robot","Kỹ thuật Điện - Điện tử","Kỹ thuật Vật liệu","Công nghệ vật liệu","Khoa học Vật liệu","Công nghệ kỹ thuật hoá học","Kỹ thuật Hóa học","Vật lý học","Công nghệ điện tử, vi mạch và bán dẫn"],"bao-chi":["Công nghệ truyền thông","Quay phim","Nhiếp ảnh báo chí","Quản trị Marketing","Báo chí","Marketing","Truyền thông Marketing","Quan hệ công chúng","Quản lí giải trí và sự kiện","Quản trị kinh doanh & Marketing","Quản trị thương hiệu","Truyền thông, quảng cáo","Xuất bản và kinh doanh xuất bản phẩm","Quan hệ quốc tế","Digital Marketing"],"spg":["Công nghệ giáo dục","Sư phạm Toán","Sư phạm Vật lý","Sư phạm Ngữ văn","Sư phạm Tiếng Anh","Sư phạm Hóa học","Sư phạm Sinh học","Sư phạm Lịch sử","Sư phạm Địa lý","Sư phạm Lịch sử - Địa lý","Sư phạm Khoa học tự nhiên","Sư phạm Âm nhạc","Sư phạm Công nghệ","Sư phạm Mỹ thuật","Sư phạm Tiếng Đức","Sư phạm Tiếng H'mong","Sư phạm Tiếng Hàn Quốc","Sư phạm Tiếng Nga","Sư phạm Tiếng Nhật","Sư phạm Tiếng Pháp","Sư phạm Tiếng Trung","Sư phạm Tin học","Sư phạm Kỹ thuật công nghiệp","Giáo dục Chính trị","Giáo dục Công dân","Giáo dục Đặc biệt","Giáo dục học","Giáo dục Mầm non","Giáo dục pháp luật","Giáo dục Quốc phòng - An ninh","Giáo dục Thể chất","Giáo dục Tiểu học","Hỗ trợ giáo dục người khuyết tật","Khoa học Giáo dục và Khác","Quản lý giáo dục"],"yd":["Kỹ thuật phục hình răng","Kỹ thuật Xét nghiệm Y học","Y khoa","Răng Hàm Mặt","Dược học","Điều dưỡng","Y học cổ truyền","Y học dự phòng","Y tế công cộng","Dinh dưỡng","Hóa dược","Hộ Sinh","Khoa học và Công nghệ y khoa","Kỹ thuật hình ảnh y học","Kỹ Thuật Phục Hồi Chức Năng","Quản lý bệnh viện","Vật lý Y khoa","Công nghệ sinh học Y Dược","Công nghệ thẩm mỹ","Dược liệu và hợp chất thiên nhiên","Khúc xạ nhãn khoa","Công nghệ kỹ thuật điện tử y sinh"],"bac-si-thu-y":["Thú y","Chăn nuôi","Chăn nuôi thú y"],"quan-doi":["Công nghệ thông tin - CAQĐ","An toàn thông tin - CAQĐ","Y khoa - CAQĐ","An ninh mạng và phòng chống tội phạm công nghệ cao","Biên phòng","Chỉ huy kỹ thuật Công binh","Chỉ huy Kỹ thuật hóa học","Chỉ huy Tham mưu - thông tin","Chỉ huy tham mưu Đặc công","Chỉ huy tham mưu Hải quân","Chỉ huy tham mưu không quân (Phi công quân sự)","Chỉ huy tham mưu Lục quân","Chỉ huy tham mưu Pháo binh","Chỉ huy Tham mưu Phòng không, Không quân và Tác chiến điện tử","Chỉ huy tham mưu Tăng Thiết giáp","Chỉ huy quản lý kỹ thuật","Hậu cần quân sự","Kỹ thuật - Hậu cần","Nghiệp vụ an ninh","Phòng cháy chữa cháy và cứu nạn, cứu hộ","Trinh sát kỹ thuật","Ngôn ngữ Anh - CAQĐ","Ngôn ngữ Trung Quốc - CAQĐ","Ngôn ngữ Nga - CAQĐ","Quan hệ quốc tế - CAQĐ","Kỹ thuật, công nghệ Hàng không - CAQĐ","Luật - CAQĐ","Xây dựng Đảng & CQNN - CAQĐ"],"tkdh":["Thiết kế mỹ thuật hoạt hình","Công nghệ đa phương tiện","Truyền thông đa phương tiện","Thiết kế Đồ hoạ","Thiết kế Mỹ thuật số","Thiết kế Công nghiệp"],"xd":["Kỹ thuật an toàn giao thông","Xây dựng dân dụng và công nghiệp","Kinh tế vận tải","Kinh tế Xây dựng","Kỹ thuật xây dựng","Công nghệ kỹ thuật Xây dựng","Công nghệ kỹ thuật giao thông","Kiến trúc","Kiến trúc Cảnh quan","Kiến trúc nội thất","Kỹ thuật cơ sở hạ tầng","Kỹ thuật xây dựng công trình giao thông","Thiết kế nội thất","Quản lý xây dựng","Khai thác vận tải","Đô thị, mỹ thuật đô thị","Quản lý phát triển đô thị và bất động sản","Quản lý, khai thác và bảo trì đường cao tốc","Quy hoạch vùng và đô thị","Thiết kế, quản trị đô thị","Xây dựng, quản lý Cầu - đường sắt","Xây dựng công trình","Xây dựng và quản lý hạ tầng đô thị","Kỹ thuật xây dựng công trình thủy"],"ngoai-giao":["Ngôn ngữ Tây Ban Nha","Tiếng Anh du lịch","Quan hệ công chúng","Ngôn ngữ Anh","Ngôn ngữ Trung Quốc","Ngôn ngữ Đức","Ngôn ngữ Nga","Ngôn ngữ Nhật","Ngôn ngữ Pháp","Quan hệ quốc tế","Ngôn ngữ Ả Rập","Thương mại quốc tế","Ngôn ngữ Bồ Đào Nha","Ngôn ngữ Hàn Quốc","Ngôn ngữ Italia","Ngôn ngữ Khmer","Ngôn ngữ Thái Lan","Ngôn ngữ và Văn hóa các dân tộc thiểu số Việt Nam","Quản trị kinh doanh & Luật","Tiếng Anh chuyên nghiệp quốc tế","Tiếng Anh KHKT và Công nghệ","Tiếng Anh Thương mại","Tiếng Nhật thương mại","Tiếng Pháp thương mại","Tiếng Trung Thương mại","Văn hóa và truyền thông xuyên quốc gia"],"ngoai-thuong":["Kinh doanh quốc tế","Logistics","Logistics và Quản lý chuỗi cung ứng","Kinh tế đối ngoại","Tài chính quốc tế","Hải quan và Logistics","Quản trị Hải quan - Ngoại thương","Quản trị và Kinh doanh Quốc tế","Truyền thông quốc tế"],"du-lich":["Quản trị lữ hành, khách sạn","Du lịch","Hướng dẫn du lịch","Quản trị dịch vụ du lịch và lữ hành","Quản trị du lịch và khách sạn","Quản trị khách sạn","Quản trị nhà hàng - khách sạn","Quản trị nhà hàng và dịch vụ ăn uống","Quản trị sự kiện","Quốc tế học","Tài nguyên và Du lịch sinh thái","Văn hóa Du lịch","Địa lý học"],"cokhi":["công nghệ ô tô điện","Cơ điện tử ô tô","Quản lý công nghiệp","Công nghệ kỹ thuật ô tô","Kỹ thuật ô tô","Công nghệ kỹ thuật cơ khí","Công nghệ chế tạo máy","Công nghệ kỹ thuật","Kỹ thuật cơ điện tử","Kỹ thuật cơ khí","Kỹ thuật cơ khí động lực","Kỹ thuật hệ thống công nghiệp","Vật lý Kỹ thuật","Cơ Kỹ thuật","Kỹ thuật công nghiệp","Công nghệ kỹ thuật cơ điện tử","Thiết kế Công nghiệp"],"dien-tu":["Năng lượng tái tạo","Công nghệ sản xuất tự động","Quản lý công nghiệp","Điện","Công nghệ kỹ thuật cơ điện tử","Công nghệ kỹ thuật điện, điện tử","Công nghệ kỹ thuật điều khiển và tự động hóa","Kỹ thuật điện","Kỹ thuật cơ điện tử","Kỹ thuật Điều khiển - Tự động hoá","Kỹ thuật Nhiệt","Công nghệ kỹ thuật nhiệt","Kỹ thuật Robot","Kỹ thuật robot và trí tuệ nhân tạo","Công nghệ kỹ thuật năng lượng","Tự động hóa","Điện tự động","Kỹ thuật cơ khí, cơ điện","Kỹ thuật Điện - Điện tử","Quản lý năng lượng","Vi mạch bán dẫn"],"hang-hai":["CNKT cơ khí tàu thủy và công trình nổi","Hải quan và Logistics","Khoa học hàng hải","Kỹ thuật xây dựng công trình thủy","Biến đổi khí hậu và Phát triển bền vững","Khí tượng và Khí hậu học","Kinh tế, kỹ thuật, quản lý Hàng Hải","Điều khiển tàu biển","Đóng tàu & công trình ngoài khơi","Hải dương học","Khai thác máy tàu biển","Kỹ thuật biển","Kỹ thuật Tài nguyên nước","Kỹ thuật Tàu thủy","Thiết kế tàu & công trình ngoài khơi","Thủy văn học","Xây dựng công trình thủy"],"hang-khong":["Kỹ thuật, công nghệ Hàng không","Kỹ thuật hạt nhân","Quản lý hoạt động bay","Phi công quân sự","Khoa học thông tin địa không gian","Quản trị kinh doanh hàng không"],"vat-lieu":["Kỹ thuật Vật liệu","Công nghệ vật liệu","Khoa học Vật liệu","Công nghệ kỹ thuật Vật liệu xây dựng","Khoa học Vũ trụ và Công nghệ Vệ tinh","Khoa học Y Sinh","Vật liệu thông minh và trí tuệ nhân tạo","Vật liệu tiên tiến và công nghệ nano"],"thuc-pham":["Công nghệ Thực phẩm","Đảm bảo chất lượng và an toàn thực phẩm","Kỹ thuật thực phẩm","Quản trị kinh doanh thực phẩm","Khoa học chế biến món ăn"],"in-giay":["Công nghệ kỹ thuật in","Kỹ thuật in"],"khtn":["Công nghệ hóa học","Công nghệ kỹ thuật hoá học","Công nghệ Sinh học","Sinh học","Hoá học","Kỹ thuật Hóa học","Kỹ thuật Sinh học","Kỹ thuật Y Sinh","Sinh học ứng dụng","Địa lý học","Vật lý học"],"luat":["Luật dân sự và tố tụng dân sự","Luật hiến pháp và luật hành chính","Quản trị kinh doanh & Luật","Luật","Luật hàng hải","Luật hình sự và tố tụng hình sự","Luật kinh doanh","Luật kinh tế","Luật quốc tế","Luật thương mại quốc tế","Quản trị - Luật","Tài chính ngân hàng & Luật"],"mo-dia":["Kỹ thuật trắc địa - bản đồ","Kỹ thuật địa chất","Địa chất học","Công nghệ, kỹ thuật dầu khí","Đá quý Đá mỹ nghệ","Kỹ thuật mỏ","Kỹ thuật địa vật lý","Kỹ thuật tuyển khoáng"],"nt":["Biên đạo múa","CTĐT Nghệ thuật và thiết kế","Sáng tác âm nhạc","Chỉ huy âm nhạc","Biểu diễn nhạc cụ phương Tây","Nhạc Jazz","Nghệ thuật thị giác","Thiết kế sáng tạo","Công nghệ điện ảnh, truyền hình","Diễn viên Kịch - Điện ảnh","Đạo diễn Điện ảnh, Truyền hình","Piano","Thanh nhạc","Điêu khắc","Hội họa","Nhiếp ảnh nghệ thuật","Âm nhạc","Digital Art","Biểu diễn nhạc cụ truyền thống","Công nghệ nghệ thuật (Arttech)","Nghệ thuật học","Nghệ thuật tạo hình đương đại"],"tai-nguyen":["Tài nguyên và Du lịch sinh thái","Công nghệ kĩ thuật môi trường","Khoa học môi trường","Kỹ thuật môi trường","Kỹ thuật cấp thoát nước","Quản lý tài nguyên rừng","Quản lý đất đai","Quản lý tài nguyên và môi trường","Tài nguyên và Môi trường","Quản lý tài nguyên","Bảo hộ, an toàn lao động","Kỹ thuật khí thiên nhiên","Kỹ thuật môi trường đô thị","Tài nguyên nước và môi trường","Quản lý biển"],"tl":["Tâm lý học","Tâm lý học giáo dục"],"the-thao":["Giáo dục Thể chất","Huấn luyện thể thao","Quản lý thể dục thể thao"],"thoi-trang":["Công nghệ Dệt May","Công nghệ may","Công nghệ sợi dệt","Kinh doanh thời trang và Dệt may","Thiết kế thời trang"],"nlts":["Công nghệ nông nghiệp","Quản lý tài nguyên rừng","Công nghệ chế biến thủy sản","Chăn nuôi thủy sản","Lâm nghiệp","Lâm học","Nông nghiệp","Nông học","Bảo vệ thực vật","Khoa học cây trồng","Kinh doanh nông nghiệp","Nuôi trồng thủy sản","Phát triển nông thôn","Quản lý thủy sản","Công nghệ chế biến lâm sản","Công nghệ sau thu hoạch","Bệnh học thủy sản","Khoa học đất","Khoa học thủy sản","Khuyến nông","Kỹ nghệ gỗ và nội thất"],"toan-tk":["Toán học","Toán Kinh tế","Toán ứng dụng","Thống kê kinh doanh","Toán tin","Thống kê","Toán tài chính"],"nhan-su":["Quản lý công","Quản trị nhân lực","Quản trị văn phòng","Hệ thống hoạch định nguồn lực doanh nghiệp","Quan hệ lao động"],"van-hoa":["Di sản","Quốc tế học","Văn hóa học","Quản lý văn hóa","Chính trị học","Văn học","Việt Nam Học","Xã hội học","Xây dựng Đảng & CQNN","Đông phương học","Công tác xã hội, thanh thiếu niên","Đông Nam Á học","Lịch sử","Ngôn ngữ học","Trung Quốc học","Hàn Quốc học","Nhật Bản học","Quản lý công, nhà nước","Thông tin - Thư viện","Triết học","Kinh tế chính trị","Lưu trữ học","Tiếng Việt & Văn hóa Việt Nam","Hán - Nôm","Nhân học","Bảo tàng học","Tôn giáo học","Giới và phát triển","Nghiên cứu phát triển","Hoa Kỳ học","Quản lý phân tích dữ liệu khoa học trái đất"]};
+const TO_HOP_FULL=[{"c":"A01","m":"Toán, Vật lí, Tiếng Anh","n":359},{"c":"B00","m":"Toán, Hóa học, Sinh học","n":211},{"c":"C00","m":"Ngữ văn, Lịch sử, Địa lí","n":154},{"c":"C01","m":"Ngữ văn, Toán, Vật lí","n":311},{"c":"D14","m":"Ngữ văn, Lịch sử, Tiếng Anh","n":157},{"c":"D15","m":"Ngữ văn, Địa lí, Tiếng Anh","n":137},{"c":"A02","m":"Toán, Vật lí, Sinh học","n":180},{"c":"C04","m":"Ngữ văn, Toán, Địa lí","n":246},{"c":"D03","m":"Ngữ văn, Toán, Tiếng Pháp","n":119},{"c":"D04","m":"Ngữ văn, Toán, Tiếng Trung","n":133},{"c":"D10","m":"Toán, Địa lí, Tiếng Anh","n":200},{"c":"B08","m":"Toán, Sinh học, Tiếng Anh","n":142},{"c":"D06","m":"Ngữ văn, Toán, Tiếng Nhật","n":118},{"c":"D08","m":"Toán, Sinh học, Tiếng Anh","n":121},{"c":"X74","m":"Ngữ văn, Địa lí, GDKTPL","n":82},{"c":"D09","m":"Toán, Lịch sử, Tiếng Anh","n":174},{"c":"X70","m":"Ngữ văn, Lịch sử, GDKTPL","n":91},{"c":"X01","m":"Ngữ văn, Toán, GDKTPL","n":240},{"c":"D02","m":"Ngữ văn, Toán, Tiếng Nga","n":105},{"c":"X78","m":"Ngữ văn, GDKTPL, Tiếng Anh","n":95},{"c":"D05","m":"Ngữ văn, Toán, Tiếng Đức","n":108},{"c":"C02","m":"Ngữ văn, Toán, Hóa học","n":287},{"c":"D28","m":"Toán, Vật lí, Tiếng Nhật","n":104},{"c":"D29","m":"Toán, Vật lí, Tiếng Pháp","n":101},{"c":"X21","m":"Toán, Địa lí, GDKTPL","n":132},{"c":"D26","m":"Toán, Vật lí, Tiếng Đức","n":98},{"c":"D24","m":"Toán, Hóa học, Tiếng Pháp","n":98},{"c":"V00","m":"Toán, Vật lí, Vẽ Hình họa mỹ thuật","n":77},{"c":"D23","m":"Toán, Hóa học, Tiếng Nhật","n":104},{"c":"D27","m":"Toán, Vật lí, Tiếng Nga","n":95},{"c":"D46","m":"Ngữ văn, Hóa học, Tiếng Đức","n":36},{"c":"D30","m":"Toán, Vật lí, Tiếng Trung","n":98},{"c":"D21","m":"Toán, Hóa học, Tiếng Đức","n":96},{"c":"D47","m":"Ngữ văn, Hóa học, Tiếng Nga","n":36},{"c":"D22","m":"Toán, Hóa học, Tiếng Nga","n":96},{"c":"D25","m":"Toán, Hóa học, Tiếng Trung","n":96},{"c":"V01","m":"Toán, Ngữ văn, Vẽ Hình họa mỹ thuật","n":81},{"c":"A07","m":"Toán, Lịch sử, Địa lí","n":138},{"c":"C03","m":"Ngữ văn, Toán, Lịch sử","n":245},{"c":"B03","m":"Toán, Sinh học, Ngữ văn","n":216},{"c":"AH1","m":"Toán, Địa lí, Tiếng Hàn","n":61},{"c":"H00","m":"Ngữ văn, Năng khiếu vẽ Nghệ thuật 1, Năng khiếu vẽ Nghệ thuật 2","n":49},{"c":"V02","m":"Toán, Tiếng Anh, Vẽ mỹ thuật","n":67},{"c":"H01","m":"Toán, Ngữ văn, Vẽ Mỹ thuật","n":75},{"c":"C08","m":"Ngữ văn, Hóa học, Sinh học","n":76},{"c":"X25","m":"Toán, Tiếng Anh, GDKTPL","n":143},{"c":"T00","m":"Toán, Sinh học, Năng khiếu TDTT","n":63},{"c":"A04","m":"Toán, Vật lí, Địa lí","n":137},{"c":"X13","m":"Toán, Sinh học, GDKTPL","n":80},{"c":"T05","m":"Ngữ văn, GDKTPL, Năng khiếu thể dục thể thao","n":40},{"c":"X05","m":"Toán, Vật lí, GDKTPL","n":125},{"c":"M01","m":"Ngữ văn, Lịch sử, Năng khiếu","n":40},{"c":"H06","m":"Ngữ văn, Tiếng Anh,Vẽ mỹ thuật","n":48},{"c":"D11","m":"Ngữ văn, Vật lí, Tiếng Anh","n":78},{"c":"N00","m":"Ngữ văn, Năng khiếu Âm nhạc 1, Năng khiếu Âm nhạc 2","n":40},{"c":"M00","m":"Ngữ văn, Toán, Đọc diễn cảm, Hát","n":70},{"c":"X26, K01","m":"Toán, Tiếng Anh, Tin học","n":191},{"c":"T02","m":"Ngữ văn, Sinh, Năng khiếu TDTT","n":40},{"c":"T01","m":"Toán, Ngữ văn, Năng khiếu TDTT","n":72},{"c":"D13","m":"Ngữ văn, Sinh học, Tiếng Anh","n":59},{"c":"H02","m":"Toán, Vẽ Hình họa mỹ thuật, Vẽ trang trí màu","n":65},{"c":"H04","m":"Toán, Tiếng Anh, Vẽ Năng khiếu","n":63},{"c":"A05","m":"Toán, Hóa học, Lịch sử","n":92},{"c":"A06","m":"Toán, Hóa học, Địa lí","n":107},{"c":"X17","m":"Toán, Lịch sử, GDKTPL","n":112},{"c":"T03","m":"Ngữ văn, Địa, Năng khiếu TDTT","n":41},{"c":"B02","m":"Toán, Sinh học, Địa lí","n":87},{"c":"X09","m":"Toán, Hóa học, GDKTPL","n":100},{"c":"M02","m":"Toán, Năng khiếu 1, Năng khiếu 2","n":64},{"c":"C05","m":"Ngữ văn, Vật lí, Hóa học","n":52},{"c":"M09","m":"Toán, NK Mầm non 1( kể chuyện, đọc, diễn cảm), NK Mầm non 2 (Hát)","n":59},{"c":"D12","m":"Ngữ văn, Hóa học, Tiếng Anh","n":54},{"c":"D45","m":"Ngữ văn, Địa lí, Tiếng Trung","n":44},{"c":"M03","m":"Văn, Năng khiếu 1, Năng khiếu 2","n":42},{"c":"N01","m":"Ngữ văn, xướng âm, biểu diễn nghệ thuật","n":39},{"c":"A03","m":"Toán, Vật lí, Lịch sử","n":139},{"c":"D44","m":"Ngữ văn, Địa lí, Tiếng Pháp","n":44},{"c":"D63","m":"Ngữ văn, Lịch sử, Tiếng Nhật","n":46},{"c":"M13","m":"Toán, Sinh học, Năng khiếu","n":60},{"c":"V03","m":"Vẽ mỹ thuật, Toán, Hóa","n":69},{"c":"D64","m":"Ngữ văn, Lịch sử, Tiếng Pháp","n":46},{"c":"H08","m":"Ngữ văn, Lịch sử, Vẽ mỹ thuật","n":48},{"c":"T04","m":"Toán, Lý, Năng khiếu TDTT","n":69},{"c":"V06","m":"Toán, Địa lí, Vẽ mỹ thuật","n":63},{"c":"C13","m":"Ngữ văn, Sinh học, Địa lí","n":46},{"c":"S00","m":"Ngữ văn, Năng khiếu SKĐA 1, Năng khiếu SKĐA 2","n":39},{"c":"D20","m":"Toán, Địa lí, Tiếng Trung","n":66},{"c":"D32","m":"Toán, Sinh học, Tiếng Nga","n":67},{"c":"D33","m":"Toán, Sinh học, Tiếng Nhật","n":70},{"c":"D34","m":"Toán, Sinh học, Tiếng Pháp","n":67},{"c":"D42","m":"Ngữ văn, Địa lí, Tiếng Nga","n":42},{"c":"H07","m":"Toán, Hình họa, Trang trí","n":65},{"c":"M10","m":"Toán, Tiếng Anh, NK1","n":59},{"c":"M11","m":"Ngữ Văn, năng kiếu báo chí, Tiếng Anh","n":39},{"c":"N05","m":"Ngữ Văn, Xây dựng kịch bản sự kiện, Năng khiếu","n":38},{"c":"V05","m":"Văn, Vật lí, Vẽ mỹ thuật","n":39},{"c":"V07","m":"Toán, tiếng Đức, Vẽ mỹ thuật","n":58},{"c":"V10","m":"Toán, tiếng Pháp, Vẽ mỹ thuật","n":60},{"c":"D16","m":"Toán, Địa lí, Tiếng Đức","n":61},{"c":"D31","m":"Toán, Sinh học, Tiếng Đức","n":67},{"c":"D35","m":"Toán, Sinh học, Tiếng Trung","n":67},{"c":"D43","m":"Ngữ văn, Địa lí, Tiếng Nhật","n":44},{"c":"D55","m":"Ngữ văn, Vật lí, Tiếng Trung","n":38},{"c":"D65","m":"Ngữ văn, Lịch sử, Tiếng Trung","n":51},{"c":"D68","m":"Ngữ văn, GDKTPL, Tiếng Nga","n":36},{"c":"D70","m":"Ngữ Văn, GDKTPL, Tiếng Pháp","n":36},{"c":"D71","m":"Ngữ văn, GDKTPL, Tiếng Trung","n":37},{"c":"M04","m":"Toán, Đọc kể diễn cảm, Hát - Múa","n":59},{"c":"M14","m":"Ngữ văn, Năng khiếu báo chí, Toán","n":68},{"c":"N02","m":"Ngữ văn, Ký xướng âm, Hát hoặc biểu diễn nhạc cụ","n":38},{"c":"V08","m":"Toán, tiếng Nga, Vẽ mỹ thuật","n":58},{"c":"V09","m":"Toán, tiếng Nhật, Vẽ mỹ thuật","n":58},{"c":"V11","m":"Toán, Tiếng Trung, Vẽ mỹ thuật","n":60},{"c":"B01","m":"Toán, Lịch sử, Sinh học","n":72},{"c":"C06","m":"Ngữ Văn, Vật lí, Sinh học","n":38},{"c":"C07","m":"Ngữ văn, Lịch sử, Vật lí","n":50},{"c":"X23","m":"Toán, Địa lí, Công nghệ công nghiệp","n":68},{"c":"C09","m":"Ngữ văn, Địa lí, Vật lí","n":37},{"c":"X24","m":"Toán, Địa lí, Công nghệ nông nghiệp","n":64},{"c":"C10","m":"Ngữ văn, Lịch sử, Hóa học","n":49},{"c":"C11","m":"Ngữ văn, Địa lí, Hóa học","n":37},{"c":"C12","m":"Ngữ văn, Lịch sử, Sinh học","n":43},{"c":"X58","m":"Ngữ văn, Vật lí, GDKTPL","n":36},{"c":"D54","m":"Ngữ văn, Vật lí, Tiếng Pháp","n":37},{"c":"D61","m":"Ngữ văn, Lịch sử, Tiếng Đức","n":45},{"c":"D62","m":"Ngữ văn, Lịch sử, Tiếng Nga","n":44},{"c":"X94","m":"Ngữ Văn, GDKTPL, Tiếng Đức","n":40},{"c":"X98","m":"Văn, GDKTPL, Tiếng Nhật","n":41},{"c":"X41","m":"Toán, GDKTPL, Tiếng Đức","n":59},{"c":"X29","m":"Toán, GDKTPL, Tiếng Nga","n":59},{"c":"N03","m":"Ngữ văn, Tiếng Anh, Năng khiếu âm nhạc","n":38},{"c":"N04","m":"Ngữ Văn, Năng khiếu thuyết trình, Năng khiếu","n":37},{"c":"R00","m":"Ngữ văn, Lịch sử, Năng khiếu báo chí","n":40},{"c":"R01","m":"Ngữ văn, Địa lý, Năng khiếu nghệ thuật","n":38},{"c":"R02","m":"Ngữ văn, Toán, Năng khiếu nghệ thuật","n":69},{"c":"R03","m":"Ngữ văn, tiếng Anh, Năng khiếu nghệ thuật","n":39},{"c":"X62","m":"Ngữ văn, Hóa học, GDKTPL","n":47},{"c":"K00","m":"Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề","n":320},{"c":"X02, K21, TH6, DK, F01, TH3","m":"Toán, Ngữ văn, Tin học","n":262},{"c":"X06, A0T, GT1, TH1","m":"Toán, Vật lí, Tin học","n":214},{"c":"X08","m":"Toán, Vật lí, Công nghệ nông nghiệp","n":108},{"c":"X07, A0C, TH3, TH4","m":"Toán, Vật lí, Công nghệ công nghiệp","n":172},{"c":"X11, B0C, TH5","m":"Toán, Hóa học, Công nghệ công nghiệp","n":124},{"c":"X28, K20, D0C","m":"Toán, Tiếng Anh, Công nghệ nông nghiệp","n":83},{"c":"X27; D0C; K20; TH5; TH7","m":"Toán, Tiếng Anh, Công nghệ công nghiệp","n":127},{"c":"X12","m":"Toán, Hóa học, Công nghệ nông nghiệp","n":106},{"c":"X15","m":"Toán, Sinh học, Công nghệ công nghiệp","n":104},{"c":"X14","m":"Toán, Sinh học, Tin học","n":113},{"c":"X16","m":"Toán, Sinh học, Công nghệ nông nghiệp","n":83},{"c":"D18","m":"Toán, Địa lí, Tiếng Nhật","n":62},{"c":"D39","m":"Toán, Lịch sử, Tiếng Pháp","n":72},{"c":"X10, TH4","m":"Toán, Hoá, Tin","n":133},{"c":"(Ngữ văn, Vật lí, Tiếng Hàn)","m":"Ngữ văn, Vật lí, Tiếng Hàn","n":36},{"c":"X75","m":"Ngữ văn, Địa lí, Tin học","n":44},{"c":"X46","m":"Toán, Tiếng Nhật, Tin học","n":65},{"c":"X22","m":"Toán, Địa lí, Tin học","n":81},{"c":"D19","m":"Toán, Địa lí, Tiếng Pháp","n":63},{"c":"D41","m":"Ngữ văn, Địa lí, Tiếng Đức","n":43},{"c":"D50","m":"Ngữ văn, Hóa học, Tiếng Trung","n":36},{"c":"X03; TH8; K22; E01","m":"Toán, Ngữ văn, Công nghệ công nghiệp","n":196},{"c":"D73","m":"Ngữ văn, Khoa học tự nhiên, Tiếng Đức","n":36},{"c":"X79; TH9","m":"Ngữ văn, Tiếng Anh, Tin học","n":55},{"c":"K01","m":"Toán, Văn, Lý/Hóa/Sinh/Tin","n":105},{"c":"X04; TH8; K22; E01","m":"Toán, Ngữ văn, Công nghệ nông nghiệp","n":167},{"c":"X71; TH11","m":"Ngữ văn, Lịch sử, Tin học","n":49},{"c":"Q00","m":"Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh","n":331},{"c":"D96","m":"Toán, Khoa học xã hội, Tiếng Anh","n":58},{"c":"X53","m":"Toán, GDKTPL, Tin học","n":61},{"c":"AH3","m":"Toán, Vật lí, Tiếng Hàn","n":91},{"c":"DD2","m":"Ngữ văn, Toán, Tiếng Hàn","n":99},{"c":"AH2","m":"Toán, Hóa học, Tiếng Hàn","n":93},{"c":"AH5","m":"Toán, Lịch sử, Tiếng Hàn","n":58},{"c":"D36","m":"Toán, Lịch sử, Tiếng Đức","n":70},{"c":"D37","m":"Toán, Lịch sử, Tiếng Nga","n":71},{"c":"D38","m":"Toán, Lịch sử, Tiếng Nhật","n":70},{"c":"D40","m":"Toán, Lịch sử, Tiếng Trung","n":80},{"c":"M08","m":"Ngữ Văn, Năng Khiếu 1, Năng Khiếu 2","n":38},{"c":"X86","m":"Ngữ văn, GDKTPL, Tiếng Pháp","n":40},{"c":"M05","m":"Ngữ văn, Khoa học xã hội, Năng khiếu","n":37},{"c":"X45","m":"Toán, GDKTPL, Tiếng Nhật","n":65},{"c":"X33","m":"Toán, GDKTPL, Tiếng Pháp","n":65},{"c":"D48","m":"Ngữ văn, Hóa học, Tiếng Nhật","n":36},{"c":"D49","m":"Ngữ văn, Hóa học, Tiếng Pháp","n":36},{"c":"D51","m":"Ngữ văn, Vật lí, Tiếng Đức","n":36},{"c":"D52","m":"Ngữ văn, Vật lí, Tiếng Nga","n":36},{"c":"D53","m":"Ngữ văn, Vật lí, Tiếng Nhật","n":38},{"c":"D56","m":"Ngữ văn, Sinh học, Tiếng Đức","n":36},{"c":"D57","m":"Ngữ văn, Sinh học, Tiếng Nga","n":36},{"c":"D58","m":"Ngữ văn, Sinh học, Tiếng Nhật","n":36},{"c":"D59","m":"Ngữ văn, Sinh học, Tiếng Pháp","n":36},{"c":"D60","m":"Ngữ văn, Sinh học, Tiếng Trung","n":36},{"c":"DH2","m":"Ngữ văn, Hóa học, Tiếng Hàn","n":1},{"c":"DH3","m":"Ngữ văn, Vật lí, Tiếng Hàn","n":37},{"c":"DH4","m":"Ngữ văn, Sinh học, Tiếng Hàn","n":36},{"c":"X30","m":"Toán, Tin học, Tiếng Nga","n":32},{"c":"X31","m":"Toán, Công nghệ công nghiệp, Tiếng Nga","n":58},{"c":"X32","m":"Toán, Công nghệ nông nghiệp, Tiếng Nga","n":58},{"c":"X34","m":"Toán, Tin học, Tiếng Pháp","n":32},{"c":"X90","m":"Ngữ văn, GDKTPL, Tiếng Trung","n":41},{"c":"R04","m":"Ngữ văn, Biểu diễn nghệ thuật, Năng khiếu văn hóa nghệ thuật","n":36},{"c":"M07","m":"Ngữ Văn, Địa lý, Năng khiếu đọc diễn cảm và Hát","n":38},{"c":"H09","m":"Ngữ Văn, Địa, Năng khiếu","n":39},{"c":"H10; H11; H06","m":"Ngữ Văn, Ngoại ngữ, năng khiếu","n":46},{"c":"T10","m":"Toán, Vật lý, Năng khiếu Thể dục Thể thao","n":68},{"c":"X35","m":"Toán, Công nghệ công nghiệp, Tiếng Pháp","n":58},{"c":"T06","m":"Toán, Địa lý, Năng khiếu Thể dục thể thao","n":65},{"c":"T07","m":"Ngữ văn, Địa lý, Năng khiếu Thể dục Thể thao","n":40},{"c":"T08","m":"Toán, GDKTPL, Năng khiếu Thể dục thể thao","n":62},{"c":"T09","m":"Ngữ văn, Lịch sử, năng khiếu thể dục thể thao","n":42},{"c":"M06","m":"Ngữ Văn, Toán, Năng khiếu Giáo dục mầm non","n":70},{"c":"X54","m":"Toán, GDKTPL, Công nghệ công nghiệp","n":72},{"c":"X66","m":"Ngữ văn, Sinh học, GDKT&PL","n":40},{"c":"X55","m":"Toán, GDKTPL, Công nghệ nông nghiệp","n":66},{"c":"X56","m":"Toán, Tin học, Công nghệ công nghiệp","n":104},{"c":"X57","m":"Toán, Tin học, Công nghệ nông nghiệp","n":65},{"c":"X19","m":"Toán, Lịch sử, Công nghệ công nghiệp","n":61},{"c":"X20","m":"Toán, Lịch sử, Công nghệ nông nghiệp","n":58},{"c":"X18","m":"Toán, Lịch sử, Tin học","n":62},{"c":"X76","m":"Ngữ văn, Địa lí, Công nghệ công nghiệp","n":37},{"c":"Y08","m":"Ngữ văn, GDKTPL, Công nghệ công nghiệp","n":44},{"c":"X77","m":"Ngữ văn, Địa lí, Công nghệ nông nghiệp","n":37},{"c":"Y09","m":"Ngữ văn, GDKTPL, Công nghệ nông nghiệp","n":46},{"c":"Y07","m":"Ngữ văn, GDKTPL, Tin học","n":43},{"c":"X64","m":"Ngữ văn, Hóa học, Công nghệ công nghiệp","n":36},{"c":"X65","m":"Ngữ văn, Hóa học, Công nghệ nông nghiệp","n":36},{"c":"X63","m":"Ngữ văn, Hóa học, Tin học","n":55},{"c":"X72","m":"Ngữ văn, Lịch sử, Công nghệ công nghiệp","n":40},{"c":"X73","m":"Ngữ văn, Lịch sử, Công nghệ nông nghiệp","n":41},{"c":"X68","m":"Ngữ văn, Sinh học, Công nghệ công nghiệp","n":36},{"c":"X69","m":"Ngữ văn, Sinh học, Công nghệ nông nghiệp","n":38},{"c":"X67","m":"Ngữ văn, Sinh học, Tin học","n":50},{"c":"X80","m":"Ngữ văn, Tiếng Anh, Công nghệ công nghiệp","n":39},{"c":"X81","m":"Ngữ văn, Tiếng Anh, Công nghệ nông nghiệp","n":39},{"c":"Y10","m":"Ngữ văn, Tin học, Công nghệ công nghiệp","n":37},{"c":"Y11","m":"Ngữ văn, Tin học, Công nghệ nông nghiệp","n":49},{"c":"X60","m":"Ngữ văn, Vật lí, Công nghệ công nghiệp","n":37},{"c":"DH1","m":"Ngữ văn, Địa lí, Tiếng Hàn","n":39},{"c":"X61","m":"Ngữ văn, Vật lí, Công nghệ nông nghiệp","n":36},{"c":"DH5","m":"Ngữ văn, Lịch sử, Tiếng Hàn","n":43},{"c":"X59","m":"Ngữ văn, Vật lí, Tin học","n":38},{"c":"AH4","m":"Toán, Sinh học, Tiếng Hàn","n":67},{"c":"A00","m":"Toán – Vật lí – Hóa học","n":0},{"c":"A08","m":"Toán – Lịch sử – Giáo dục công dân","n":0},{"c":"A09","m":"Toán – Địa lý – Giáo dục công dân","n":0},{"c":"A10","m":"Toán – Lý – Giáo dục công dân","n":0},{"c":"A11","m":"Toán – Hóa – Giáo dục công dân","n":0},{"c":"A12","m":"Toán – Khoa học tự nhiên – KH xã hội","n":0},{"c":"A14","m":"Toán – Khoa học tự nhiên – Địa lí","n":0},{"c":"A15","m":"Toán – KH tự nhiên – Giáo dục công dân","n":0},{"c":"A16","m":"Toán – Khoa học tự nhiên – Ngữ văn","n":0},{"c":"A17","m":"Toán – Vật lý – Khoa học xã hội","n":0},{"c":"A18","m":"Toán – Hóa học – Khoa học xã hội","n":0},{"c":"B04","m":"Toán – Sinh học – Giáo dục công dân","n":0},{"c":"B05","m":"Toán – Sinh học – Khoa học xã hội","n":0},{"c":"C14","m":"Ngữ văn – Toán – Giáo dục công dân","n":0},{"c":"C15","m":"Ngữ văn – Toán – Khoa học xã hội","n":0},{"c":"C16","m":"Ngữ văn – Vật lí – Giáo dục công dân","n":0},{"c":"C17","m":"Ngữ văn – Hóa học – Giáo dục công dân","n":0},{"c":"C19","m":"Ngữ văn – Lịch sử – Giáo dục công dân","n":0},{"c":"C20","m":"Ngữ văn – Địa lí – Giáo dục công dân","n":0},{"c":"D01","m":"Ngữ văn – Toán – Tiếng Anh","n":0},{"c":"D07","m":"Toán – Hóa học – Tiếng Anh","n":0},{"c":"D17","m":"Toán – Địa lí – Tiếng Nga","n":0},{"c":"D66","m":"Ngữ văn – Giáo dục công dân – Tiếng Anh","n":0},{"c":"D69","m":"Ngữ văn – Giáo dục công dân – Tiếng Nhật","n":0},{"c":"D72","m":"Ngữ văn – Khoa học tự nhiên – Tiếng Anh","n":0},{"c":"D74","m":"Ngữ văn – Khoa học tự nhiên – Tiếng Nga","n":0},{"c":"D76","m":"Ngữ văn – Khoa học tự nhiên – Tiếng Nhật","n":0},{"c":"D77","m":"Ngữ văn – Khoa học tự nhiên – Tiếng Trung","n":0},{"c":"D78","m":"Ngữ văn – Khoa học xã hội – Tiếng Anh","n":0},{"c":"D79","m":"Ngữ văn – Khoa học xã hội – Tiếng Đức","n":0},{"c":"D80","m":"Ngữ văn – Khoa học xã hội – Tiếng Nga","n":0},{"c":"D81","m":"Ngữ văn – Khoa học xã hội – Tiếng Nhật","n":0},{"c":"D82","m":"Ngữ văn – Khoa học xã hội – Tiếng Pháp","n":0},{"c":"D83","m":"Ngữ văn – Khoa học xã hội – Tiếng Trung","n":0},{"c":"D84","m":"Toán – Giáo dục công dân – Tiếng Anh","n":0},{"c":"D85","m":"Toán – Giáo dục công dân – Tiếng Đức","n":0},{"c":"D86","m":"Toán – Giáo dục công dân – Tiếng Nga","n":0},{"c":"D87","m":"Toán – Giáo dục công dân – Tiếng Pháp","n":0},{"c":"D88","m":"Toán – Giáo dục công dân – Tiếng Nhật","n":0},{"c":"D90","m":"Toán – Khoa học tự nhiên – Tiếng Anh","n":0},{"c":"D91","m":"Toán – Khoa học tự nhiên – Tiếng Pháp","n":0},{"c":"D92","m":"Toán – Khoa học tự nhiên – Tiếng Đức","n":0},{"c":"D93","m":"Toán – Khoa học tự nhiên – Tiếng Nga","n":0},{"c":"D94","m":"Toán – Khoa học tự nhiên – Tiếng Nhật","n":0},{"c":"D95","m":"Toán – Khoa học tự nhiên – Tiếng Trung","n":0},{"c":"D97","m":"Toán – Khoa học xã hội – Tiếng Pháp","n":0},{"c":"D98","m":"Toán – Khoa học xã hội – Tiếng Đức","n":0},{"c":"D99","m":"Toán – Khoa học xã hội – Tiếng Nga","n":0},{"c":"H03","m":"Toán – Khoa học tự nhiên – Vẽ Năng khiếu","n":0},{"c":"H05","m":"Ngữ văn – Khoa học xã hội – Vẽ Năng khiếu","n":0},{"c":"M15","m":"Ngữ văn – Năng khiếu báo chí – Tiếng Anh","n":0},{"c":"M16","m":"Ngữ văn – Năng khiếu báo chí – Vật lí","n":0},{"c":"M17","m":"Ngữ văn – Năng khiếu báo chí – Lịch sử","n":0},{"c":"M18","m":"Ngữ văn – Năng khiếu Ảnh báo chí – Toán","n":0},{"c":"M19","m":"Ngữ văn – Năng khiếu Ảnh báo chí – Tiếng Anh","n":0},{"c":"M20","m":"Ngữ văn – Năng khiếu Ảnh báo chí – Vật lí","n":0},{"c":"M21","m":"Ngữ văn – Năng khiếu Ảnh báo chí – Lịch sử","n":0},{"c":"M22","m":"Ngữ văn – Năng khiếu quay phim truyền hình – Toán","n":0},{"c":"M23","m":"Ngữ văn – Năng khiếu quay phim truyền hình – Tiếng Anh","n":0},{"c":"M24","m":"Ngữ văn – Năng khiếu quay phim truyền hình – Vật lí","n":0},{"c":"M25","m":"Ngữ văn – Năng khiếu quay phim truyền hình – Lịch sử","n":0},{"c":"N06","m":"Ngữ văn – Ghi âm, xướng âm – Chuyên môn","n":0},{"c":"N07","m":"Ngữ văn – Ghi âm, xướng âm – Chuyên môn","n":0},{"c":"N08","m":"Ngữ văn – Hòa thanh – Phát triển chủ đề và phổ thơ","n":0},{"c":"N09","m":"Ngữ văn – Hòa thanh – Bốc thăm đề, chỉ huy tại chỗ","n":0},{"c":"R05","m":"Ngữ văn – Tiếng Anh – Năng khiếu kiến thức truyền thông","n":0},{"c":"S01","m":"Toán – Năng khiếu 1 – Năng khiếu 2","n":0}];
+const TO_HOP_PHO_BIEN=[{"c":"D01","m":"Toán, Ngữ văn, Tiếng Anh","g":"Kinh tế, Ngôn ngữ, Luật, Marketing, CNTT."},{"c":"A01","m":"Toán, Vật lí, Tiếng Anh","g":"Công nghệ, Kỹ thuật, Quản trị, Tài chính."},{"c":"A00","m":"Toán, Vật lí, Hóa học","g":"Kỹ thuật, Sản xuất, Xây dựng, CNTT."},{"c":"C00","m":"Ngữ văn, Lịch sử, Địa lí","g":"Báo chí, Luật, Sư phạm, Du lịch, Tâm lý."},{"c":"B00","m":"Toán, Hóa học, Sinh học","g":"Y đa khoa, Dược, Công nghệ thực phẩm."},{"c":"D07","m":"Toán, Hóa học, Tiếng Anh","g":"Kinh tế, Dược học, Kỹ thuật hóa học."},{"c":"C01","m":"Ngữ văn, Toán, Vật lí","g":"Công nghệ kỹ thuật, Quản lý dự án."},{"c":"D08","m":"Toán, Sinh học, Tiếng Anh","g":"Điều dưỡng, Công nghệ sinh học, Thú y."},{"c":"C02","m":"Ngữ văn, Toán, Hóa học","g":"Sư phạm, Môi trường, Nông nghiệp."},{"c":"C03","m":"Ngữ văn, Toán, Lịch sử","g":"An ninh, Cảnh sát, Quản lý nhà nước."},{"c":"D14","m":"Ngữ văn, Lịch sử, Tiếng Anh","g":"Ngôn ngữ, Quan hệ quốc tế, Báo chí."},{"c":"D15","m":"Ngữ văn, Địa lí, Tiếng Anh","g":"Du lịch, Khách sạn, Ngôn ngữ."},{"c":"D09","m":"Toán, Lịch sử, Tiếng Anh","g":"Kinh doanh, Thương mại, Xã hội học."},{"c":"D10","m":"Toán, Địa lí, Tiếng Anh","g":"Logistics, Kinh tế biển, Quản lý đất đai."},{"c":"A02","m":"Toán, Vật lí, Sinh học","g":"Nông lâm nghiệp, Thủy sản."},{"c":"C04","m":"Ngữ văn, Toán, Địa lí","g":"Sư phạm, Địa chính, Quản lý đô thị."},{"c":"C14","m":"Ngữ văn, Toán, GDCD","g":"Luật, Sư phạm GDCD, Hành chính."},{"c":"V00","m":"Toán, Vật lí, Vẽ Mỹ thuật","g":"Kiến trúc, Thiết kế nội thất, Quy hoạch."},{"c":"H00","m":"Ngữ văn, Vẽ hình họa, Vẽ màu","g":"Thiết kế đồ họa, Mỹ thuật công nghiệp."},{"c":"D02-06","m":"Toán, Ngữ văn, [Tiếng Nga/Pháp/Trung/Đức/Nhật]","g":"Nhóm ngành Ngôn ngữ đặc thù."}];
+
+const MA_DEAN={"KHA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-quoc-dan-KHA.html","BKA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bach-khoa-ha-noi-BKA.html","NTH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ngoai-thuong-NTH.html","TMU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thuong-mai-TMU.html","DCN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-ha-noi-DCN.html","BVH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-cong-nghe-buu-chinh-vien-thong-BVH.html","QHI":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-dh-quoc-gia-ha-noi-QHI.html","QHX":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-xa-hoi-va-nhan-van-ha-noi-QHX.html","NHH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngan-hang-NHH.html","HBT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-bao-chi-va-tuyen-truyen-HBT.html","QHE":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-dh-quoc-gia-ha-noi-QHE.html","VJU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-viet-nhat-dhqg-ha-noi-VJU.html","SPH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ha-noi-SPH.html","QHL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-luat-dhqghn-QHL.html","QHT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-tu-nhien-dhqghn-QHT.html","GHA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-giao-thong-van-tai-GHA.html","HTC":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-tai-chinh-HTC.html","YHB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-ha-noi-YHB.html","QHY":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-dhqghn-QHY.html","MHN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-mo-ha-noi-MHN.html","SP2":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ha-noi-2-SP2.html","SP":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ha-noi-2-SP2.html","DHD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hue-bao-gom-cac-truong-thanh-vien-DHD.html","DHC":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hue-bao-gom-cac-truong-thanh-vien-DHD.html","HHA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hang-hai-viet-nam-HHA.html","QHQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-quoc-te-dai-hoc-quoc-gia-ha-noi-QHQ.html","HCP":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-sach-va-phat-trien-HCP.html","DTS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-dh-thai-nguyen-DTS.html","KCN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-va-cong-nghe-ha-noi-KCN.html","DMT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tai-nguyen-va-moi-truong-ha-noi-DMT.html","TQU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-tan-trao-TQU.html","DKS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kiem-sat-DKS.html","VUI":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-viet-tri-VUI.html","DHP":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quan-ly-va-cong-nghe-hai-phong-DHP.html","DTQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/khoa-quoc-te-dh-thai-nguyen-DTQ.html","DKT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hai-duong-DKT.html","DKK":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-ky-thuat-cong-nghiep-DKK.html","TDH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-the-duc-the-thao-ha-noi-TDH.html","DTB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-bac-DTB.html","THP":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hai-phong-THP.html","NHF":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ha-noi-NHF.html","DTZ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-dh-thai-nguyen-DTZ.html","DTE":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-quan-tri-kinh-doanh-dh-thai-nguyen-DTE.html","DDM":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-quang-ninh-DDM.html","SKN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-nam-dinh-SKN.html","TDB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-the-duc-the-thao-bac-ninh-TDB.html","SKH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-hung-yen-SKH.html","DTY":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-dh-thai-nguyen-DTY.html","DTN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nong-lam-thai-nguyen-DTN.html","SDU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-sao-do-SDU.html","GTA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-giao-thong-van-tai-GTA.html","VHH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-hoa-ha-noi-VHH.html","YTB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-thai-binh-YTB.html","DDL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dien-luc-DDL.html","DTC":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-thong-tin-va-truyen-thong-dh-thai-nguyen-DTC.html","HLU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-luat-ha-noi-HLU.html","QHF":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ngoai-ngu-dhqghn-QHF.html","DHN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-duoc-ha-noi-DHN.html","YTC":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-te-cong-cong-YTC.html","HAQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hanh-chinh-quoc-gia-HAQ.html","XDH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-xay-dung-ha-noi-XDH.html","TLU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thuy-loi-TLU.html","LNV":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-lam-nghiep-viet-nam-LNV.html","HVN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-nong-nghiep-viet-nam-HVN.html","MDC":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-mo-dia-chat-MDC.html","KTH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kien-truc-ha-noi-KTH.html","LDX":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-lao-dong-xa-hoi-LDX.html","PNV":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-phu-nu-viet-nam-PNV.html","MTV":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-my-thuat-viet-nam-MTV.html","SKD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-san-khau-dien-anh-ha-noi-SKD.html","ANQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-am-nhac-quan-doi-ANQ.html","HNG":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngoai-giao-HNG.html","QGD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-quan-ly-giao-duc-QGD.html","TTN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-nguyen-TTN.html","HTA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-toa-an-HTA.html","YCT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-can-tho-YCT.html","HDT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hong-duc-HDT.html","KMM":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-mat-ma-KMM.html","NHB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngan-hang-phan-vien-bac-ninh-NHB.html","DHL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ha-long-DHL.html","HNM":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thu-do-ha-noi-HNM.html","YPB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-hai-phong-YPB.html","QHS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-giao-duc-ha-noi-QHS.html","HVP":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hung-vuong-HVP.html","SNA":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-nghe-thuat-tw-SNA.html","NVH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-noi-vu-ha-noi-NVH.html","DDN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dieu-duong-nam-dinh-DDN.html","CTQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-quoc-gia-ho-chi-minh-CTQ.html","YQH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-quan-y-YQH.html","KQH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-quan-su-KQH.html","TGH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-si-quan-tang-thiet-giap-TGH.html","BPH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-bien-phong-BPH.html","LCH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-si-quan-chinh-tri-LCH.html","PCH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phong-chay-chua-chay-PCH.html","HGH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-si-quan-phong-hoa-HGH.html","ANH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-an-ninh-nhan-dan-ANH.html","CSH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-canh-sat-nhan-dan-CSH.html","PKH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-phong-khong-khong-quan-PKH.html","CTH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-cong-an-nhan-dan-CTH.html","HCH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hau-can-he-dan-su-HCH.html","KQS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-khoa-hoc-quan-su-KQS.html","KDS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-quan-su-he-dan-su-KDS.html","YQD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-quan-y-he-dan-su-YQD.html","DTL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thang-long-DTL.html","FPT":"https://tuyensinh.fpt.edu.vn/","NTU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nguyen-trai-NTU.html","DPD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phuong-dong-DPD.html","DCQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-va-quan-ly-huu-nghi-DCQ.html","ETU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hoa-binh-ETU.html","PHE":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phenikaa-PHE.html","VIN":"https://vinuni.edu.vn/admissions/","HHT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ha-tinh-HHT.html","DVD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-hoa-the-thao-va-du-lich-thanh-hoa-DVD.html","YDN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ky-thuat-y-duoc-da-nang-YDN.html","DDT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bach-khoa-dh-da-nang-DDT.html","DDK":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/phan-hieu-dai-hoc-da-nang-tai-kon-tum-DDK.html","DDS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-dh-da-nang-DDS.html","VIU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-vinh-VIU.html","QNU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quy-nhon-QNU.html","NTU2":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nha-trang-NTU2.html","DLU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-da-lat-DLU.html","PYU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phu-yen-PYU.html","PVD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-pham-van-dong-PVD.html","QNM":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quang-nam-QNM.html","ANH2":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-am-nhac-hue-ANH2.html","YDH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-dai-hoc-hue-YDH.html","KHH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-dai-hoc-hue-KHH.html","NHY":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ngan-hang-phan-vien-phu-yen-NHY.html","DHQ":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/phan-hieu-dai-hoc-hue-tai-quang-tri-DHQ.html","BDI":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-binh-dinh-BDI.html","QBU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quang-binh-QBU.html","KPN":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-ky-thuat-quan-su-co-so-phia-nam-KPN.html","MTH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-my-thuat-hue-MTH.html","XMT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-xay-dung-mien-trung-XMT.html","LQH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-luc-quan-LQH.html","HQH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hai-quan-HQH.html","DTU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-duy-tan-DTU.html","DAD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dong-a-DAD.html","YDL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-yersin-da-lat-YDL.html","DPT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-phan-thiet-DPT.html","FUV":"https://fulbright.edu.vn/vi/admissions/","PCT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-phan-chau-trinh-PCT.html","QSX":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-khoa-hoc-xa-hoi-va-nhan-van-dhqg-hcm-QSX.html","SPS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-su-pham-tphcm-SPS.html","QSB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-gia-tphcm-mo-hinh-tich-hop-QSB.html","QST":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-gia-tphcm-mo-hinh-tich-hop-QSB.html","BKH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bach-khoa-tphcm-BKH.html","DIC":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghiep-tphcm-DIC.html","UEH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-tphcm-ueh-UEH.html","BUH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ngan-hang-tphcm-BUH.html","SKS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-tphcm-SKS.html","DFM":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tai-chinh-marketing-DFM.html","OMH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-mo-tphcm-OMH.html","HCL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-luat-tphcm-HCL.html","QSI":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-thong-tin-dhqg-tp-hcm-QSI.html","QST2":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-khoa-hoc-tu-nhien-dhqg-tp-hcm-QST2.html","QSG":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-te-dhqg-tp-hcm-QSG.html","QSL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-luat-dhqg-tp-hcm-QSL.html","PNT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/truong-dai-hoc-y-khoa-pham-ngoc-thach-PNT.html","CTU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-can-tho-CTU.html","AGU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-an-giang-dhqg-tp-hcm-AGU.html","BDU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-binh-duong-BDU.html","TDM":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-thu-dau-mot-TDM.html","HVB":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-can-bo-tphcm-HVB.html","YDS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-y-duoc-tphcm-YDS.html","DTT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ton-duc-thang-DTT.html","NLS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nong-lam-tphcm-NLS.html","KTS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kien-truc-tphcm-KTS.html","HKV":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-hang-khong-viet-nam-HKV.html","DTH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dong-thap-DTH.html","BVU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ba-ria-vung-tau-BVU.html","TMT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tai-nguyen-va-moi-truong-tphcm-TMT.html","SGU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-sai-gon-SGU.html","NVS":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/nhac-vien-tphcm-NVS.html","TVU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tra-vinh-TVU.html","DNU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-dong-nai-DNU.html","LAU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-long-an-LAU.html","TGU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tien-giang-TGU.html","KGU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kien-giang-KGU.html","SVL":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-su-pham-ky-thuat-vinh-long-SVL.html","BLU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-bac-lieu-BLU.html","MKG":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-mekong-MKG.html","CMD":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-mien-dong-CMD.html","CK2":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-khu-vuc-ii-CK2.html","CK":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/hoc-vien-chinh-tri-khu-vuc-ii-CK2.html","DNH":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-dong-nai-DNH.html","LHU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-lac-hong-LHU.html","HSU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-hoa-sen-HSU.html","VLU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-lang-VLU.html","NTT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nguyen-tat-thanh-NTT.html","HTC2":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cong-nghe-tphcm-hutech-HTC2.html","GDU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-gia-dinh-GDU.html","RMT":"https://www.rmit.edu.vn/vi/tuyen-sinh","VGU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-viet-duc-VGU.html","EIU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-quoc-te-mien-dong-EIU.html","UEF":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-kinh-te-tai-chinh-tphcm-UEF.html","TDU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tay-do-TDU.html","KCT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-ky-thuat-cong-nghe-can-tho-KCT.html","VHU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-van-hien-VHU.html","MCU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-cuu-long-MCU.html","NCT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-nam-can-tho-NCT.html","VTT":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-vo-truong-toan-VTT.html","TTU":"https://diemthi.tuyensinh247.com/de-an-tuyen-sinh/dai-hoc-tan-tao-TTU.html"};
+const MA_PTFULL={"KHA":"Tuyển thẳng; Xét tuyển kết hợp (Chứng chỉ quốc tế SAT/ACT hoặc kết quả thi ĐGNL/ĐGTD); Xét tuyển dựa vào điểm thi tốt nghiệp THPT 2026. Không xét học bạ độc lập.","BKA":"Xét tuyển tài năng; Xét kết quả kỳ thi Đánh giá tư duy (TSA); Chứng chỉ quốc tế (SAT, ACT, A-Level, AP, IB); Xét kết quả thi tốt nghiệp THPT 2026. Không xét học bạ.","NTH":"Bao gồm 7 phương thức: Xét kết quả thi ĐGNL/ĐGTD; Xét tuyển kết hợp (Chứng chỉ quốc tế + Điểm thi THPT/Học bạ); Xét kết quả thi tốt nghiệp THPT.","TMU":"Bao gồm 7 phương thức: Xét tuyển theo kết quả thi tốt nghiệp THPT; Xét học bạ; Xét điểm thi ĐGNL; Dự kiến mở mới 6 chương trình và thêm 4 tổ hợp mới.","DCN":"Bao gồm 5 phương thức: Xét tuyển thẳng; Xét tuyển thí sinh đoạt giải HSG hoặc chứng chỉ quốc tế kết hợp học bạ; Xét kết quả thi tốt nghiệp THPT 2026; Xét kết quả thi ĐGNL (ĐHQGHN) hoặc ĐGTD (ĐHBKHN).","BVH":"Xét tuyển tài năng; Xét kết quả chứng chỉ ĐGNL quốc tế (SAT/ACT); Xét kết quả thi ĐGNL/ĐGTD (HSA, V-ACT, TSA, SPT); Xét tuyển kết hợp Chứng chỉ tiếng Anh + Học bạ THPT; Xét kết quả thi tốt nghiệp THPT 2026. Không xét học bạ độc lập.","QHI":"Xét tuyển thẳng; Xét tuyển kết quả thi tốt nghiệp THPT 2026; Kết quả thi ĐGNL (HSA); Chứng chỉ ĐGNL quốc tế (SAT). Không xét học bạ.","QHX":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét tuyển kết quả thi ĐGNL (HSA) của ĐHQGHN; Xét tuyển kết quả thi tốt nghiệp THPT.","NHH":"Xét tuyển thẳng; Xét tuyển kết hợp (Học bạ + ĐGNL/Chứng chỉ quốc tế); Xét tuyển theo kết quả kỳ thi tốt nghiệp THPT năm 2026.","HBT":"Xét tuyển thẳng; Dựa vào kết quả thi tốt nghiệp THPT; Kết hợp với các chứng chỉ quốc tế (IELTS, SAT) và học bạ.","QHE":"Xét tuyển kết quả thi tốt nghiệp THPT 2026 (bao gồm kết hợp chứng chỉ ngoại ngữ); Xét tuyển kết quả thi ĐGNL của ĐHQGHN; Xét tuyển thẳng.","VJU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT; Xét kết quả thi ĐGNL của ĐHQGHN; Xét điểm SAT; Xét chứng chỉ ngoại ngữ kết hợp điểm thi tốt nghiệp; Phỏng vấn và ĐGNL.","SPH":"Xét kết quả thi tốt nghiệp THPT; Xét tuyển thí sinh có năng lực, thành tích vượt trội; Xét kết quả thi Đánh giá năng lực (SPT).","QHL":"Xét kết quả thi tốt nghiệp THPT 2026 (độc lập hoặc kết hợp chứng chỉ quốc tế); Xét tuyển thẳng/Ưu tiên xét tuyển; Xét kết quả thi ĐGNL của ĐHQGHN; Xét tuyển học sinh dự bị đại học.","QHT":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét kết quả thi ĐGNL (HSA); Chứng chỉ quốc tế SAT; Kết hợp điểm thi THPT với chứng chỉ quốc tế; Diện hiệp định/dự bị đại học.","GHA":"Xét tuyển theo điểm thi THPT 2026 và tuyển thẳng; Xét tuyển kết hợp Học bạ + Điểm thi THPT; Xét tuyển theo kết quả ĐGNL (ĐHQGHN/ĐHQG TPHCM); Xét tuyển theo kết quả ĐGTD của ĐHBK Hà Nội.","HTC":"Xét tuyển thẳng; Xét tuyển kết hợp; Xét điểm thi tốt nghiệp THPT năm 2026.","YHB":"Bao gồm 2 phương thức chính: Xét tuyển thẳng theo quy định; Xét tuyển dựa trên kết quả thi tốt nghiệp THPT 2026.","QHY":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét kết quả thi tốt nghiệp THPT 2026 (độc lập hoặc kết hợp chứng chỉ ngoại ngữ); Kết quả thi ĐGNL (HSA); Dự bị dân tộc.","MHN":"Xét kết quả thi THPT; Học bạ; Xét tuyển thẳng; Điểm ĐGNL/ĐGTD; Xét tuyển kết hợp; Xét tuyển dự bị.","SP2":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét điểm thi tốt nghiệp THPT; Xét học bạ (cho một số ngành đặc thù); Kết hợp điểm thi năng khiếu/ĐGNL.","SP":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét điểm thi tốt nghiệp THPT; Xét học bạ (cho một số ngành đặc thù); Kết hợp điểm thi năng khiếu/ĐGNL.","DHD":"Xét tuyển thẳng/Ưu tiên xét tuyển; Kết quả thi tốt nghiệp THPT; Học bạ; Điểm thi ĐGNL; Xét tuyển kết hợp.","DHC":"Xét tuyển thẳng/Ưu tiên xét tuyển; Kết quả thi tốt nghiệp THPT; Học bạ; Điểm thi ĐGNL; Xét tuyển kết hợp.","HHA":"Kết quả thi tốt nghiệp THPT; Xét tuyển kết hợp; Học bạ; Điểm thi ĐGNL/ĐGTD; Kết hợp Chứng chỉ tiếng Anh + Học bạ; Xét tuyển thẳng.","QHQ":"Xét thi THPT; CCQT; ĐGNL ĐHQGHN; Tuyển thẳng","HCP":"Tuyển thẳng/Ưu tiên xét tuyển; Xét tuyển kết hợp (HSG/Chứng chỉ quốc tế/Học bạ + Điểm thi THPT); Xét tuyển dựa trên kết quả bài thi ĐGNL (HSA/SPT) hoặc ĐGTD (TSA); Xét tuyển theo điểm thi tốt nghiệp THPT 2026.","DTS":"Xét tuyển thẳng; Xét kết quả thi ĐGNL của ĐHSP Hà Nội; Xét tuyển theo kết quả thi tốt nghiệp THPT 2026; Kết hợp thi năng khiếu hoặc chứng chỉ quốc tế; Xét học sinh hoàn thành dự bị đại học.","KCN":"Dựa trên kết quả thi ĐGNL do Trường tổ chức; Dựa trên năng lực học tập kết hợp phỏng vấn; Xét tuyển thẳng; Dựa trên kết quả thi tốt nghiệp THPT.","DMT":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét kết quả kỳ thi tốt nghiệp THPT 2026; Xét kết quả học tập bậc THPT (Học bạ); Xét kết quả thi ĐGNL của ĐHQGHN 2026.","TQU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét kết quả thi tốt nghiệp THPT trước năm 2026; Xét kết quả học tập cấp THPT (Học bạ).","DKS":"Xét tuyển theo 11 tổ hợp và 4 ngành đào tạo (Chi tiết phương thức đang cập nhật).","VUI":"Xét tuyển học bạ; Xét điểm thi tốt nghiệp THPT 2026; Xét điểm thi ĐGNL (ĐHQGHN) và ĐGTD (ĐHBKHN); Xét tuyển thẳng.","DHP":"Xét điểm thi tốt nghiệp THPT (PT100); Xét học bạ lớp 12 (PT200); Xét tuyển thẳng.","DTQ":"Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm V-SAT của ĐH Thái Nguyên; Xét điểm ĐGNL/ĐGTD; Xét tuyển thẳng.","DKT":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT; Xét điểm học tập cấp THPT; Xét tuyển kết hợp chứng chỉ tiếng Anh.","DKK":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm thi ĐGTD (ĐHBKHN); Xét điểm thi ĐGNL (ĐHQGHN).","TDH":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét điểm thi THPT kết hợp năng khiếu; Xét học bạ kết hợp năng khiếu; Thi tuyển năng khiếu.","DTB":"Xét thi THPT; Học bạ; Tuyển thẳng; Dự bị đại học","THP":"Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT; Xét tuyển kết hợp chứng chỉ quốc tế; Xét kết quả thi ĐGNL/ĐGTD; Xét tuyển thẳng.","NHF":"Xét tuyển thẳng/Ưu tiên xét tuyển; Xét tuyển kết hợp; Xét kết quả thi tốt nghiệp THPT 2026.","DTZ":"Kết quả thi THPT 2026; Học bạ THPT; Kết quả thi V-SAT của ĐH Thái Nguyên; Kết quả thi ĐGNL/ĐGTD; Xét tuyển thẳng; Cử tuyển/dự bị đại học; Xét tuyển kết hợp.","DTE":"Tuyển thẳng; Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT; Kết quả thi ĐGNL (ĐHQGHN/ĐHSPHN); Kết quả thi V-SAT-TNU.","DDM":"Xét tuyển thẳng; Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT (điểm trung bình 3 năm); Kết quả thi ĐGNL (ĐHQGHN) hoặc ĐGTD (ĐHBKHN).","SKN":"Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT (6 học kỳ); Kết quả thi ĐGNL (ĐHQGHN/ĐHSPHN) hoặc ĐGTD (ĐHBKHN); Xét tuyển thẳng.","TDB":"Học bạ THPT kết hợp năng khiếu; Điểm thi tốt nghiệp THPT kết hợp năng khiếu; Xét tuyển thẳng.","SKH":"Kết quả thi tốt nghiệp THPT 2026; Điểm trung bình học tập lớp 10, 11, 12; Xét tuyển thẳng; Kết quả thi V-SAT/ĐGNL/ĐGTD.","DTY":"Kết quả thi tốt nghiệp THPT; Xét tuyển thẳng; Học bạ THPT; Kết quả thi ĐGNL (HSA) hoặc V-SAT; Phương thức khác (mã 500).","DTN":"Điểm thi tốt nghiệp THPT 2026; Học bạ lớp 12; Điểm bài thi V-SAT của ĐHTN; Xét tuyển thẳng.","SDU":"Xét tuyển thẳng; Kết quả thi tốt nghiệp THPT 2026; Học bạ cấp THPT; Kết quả thi ĐGNL/ĐGTD; Xét tuyển kết hợp.","GTA":"Xét tuyển thẳng; Kết quả thi tốt nghiệp THPT 2026; Học bạ bậc THPT; Kết quả thi ĐGNL/ĐGTD.","VHH":"Xét tuyển thẳng; Kết quả thi tốt nghiệp THPT 2026; Học bạ cấp THPT; Kết hợp học bạ với điểm thi năng khiếu.","YTB":"Xét tuyển thẳng; Dự bị đại học; Kết quả thi tốt nghiệp THPT; Thi ĐGNL của ĐHSP Hà Nội.","DDL":"Học bạ; Kết hợp học bạ với chứng chỉ Quốc tế; Kết quả tốt nghiệp THPT; Xét tuyển thẳng.","DTC":"Học bạ THPT; Kết quả thi tốt nghiệp THPT; Kết quả ĐGNL V-SAT-TNU; Tuyển thẳng.","HLU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ (một số ngành); Xét điểm ĐGNL/ĐGTD.","QHF":"Xét tuyển thẳng/Ưu tiên; Xét điểm ĐGNL (HSA); Xét kết quả thi tốt nghiệp THPT 2026 (kết hợp chứng chỉ ngoại ngữ).","DHN":"Xét tuyển thẳng; Xét học bạ kết hợp chứng chỉ quốc tế; Xét kết quả thi tốt nghiệp THPT 2026.","YTC":"Xét tuyển thẳng; Xét học bạ; Xét thi tốt nghiệp THPT 2026; Xét điểm ĐGNL.","HAQ":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL/ĐGTD.","XDH":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL/ĐGTD.","TLU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm ĐGNL (ĐHQGHN/ĐHQG TP.HCM).","LNV":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL/ĐGTD.","HVN":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm V-SAT/ĐGNL.","MDC":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL/ĐGTD.","KTH":"Xét tuyển thẳng; Xét kết quả thi THPT 2026 kết hợp thi năng khiếu; Xét học bạ kết hợp năng khiếu.","LDX":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL/ĐGTD.","PNV":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL.","MTV":"Xét tuyển thẳng; Thi tuyển năng khiếu mỹ thuật; Xét tuyển kết hợp.","SKD":"Xét tuyển thẳng; Thi tuyển năng khiếu; Xét điểm thi THPT kết hợp năng khiếu.","ANQ":"Xét thi THPT kết hợp thi năng khiếu âm nhạc; Tuyển thẳng","HNG":"Xét thi THPT; Học bạ + CCQT (IELTS/SAT); Tuyển thẳng","QGD":"Xét thi THPT; Học bạ THPT; Tuyển thẳng; ĐGNL/ĐGTD","TTN":"Kết quả thi tốt nghiệp THPT; Học bạ; Xét tuyển thẳng; Kết quả ĐGNL của ĐHQG TP.HCM; Kết hợp điểm thi THPT với năng khiếu; Dự bị đại học.","HTA":"Xét thi THPT; Học bạ THPT; Tuyển thẳng","YCT":"Xét tuyển thẳng; Dự bị đại học; Xét kết quả thi tốt nghiệp THPT 2026; Xét điểm thi ĐGNL (ĐHQG TP.HCM).","HDT":"Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT (trừ ngành giáo viên); Kết quả thi ĐGNL/ĐGTD; Xét tuyển thẳng/Cử tuyển/Dự bị/Lưu học sinh.","KMM":"Xét tuyển thẳng; Xét kết quả thi THPT 2026","NHB":"Xét thi THPT; Học bạ; V-SAT; ĐGNL (ĐHQGHN); Tuyển thẳng","DHL":"Xét thi THPT; Học bạ THPT; Tuyển thẳng","HNM":"Xét thi THPT; Học bạ; Tuyển thẳng","YPB":"Xét thi THPT; ĐGNL ĐHQGHN; Tuyển thẳng","QHS":"Xét thi THPT; ĐGNL ĐHQGHN; Tuyển thẳng","HVP":"Xét thi THPT; Học bạ; Tuyển thẳng","SNA":"Xét thi THPT kết hợp thi năng khiếu; Tuyển thẳng","NVH":"Xét thi THPT; Học bạ; ĐGNL ĐHQGHN; Tuyển thẳng","DDN":"Xét thi THPT; Tuyển thẳng","CTQ":"Xét thi THPT; Tuyển thẳng; Xét theo chỉ tiêu","YQH":"Xét tuyển thẳng; Xét kết quả thi ĐGNL của ĐHQGHN và ĐHQG TP.HCM; Xét kết quả thi THPT; Xét kết quả thi ĐGNL của Bộ Quốc phòng.","KQH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT (A00, A01, AOT). Hệ dân sự có phương thức riêng sẽ công bố sau.","TGH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT (A00, A01, C01).","BPH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT (Dự kiến C03, C04, D01).","LCH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT (C01, C03, C04, D01).","PCH":"Tuyển thẳng; Xét tuyển kết hợp chứng chỉ ngoại ngữ + Bài thi đánh giá của Bộ Công an; Xét tuyển kết hợp kết quả thi THPT + Bài thi đánh giá của Bộ Công an.","HGH":"Xét tuyển thẳng/Ưu tiên xét tuyển; Kết quả thi ĐGNL (ĐHQGHN/ĐHQG TP.HCM); Kết quả thi tốt nghiệp THPT 2026; Kết quả thi ĐGNL của Bộ Quốc phòng.","ANH":"Xét tuyển thẳng; Xét kết hợp chứng chỉ ngoại ngữ + bài thi Bộ Công an; Xét kết hợp thi THPT + bài thi Bộ Công an.","CSH":"Xét tuyển thẳng; Xét kết hợp chứng chỉ ngoại ngữ + bài thi Bộ Công an; Xét kết hợp thi THPT + bài thi Bộ Công an.","PKH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT; Xét điểm thi ĐGNL của Bộ Quốc phòng.","CTH":"Tuyển thẳng theo quy chế BCA; Xét CC ngoại ngữ + bài thi BCA; Xét thi THPT","HCH":"Xét tuyển thẳng theo Quy chế tuyển sinh (Điều 8)","KQS":"Tuyển thẳng/ưu tiên giải QG, QT; Xét thi THPT","KDS":"Xét tuyển thẳng; ĐGNL ĐHQG HN; ĐGNL ĐHQG HCM; Xét thi THPT","YQD":"Xét tuyển thẳng; ĐGNL ĐHQG HN; ĐGNL ĐHQG HCM; Xét thi THPT","DTL":"Xét tuyển dựa theo kết quả thi tốt nghiệp THPT 2026; Kết hợp điểm thi THPT với chứng chỉ ngoại ngữ; Dựa theo kết quả ĐGNL/ĐGTD; Dựa trên học bạ; Kết hợp học bạ + Năng khiếu; Xét tuyển thẳng.","FPT":"Xét tuyển thẳng; Xét tuyển kết hợp (Điểm thi tốt nghiệp THPT + Kết quả học tập THPT); Ưu tiên xét tuyển.","NTU":"Xét kết quả thi tốt nghiệp THPT 2026; Xét kết quả học tập bậc THPT (Học bạ lớp 12); Xét tuyển thẳng theo quy chế Bộ GD&ĐT hoặc đề án riêng; Xét kết hợp thi năng khiếu với điểm thi THPT/Học bạ.","DPD":"Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT; Xét tuyển thẳng; Kết quả thi ĐGNL (ĐHQGHN) hoặc ĐGTD (ĐHBKHN); Kết hợp điểm thi THPT/Học bạ với năng khiếu.","DCQ":"Kết quả kỳ thi THPT Quốc gia; Học bạ (06 học kỳ); Kết quả kỳ thi ĐGNL của các trường Đại học.","ETU":"Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT/Văn bằng trung cấp-cao đẳng; Xét tuyển thẳng; Học bạ kết hợp năng khiếu.","PHE":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm ĐGNL (ĐHQGHN) hoặc ĐGTD (ĐHBKHN) hoặc V-SAT.","VIN":"Xét học bạ xuất sắc; Xét chứng chỉ quốc tế (SAT/ACT/IB/AP); Phỏng vấn năng lực.","HHT":"Kết quả thi tốt nghiệp THPT 2026; Học bạ THPT; Kết quả thi ĐGNL/ĐGTD; Thí sinh tốt nghiệp nước ngoài; Xét tuyển thẳng.","DVD":"Kết quả thi tốt nghiệp THPT 2026 (kết hợp năng khiếu cho ngành đặc thù); Học bạ THPT (ngoài sư phạm); Tuyển thẳng; Kết quả thi ĐGNL/ĐGTD.","YDN":"Điểm thi tốt nghiệp THPT; Điểm THPT + Chứng chỉ quốc tế; Học bạ (trừ Y khoa); Điểm thi ĐGNL; Tuyển thẳng; Dự bị đại học.","DDT":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét điểm V-SAT; Xét điểm ĐGNL/ĐGTD. Không xét học bạ độc lập.","DDK":"Tuyển thẳng; Xét thi THPT; Học bạ; Dự bị đại học","DDS":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét kết hợp thi năng khiếu (ngành đặc thù).","VIU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL/ĐGTD; Dự bị đại học.","QNU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL (ĐHQG TP.HCM); Dự bị đại học.","NTU2":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL; Xét tuyển kết hợp.","DLU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL (ĐHQG TP.HCM).","PYU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ THPT; Dự bị đại học.","PVD":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Dự bị đại học.","QNM":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ THPT; Dự bị đại học.","ANH2":"Xét tuyển thẳng; Xét năng khiếu âm nhạc kết hợp điểm thi THPT.","YDH":"Xét thi THPT; Tuyển thẳng theo quy chế Bộ GD&ĐT","KHH":"Xét thi THPT; Học bạ; ĐGNL; Tuyển thẳng","NHY":"Xét thi THPT; Học bạ; V-SAT; Tuyển thẳng","DHQ":"Tuyển thẳng; Xét thi THPT; Học bạ THPT","BDI":"Xét thi THPT; Học bạ; Tuyển thẳng","QBU":"Xét thi THPT; Học bạ; Tuyển thẳng","KPN":"Xét tuyển thẳng; ĐGNL ĐHQG HCM; Xét thi THPT","MTH":"Xét thi THPT + thi năng khiếu; Tuyển thẳng","XMT":"Xét thi THPT; Học bạ; Tuyển thẳng","LQH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT; Xét điểm thi ĐGNL của Bộ Quốc phòng.","HQH":"Xét tuyển theo tổ hợp môn thi tốt nghiệp THPT; Xét điểm thi ĐGNL của Bộ Quốc phòng.","DTU":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ năm lớp 12; Xét điểm ĐGNL (ĐHQG TP.HCM); Xét điểm V-SAT.","DAD":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét ĐGNL/ĐGTD.","YDL":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ năm lớp 12.","DPT":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT.","FUV":"Xét hồ sơ toàn diện (học bạ, bài luận, thư giới thiệu, hoạt động ngoại khóa); Phỏng vấn.","PCT":"Xét thi THPT; Học bạ; Tuyển thẳng","QSX":"Phương thức 1: Xét tuyển thẳng. Phương thức 2: Xét tuyển tổng hợp (kết hợp điểm thi THPT, ĐGNL ĐHQG-HCM, học bạ 3 năm THPT, chứng chỉ ngoại ngữ).","SPS":"Xét điểm thi Đánh giá năng lực chuyên biệt (H-SCA) kết hợp học bạ/điểm năng khiếu; Xét tuyển thẳng.","QSB":"Xét tuyển tích hợp dựa trên: Kết quả thi ĐGNL (trụ cột) + Kết quả thi tốt nghiệp THPT + Quá trình học tập THPT.","QST":"Xét tuyển tích hợp dựa trên: Kết quả thi ĐGNL (trụ cột) + Kết quả thi tốt nghiệp THPT + Quá trình học tập THPT.","BKH":"Xét tuyển tổng hợp (kết hợp điểm thi THPT, ĐGNL ĐHQG-HCM V-ACT); Xét tuyển thẳng/Ưu tiên xét tuyển. Không xét học bạ độc lập.","DIC":"Xét tuyển tổng hợp (THPT + V-ACT + học bạ 3 năm + chứng chỉ ngoại ngữ); Xét tuyển thẳng. Không xét học bạ độc lập.","UEH":"Xét tuyển thẳng; Xét tốt nghiệp nước ngoài/chứng chỉ quốc tế; Xét học tập tốt; Xét ĐGNL kết hợp tiếng Anh; Xét thi THPT kết hợp tiếng Anh.","BUH":"Xét tuyển thẳng; Xét học bạ kết hợp chứng chỉ quốc tế; Xét điểm thi ĐGNL (ĐHQG TP.HCM); Xét kết quả thi tốt nghiệp THPT 2026.","SKS":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm thi ĐGNL (ĐHQG TP.HCM); Xét điểm thi V-SAT.","DFM":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét điểm thi ĐGNL (ĐHQG TP.HCM); Xét học bạ 3 năm THPT.","OMH":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ; Xét điểm ĐGNL (ĐHQG TP.HCM).","HCL":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét kết quả học tập THPT kết hợp ĐGNL; Xét điểm ĐGNL (ĐHQG TP.HCM).","QSI":"Xét tuyển tổng hợp (THPT + V-ACT + học bạ 3 năm + chứng chỉ ngoại ngữ); Xét tuyển thẳng.","QST2":"Xét tuyển tổng hợp (THPT + V-ACT + học bạ 3 năm + chứng chỉ ngoại ngữ); Xét tuyển thẳng.","QSG":"Xét tuyển thẳng; Xét tuyển theo kết quả thi tốt nghiệp THPT 2026; Xét điểm SAT/ACT; Xét điểm ĐGNL (V-ACT).","QSL":"Xét tuyển tổng hợp (THPT + V-ACT + học bạ 3 năm + chứng chỉ ngoại ngữ); Xét tuyển thẳng.","PNT":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026. Không xét học bạ độc lập.","CTU":"Xét tuyển thẳng/Ưu tiên; Xét điểm thi THPT 2026; Xét học bạ; Xét điểm V-SAT; Tuyển chọn CT tiên tiến/CLC.","AGU":"Xét tuyển tổng hợp (THPT + V-ACT + học bạ + chứng chỉ ngoại ngữ); Xét tuyển thẳng.","BDU":"Xét thi THPT; Học bạ; Tuyển thẳng","TDM":"Xét tuyển thẳng; Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ 3 năm; Xét điểm ĐGNL (ĐHQG TP.HCM).","HVB":"Xét kết quả thi tốt nghiệp THPT 2026; Xét học bạ 6 học kỳ; Xét tuyển thẳng; Xét điểm ĐGNL (ĐHQGHN/ĐHQG TP.HCM).","YDS":"Xét thi THPT 2026 duy nhất. Không bảo lưu, không học bạ, không kết hợp CCQT.","DTT":"Xét tổng hợp năng lực (THPT + học bạ); Xét thi THPT; ĐGNL ĐHQG HCM; Tuyển thẳng","NLS":"Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng","KTS":"Xét thi THPT + năng khiếu; Học bạ + năng khiếu; Tuyển thẳng","HKV":"Tuyển thẳng/ưu tiên; Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM và HN","DTH":"Xét thi THPT; Học bạ; ĐGNL; Tuyển thẳng","BVU":"Xét thi THPT; Học bạ; Tuyển thẳng","TMT":"Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng","SGU":"Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng","NVS":"Xét thi THPT kết hợp thi tuyển năng khiếu âm nhạc","TVU":"Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng","DNU":"Xét thi THPT; Học bạ; Tuyển thẳng; Xét ĐGNL ĐHQG HCM","LAU":"Xét thi THPT; Học bạ; Tuyển thẳng","TGU":"Xét thi THPT; Học bạ; Tuyển thẳng","KGU":"Xét thi THPT; Học bạ; Tuyển thẳng","SVL":"Xét thi THPT; Học bạ; Tuyển thẳng","BLU":"Xét thi THPT; Học bạ; Tuyển thẳng","MKG":"Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng","CMD":"Xét thi THPT; Học bạ; Tuyển thẳng","CK2":"Xét thi THPT; Tuyển thẳng; Xét theo chỉ tiêu","CK":"Xét thi THPT; Tuyển thẳng; Xét theo chỉ tiêu","DNH":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét kết hợp ĐGNL.","LHU":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT.","HSU":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm ĐGNL (ĐHQG TP.HCM).","VLU":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm ĐGNL (ĐHQG TP.HCM).","NTT":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm ĐGNL.","HTC2":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT; Xét điểm ĐGNL (ĐHQG TP.HCM).","GDU":"Xét tuyển thẳng; Xét điểm thi tốt nghiệp THPT 2026; Xét học bạ THPT.","RMT":"Xét tuyển riêng theo tiêu chí RMIT; Xét hồ sơ học bạ quốc tế; Xét chứng chỉ quốc tế.","VGU":"Xét thi THPT; Phỏng vấn; Chứng chỉ quốc tế","EIU":"Xét thi THPT; Học bạ; Tuyển thẳng","UEF":"Xét thi THPT; Học bạ; ĐGNL ĐHQG HCM; Tuyển thẳng","TDU":"Xét thi THPT; Học bạ; Tuyển thẳng","KCT":"Xét thi THPT; Học bạ; Tuyển thẳng","VHU":"Xét thi THPT; Học bạ; Tuyển thẳng","MCU":"Xét thi THPT; Học bạ; Tuyển thẳng","NCT":"Xét thi THPT; Học bạ; Tuyển thẳng","VTT":"Xét thi THPT; Học bạ; Tuyển thẳng","TTU":"Xét thi THPT; Học bạ; Tuyển thẳng"};
 
 const NGANH_TRUONG_MIEN={
   'yd':{B:[{t:'Đại Học Y Hà Nội',m:'YHB',th:'B00',diem:27.06,hp:15,ct:200},{t:'Đại Học Y Dược-ĐHQGHN',m:'QHY',th:'B00',diem:25.6,hp:18,ct:100},{t:'Đại Học Dược Hà Nội',m:'DHN',th:'B00',diem:23.05,hp:18,ct:60},{t:'Đại Học Y Tế Công Cộng',m:'YTC',th:'B00',diem:22.25,hp:10,ct:60},{t:'Học Viện Y Dược Học Cổ Truyền VN',m:'YCT',th:'B00',diem:19.52,hp:12,ct:150},{t:'Đại Học Y Dược Hải Phòng',m:'YPB',th:'B00',diem:22.31,hp:18,ct:80},{t:'Đại học Y dược Thái Bình',m:'YTB',th:'B00',diem:22.94,hp:18,ct:120},{t:'Đại học Y dược-ĐH Thái Nguyên',m:'DTY',th:'B00',diem:20.21,hp:18,ct:100},{t:'Học Viện Quân Y',m:'YQH',th:'B00',diem:27.74,hp:0,ct:80},{t:'Học Viện Quân Y-Hệ Dân Sự',m:'YQD',th:'B00',diem:25.79,hp:0,ct:80},{t:'Đại Học Điều Dưỡng Nam Định',m:'DDN',th:'B00',diem:22.84,hp:14,ct:100},{t:'Học Viện Nông Nghiệp Việt Nam',m:'HVN',th:'B00',diem:19.86,hp:14,ct:60}],T:[{t:'Đại Học Y Dược-ĐH Huế',m:'YDH',th:'B00',diem:19.51,hp:10,ct:100},{t:'Đại Học Khoa Học-ĐH Huế',m:'KHH',th:'B00',diem:23.66,hp:18,ct:100}],N:[{t:'ĐH Y Khoa Phạm Ngọc Thạch',m:'PNT',th:'B00',diem:27.73,hp:25,ct:180},{t:'Đại Học Y Dược TPHCM',m:'YDS',th:'B00',diem:25.0,hp:25,ct:80},{t:'Đại Học Y Dược Cần Thơ',m:'YCT2',th:'B00',diem:22.04,hp:18,ct:100},{t:'Đại Học Nông Lâm TPHCM',m:'NLS',th:'B00',diem:22.18,hp:10,ct:60}]},
@@ -1604,7 +1803,7 @@ function switchDHTab(tab){
   dhActiveTab=tab;
   document.querySelectorAll('.dh-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
   document.querySelectorAll('.dh-tabpane').forEach(p=>p.classList.toggle('show',p.dataset.pane===tab));
-  if(tab==='truong'){schoolSearchQuery='';schoolFilterMien='Tất cả';renderSchoolList();}
+  if(tab==='truong'){schoolSearchQuery='';schoolFilterMien='Tất cả';schoolFilterLoai='Tất cả';renderSchoolList();}
 }
 function buildDH(){
   const n=NGANH.find(x=>x.id===selN);if(!n)return;
@@ -1637,6 +1836,11 @@ function buildDH(){
         </div>
         ${n.warn?`<div style="margin:.25rem 1.25rem .5rem;padding:8px 12px;border-left:2px solid #e24b4a;background:#fff0f0;border-radius:0 8px 8px 0;font-size:12px;color:#a32d2d;line-height:1.5">⚠️ ${n.warn}</div>`:''}
         <div style="margin:.25rem 1.25rem .75rem;padding:9px 12px;background:#fff0f0;border-left:2px solid #e24b4a;border-radius:0 8px 8px 0;font-size:12px;color:#a32d2d;line-height:1.5">📋 <strong>Quy chế xét học bạ 2026:</strong> Tính cả <strong>6 học kỳ</strong>, đạt tối thiểu <strong>15/30 điểm</strong> ở 3 môn thi TN tương ứng.</div>
+        <div class="dh-section">
+          <div class="dh-slabel">Tra cứu toàn bộ tổ hợp xét tuyển 2026 <span style="font-weight:400;color:var(--text3);font-size:10px">(242 mã — nguồn HNA)</span></div>
+          <input type="text" class="tohop-lk-search" placeholder="Tìm mã tổ hợp hoặc môn (VD: A00, Tiếng Anh, GDKTPL, Tin học)..." oninput="tohopLookupInput(this.value)">
+          <div id="tohop-lk-results"></div>
+        </div>
       </div>
       <div class="dh-tabpane" data-pane="truong">
         ${(()=>{
@@ -1669,6 +1873,7 @@ function buildDH(){
                   <span class="mien-tag mien-tag-ct">${s.ct} CT</span>
                   <span class="mien-tag mien-tag-hp">${hpTxt}</span>
                 </div>
+                ${(MA_DEAN[s.m]||MA_DEAN[s.m.replace(/\d+$/,'')])?`<a href="${MA_DEAN[s.m]||MA_DEAN[s.m.replace(/\d+$/,'')]}" target="_blank" rel="noopener" class="mien-dean">📄 Đề án 2026 ↗</a>`:''}
               </div>`;
             }).join('');
             return`<div class="mien-col"><div class="mien-head ${colorClass}">${label}<span class="mien-count">${list.length}</span></div><div class="mien-list">${rows}</div></div>`;
@@ -1688,6 +1893,19 @@ function buildDH(){
           <a href="tel:0969374411" class="dh-ts247-btn">📞 Liên hệ HNA tư vấn — 096 937 4411</a>
         </div>
         <div class="dh-section">
+          <details class="dh-glossary">
+            <summary>📘 Giải thích thuật ngữ xét tuyển (bấm để xem)</summary>
+            <div class="dh-gloss-body">
+              <div><b>TN THPT</b> — Xét điểm kỳ thi tốt nghiệp THPT 2026.</div>
+              <div><b>Học bạ</b> — Xét điểm trung bình các môn ở học bạ THPT.</div>
+              <div><b>Tuyển thẳng</b> — Theo quy chế Bộ GD&ĐT (HSG quốc gia, giải thưởng, ưu tiên xét tuyển…).</div>
+              <div><b>ĐGNL</b> — Đánh giá năng lực. <b>ĐGTD</b> — Đánh giá tư duy.</div>
+              <div><b>HSA</b> — Bài thi ĐGNL của ĐHQG Hà Nội. <b>V-ACT / APT</b> — ĐGNL của ĐHQG TP.HCM.</div>
+              <div><b>TSA</b> — Bài thi ĐGTD của ĐH Bách Khoa Hà Nội. <b>SPT</b> — ĐGNL của ĐH Sư phạm.</div>
+              <div><b>CCQT</b> — Chứng chỉ quốc tế (SAT, ACT, A-Level, IB, AP). <b>CCNN</b> — Chứng chỉ ngoại ngữ (IELTS, TOEFL…).</div>
+              <div><b>Kết hợp</b> — Dùng đồng thời 2 tiêu chí, ví dụ Học bạ + Chứng chỉ tiếng Anh.</div>
+            </div>
+          </details>
           <div class="dh-slabel" style="margin-bottom:.5rem">Tra cứu 207 trường ĐH cả nước &nbsp;<span style="font-weight:400;color:var(--text3);font-size:10px" id="sch207-count">207 / 207 trường</span></div>
           <input type="text" class="sch207-search" placeholder="Tìm tên trường hoặc mã trường (VD: Bách Khoa, KHA)..." oninput="schoolSearchInput(this.value)">
           <div class="sch207-filters">
@@ -1695,6 +1913,12 @@ function buildDH(){
             <button class="sch207-filter" onclick="schoolFilterClick('Bắc',this)">Miền Bắc</button>
             <button class="sch207-filter" onclick="schoolFilterClick('Trung',this)">Miền Trung</button>
             <button class="sch207-filter" onclick="schoolFilterClick('Nam',this)">Miền Nam</button>
+          </div>
+          <div class="sch207-filters">
+            <button class="sch207-filter sch207-filter-loai active" onclick="schoolFilterLoaiClick('Tất cả',this)">Tất cả loại</button>
+            <button class="sch207-filter sch207-filter-loai" onclick="schoolFilterLoaiClick('Công lập',this)">🏛️ Công lập</button>
+            <button class="sch207-filter sch207-filter-loai" onclick="schoolFilterLoaiClick('Tư thục',this)">🏢 Tư thục</button>
+            <button class="sch207-filter sch207-filter-loai" onclick="schoolFilterLoaiClick('Quân sự/CA',this)">⭐ Quân sự/CA</button>
           </div>
           <div class="sch207-list" id="school207-list"></div>
         </div>
@@ -1706,6 +1930,31 @@ function buildDH(){
         </div>
       </div>
     </div>`;
+  tohopLookupQuery=''; renderTohopLookup();
+}
+
+let tohopLookupQuery='';
+function tohopLookupInput(v){tohopLookupQuery=v;renderTohopLookup();}
+function renderTohopLookup(){
+  const el=document.getElementById('tohop-lk-results'); if(!el) return;
+  const q=tohopLookupQuery.trim().toLowerCase();
+  if(!q){
+    el.innerHTML=`<div class="tohop-lk-hint">20 tổ hợp <strong>phổ biến nhất</strong> — gõ ô trên để tra đủ 242 mã</div>`+
+      TO_HOP_PHO_BIEN.map(p=>`<div class="tohop-lk-row pho-bien">
+        <span class="tohop-lk-code">${p.c}</span>
+        <div class="tohop-lk-body"><span class="tohop-lk-mon">${p.m}</span><span class="tohop-lk-nhom">→ ${p.g}</span></div>
+      </div>`).join('');
+    return;
+  }
+  const hits=TO_HOP_FULL.filter(t=>t.c.toLowerCase().includes(q)||t.m.toLowerCase().includes(q));
+  if(!hits.length){el.innerHTML=`<div class="tohop-lk-hint">Không tìm thấy tổ hợp khớp "<strong>${tohopLookupQuery.replace(/</g,'&lt;')}</strong>".</div>`;return;}
+  hits.sort((a,b)=>b.n-a.n);
+  el.innerHTML=`<div class="tohop-lk-hint">${hits.length} tổ hợp khớp${hits.length>60?' — hiện 60 mã nhiều ngành nhất':''}</div>`+
+    hits.slice(0,60).map(t=>`<div class="tohop-lk-row">
+      <span class="tohop-lk-code">${t.c}</span>
+      <div class="tohop-lk-body"><span class="tohop-lk-mon">${t.m}</span></div>
+      ${t.n>0?`<span class="tohop-lk-sn">${t.n} ngành</span>`:`<span class="tohop-lk-sn tohop-lk-kh">Khối ${(t.c.match(/^[A-Z]+/)||[t.c])[0]}</span>`}
+    </div>`).join('')+(hits.length>60?`<div class="tohop-lk-hint">… và ${hits.length-60} mã nữa — gõ cụ thể hơn để thu hẹp</div>`:'');
 }
 
 const ALL_SCHOOLS=[
@@ -1965,10 +2214,10 @@ function toggleAcc(uid){
 
 
 function goStep(s){
-  if(s>=2&&selT.size<2)return;
-  if(s>=3&&!selN)return;
+  if(s>=2&&s<=4&&selT.size<2)return;
+  if(s>=3&&s<=4&&!selN)return;
   document.getElementById('flow-bar').style.display='flex';
-  [1,2,3,4].forEach(i=>{
+  [1,2,3,4,5].forEach(i=>{
     document.getElementById('panel'+i).className='panel'+(i===s?' show':'');
     const f=document.getElementById('fs'+i);
     f.className='flow-step'+(i===s?' active':i<s?' done':'');
@@ -1976,6 +2225,7 @@ function goStep(s){
   if(s===2)buildNganh();
   if(s===3)buildDH();
   if(s===4){buildSchool();buildMonChips();}
+  if(s===5)genProfile();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -2498,6 +2748,145 @@ function startTool(){
 }
 
 buildTraits();
+
+/* ===================== HỒ SƠ ĐỊNH HƯỚNG ===================== */
+/* ===== BƯỚC 5 — HỒ SƠ ĐỊNH HƯỚNG ===== */
+let profileGrade=10;
+const TRAIT_SKILL={
+'may-moc':'Kỹ năng thực hành với máy móc, thiết bị, công cụ',
+'thuc-hanh':'Học qua thực hành, làm dự án và trải nghiệm thực tế',
+'chinh-xac':'Tính cẩn thận, tỉ mỉ và chính xác trong công việc',
+'phan-tich':'Tư duy phân tích và giải quyết vấn đề',
+'khoa-hoc':'Tư duy khoa học, ham tìm tòi và thử nghiệm',
+'so-lieu':'Kỹ năng làm việc với số liệu, dữ liệu, thống kê',
+'sang-tao':'Tư duy sáng tạo và gu thẩm mỹ',
+'hinh-anh':'Tư duy hình ảnh và cảm nhận không gian',
+'bieu-dat':'Khả năng biểu đạt, trình bày ý tưởng',
+'giup-do':'Tinh thần phục vụ, chăm sóc và hỗ trợ người khác',
+'giao-tiep':'Kỹ năng giao tiếp và xây dựng quan hệ',
+'dong-cam':'Lắng nghe, thấu cảm và làm việc nhóm',
+'lanh-dao':'Kỹ năng tổ chức, lập kế hoạch và lãnh đạo',
+'kinh-doanh':'Tư duy kinh doanh, nắm bắt cơ hội thị trường',
+'thuyet-phuc':'Kỹ năng thuyết phục, tranh luận, đàm phán',
+'ky-luat':'Tính kỷ luật và tuân thủ quy trình',
+'kien-nhan':'Sự kiên nhẫn, bền bỉ với mục tiêu dài hạn',
+'tu-nhien':'Hiểu biết và yêu thích thiên nhiên, môi trường',
+'ngon-ngu':'Năng lực ngôn ngữ và ngoại ngữ',
+'noi-tam':'Khả năng tự nhận thức và suy ngẫm',
+};
+const KY_NANG_CHUNG=['Tiếng Anh (giao tiếp + học thuật)','Tin học văn phòng & ứng dụng AI','Kỹ năng tự học và quản lý thời gian'];
+
+function setGrade(g,el){profileGrade=g;document.querySelectorAll('.hs-grade').forEach(b=>b.classList.remove('active'));el.classList.add('active');genProfile();}
+
+function fmtDob(v){if(!v)return'…………………';const p=v.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:v;}
+
+function genProfile(){
+  const out=document.getElementById('profile-output');if(!out)return;
+  const name=(document.getElementById('hs-name').value||'').trim();
+  const dob=document.getElementById('hs-dob').value;
+  const school=(document.getElementById('hs-school').value||'').trim();
+
+  const ranked=scoreNganh();
+  const hasTraits=selT.size>=2;
+  const top5=ranked.slice(0,5);
+  const target=selN?NGANH.find(n=>n.id===selN):top5[0];
+
+  // Tổ hợp thi tốt nghiệp THPT (Toán+Văn bắt buộc + 2 môn tự chọn từ tổ hợp chủ lực)
+  const chu=target.dh[0];
+  const monPart=(chu.split(':')[1]||'').replace(/\(.*?\)/g,'').trim();
+  const mons=monPart.split('–').map(x=>x.trim()).filter(Boolean);
+  const tuChon=mons.filter(m=>!/^Toán$/i.test(m)&&!/(Ngữ\s*văn|^Văn$)/i.test(m));
+  const tnText=tuChon.length?`Toán, Ngữ văn <span class="pf-must">(bắt buộc)</span> + ${tuChon.join(', ')} <span class="pf-pick">(tự chọn)</span>`:`Toán, Ngữ văn + 2 môn theo tổ hợp ngành`;
+
+  // Trường ước mơ / phù hợp / an toàn
+  const mien=NGANH_TRUONG_MIEN[target.id];
+  let schools=mien?[...mien.B,...mien.T,...mien.N].filter(s=>s.diem>0):[];
+  schools.sort((a,b)=>b.diem-a.diem);
+  const pick=(s)=>{if(!s)return null;const d=MA_DEAN[s.m]||MA_DEAN[s.m.replace(/\d+$/,'')]||'';return{t:s.t,diem:s.diem,th:s.th,d};};
+  const dream=pick(schools[0]);
+  const match=pick(schools[Math.floor(schools.length/2)]);
+  const safe=pick(schools[schools.length-1]);
+
+  // Kỹ năng cần rèn luyện
+  const skills=[...new Set(target.traits.map(t=>TRAIT_SKILL[t]).filter(Boolean))];
+  const allSkills=[...skills,...KY_NANG_CHUNG];
+
+  const schoolCard=(label,cls,s,note)=>s?`<div class="pf-sch ${cls}">
+      <div class="pf-sch-label">${label}</div>
+      <div class="pf-sch-name">${s.t}</div>
+      <div class="pf-sch-meta">Điểm chuẩn 2024: <b>${s.diem.toFixed(2)}</b> · Khối ${s.th}${s.d?` · <a href="${s.d}" target="_blank" rel="noopener" class="pf-sch-link">📄 Đề án</a>`:''}</div>
+      <div class="pf-sch-note">${note}</div>
+    </div>`:`<div class="pf-sch ${cls}"><div class="pf-sch-label">${label}</div><div class="pf-sch-meta" style="color:var(--text3)">Đang cập nhật dữ liệu trường cho ngành này.</div></div>`;
+
+  const today=new Date();const td=`${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
+
+  out.innerHTML=`
+  <div class="pf-doc">
+    <div class="pf-head">
+      <div class="pf-brand">HƯỚNG NGHIỆP ALPHA</div>
+      <div class="pf-title">HỒ SƠ ĐỊNH HƯỚNG NGHỀ NGHIỆP</div>
+      <div class="pf-sub">Lập từ lớp 10 · Đồng hành cùng học sinh đến ngày trúng tuyển</div>
+    </div>
+
+    <div class="pf-info">
+      <div><span class="pf-k">Họ và tên:</span> <b>${name||'…………………………'}</b></div>
+      <div><span class="pf-k">Ngày sinh:</span> ${fmtDob(dob)}</div>
+      <div><span class="pf-k">Trường THPT:</span> ${school||'…………………………'}</div>
+      <div><span class="pf-k">Lớp hiện tại:</span> <b>Lớp ${profileGrade}</b></div>
+    </div>
+
+    <div class="pf-sec">
+      <div class="pf-sec-h">1 · Xu hướng nghề nghiệp đề xuất (5 nhóm ngành phù hợp nhất)</div>
+      ${!hasTraits?`<div class="pf-warn">⚠️ Bạn chưa hoàn thành Bước 1 (chọn đặc điểm bản thân) — danh sách dưới đây chỉ mang tính tham khảo. Hãy quay lại Bước 1 để có đề xuất chính xác.</div>`:''}
+      <ol class="pf-nganh-list">
+        ${top5.map(n=>`<li><span class="pf-ng-icon">${n.icon}</span><span class="pf-ng-name">${n.ten}</span>${hasTraits&&n.s>0?`<span class="pf-ng-match">${n.s>=3?'Rất phù hợp':n.s>=2?'Phù hợp':'Tham khảo'}</span>`:''}</li>`).join('')}
+      </ol>
+    </div>
+
+    <div class="pf-sec">
+      <div class="pf-sec-h">2 · Ngành mục tiêu: <span class="pf-target">${target.icon} ${target.ten}</span></div>
+      <div class="pf-2col">
+        <div class="pf-box">
+          <div class="pf-box-h">📘 Tổ hợp môn HỌC ở lớp 10</div>
+          ${target.tohop_l10.map(x=>`<div class="pf-li">${x}</div>`).join('')}
+        </div>
+        <div class="pf-box">
+          <div class="pf-box-h">📝 Tổ hợp thi TỐT NGHIỆP THPT</div>
+          <div class="pf-li">${tnText}</div>
+        </div>
+      </div>
+      <div class="pf-box">
+        <div class="pf-box-h">🎓 Tổ hợp XÉT TUYỂN đại học</div>
+        <div class="pf-pills">${target.dh.map((d,i)=>`<span class="pf-pill${i===0?' star':''}">${d.split(':')[0].trim()}${i===0?' ★':''}<span class="pf-pill-sub">${(d.split(':')[1]||'').replace(/\(.*?\)/g,'').trim()}</span></span>`).join('')}</div>
+      </div>
+      ${target.warn?`<div class="pf-warn">⚠️ ${target.warn}</div>`:''}
+    </div>
+
+    <div class="pf-sec">
+      <div class="pf-sec-h">3 · Định hướng chọn trường (3 mức)</div>
+      <div class="pf-sch-grid">
+        ${schoolCard('🌟 Trường ƯỚC MƠ','pf-sch-dream',dream,'Mục tiêu phấn đấu — cần nỗ lực cao')}
+        ${schoolCard('✅ Trường PHÙ HỢP','pf-sch-match',match,'Vừa sức nếu giữ vững phong độ')}
+        ${schoolCard('🛡️ Trường AN TOÀN','pf-sch-safe',safe,'Phương án chắc chắn đỗ')}
+      </div>
+      <div class="pf-note">Điểm chuẩn 2024 chỉ để tham khảo định hướng, thay đổi theo đề án tuyển sinh hằng năm.</div>
+    </div>
+
+    <div class="pf-sec">
+      <div class="pf-sec-h">4 · Kỹ năng cần rèn luyện từ bây giờ</div>
+      <div class="pf-skills">${allSkills.map(s=>`<div class="pf-skill"><span class="pf-skill-tick">✓</span>${s}</div>`).join('')}</div>
+    </div>
+
+    <div class="pf-foot">
+      <div>Hồ sơ lập ngày ${td} · <b>Hướng Nghiệp Alpha</b></div>
+      <div>Hotline: 096 937 4411 | huongnghiepalpha@gmail.com | www.huongnghiepalpha.vn</div>
+      <div class="pf-sign">Chữ ký học sinh: ……………………… &nbsp;&nbsp; Phụ huynh: ……………………… &nbsp;&nbsp; Tư vấn viên HNA: ………………………</div>
+    </div>
+  </div>`;
+}
+
+function printProfile(){genProfile();setTimeout(()=>window.print(),120);}
+
 </script>
 </body>
 </html>
