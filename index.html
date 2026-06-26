@@ -3,10 +3,18 @@
 <!--
 =======================================================================
   HƯỚNG NGHIỆP ALPHA — Công cụ tra cứu tổ hợp môn lớp 10
-  Phiên bản: 2.13  |  Ngày: 2026-06-26
-  Tác giả: HNA (Trần Văn Đăng) — 096 937 4411
+  Phiên bản: 2.14  |  Ngày: 2026-06-26
+  Tác giả: Alpha (Trần Văn Đăng) — 096 937 4411
   Website: www.huongnghiepalpha.vn
 =======================================================================
+
+  CHANGELOG 2.14 (2026-06-26): Hoàn thiện hồ sơ theo góp ý
+    - Đổi "Alpha" → "Alpha" trong toàn bộ chữ hiển thị.
+    - Đổi nhãn điểm chuẩn/học phí 2024 → 2025 (dữ liệu chuẩn 2025).
+    - Hồ sơ mục 3: đề xuất trường theo 3 MIỀN (Bắc/Trung/Nam), miền nào
+      ngành không có trường thì tự bỏ qua. Mỗi miền hiện trường tiêu biểu
+      + số trường + dải điểm trong miền.
+    - Thêm "Điểm mạnh của em" ở mục 1 để rõ căn cứ đề xuất ngành.
 
   CHANGELOG 2.13 (2026-06-26): BƯỚC 5 — HỒ SƠ ĐỊNH HƯỚNG
     - Thêm Bước 5: học sinh nhập Họ tên / Ngày sinh / Lớp (8–12) / Trường,
@@ -35,7 +43,7 @@
     - Mã thiếu số ngành (từ ảnh) hiển thị nhãn "Khối X" thay cho số.
 
   CHANGELOG 2.9 (2026-06-26):
-    - Tích hợp dữ liệu từ Bảng Tổng hợp Tổ Hợp–Ngành–Trường (HNA):
+    - Tích hợp dữ liệu từ Bảng Tổng hợp Tổ Hợp–Ngành–Trường (Alpha):
       + NGANH_CHI_TIET: 499 ngành đào tạo cụ thể thuộc 34/36 nhóm ngành
         → hiển thị trong Bước 2 ("Ngành cụ thể trong nhóm").
       + TO_HOP_FULL: 242 tổ hợp xét tuyển 2026 (kèm số ngành) — tra cứu
@@ -612,6 +620,16 @@ a.footer-hl:hover{text-decoration:underline}
   .pf-sch-grid,.pf-2col,.pf-info,.pf-skills{grid-template-columns:1fr 1fr 1fr}
   .pf-2col,.pf-info,.pf-skills{grid-template-columns:1fr 1fr}
 }
+
+.pf-sch-bac{border-color:#1565C0;background:#f0f6ff}
+.pf-sch-trung{border-color:#1a7a1a;background:#f1f9f1}
+.pf-sch-nam{border-color:#E65100;background:#fff6ef}
+.pf-sch-bac .pf-sch-label{color:#1565C0}
+.pf-sch-trung .pf-sch-label{color:#1a7a1a}
+.pf-sch-nam .pf-sch-label{color:#E65100}
+.pf-strengths{font-size:11.5px;color:var(--text2);background:var(--amber-light);border-radius:8px;padding:9px 12px;margin-bottom:10px;line-height:1.7}
+.pf-str-h{font-weight:700;color:var(--navy)}
+.pf-str-chip{display:inline-block;background:#fff;border:1px solid var(--border-strong);border-radius:6px;padding:2px 8px;margin:2px 3px 0 0;font-size:11px;color:var(--navy)}
 </style>
 </head>
 <body>
@@ -862,8 +880,8 @@ a.footer-hl:hover{text-decoration:underline}
 
       <!-- FORM GỬI DATA -->
       <div class="send-form" id="send-form" style="display:none">
-        <div class="sf-title">Gửi thông tin để HNA hỗ trợ tư vấn miễn phí</div>
-        <div class="sf-sub">HNA sẽ liên hệ tư vấn chi tiết hơn cho tổ hợp và ngành của bạn. Thông tin chỉ dùng để hỗ trợ học sinh, không chia sẻ cho bên thứ ba.</div>
+        <div class="sf-title">Gửi thông tin để Alpha hỗ trợ tư vấn miễn phí</div>
+        <div class="sf-sub">Alpha sẽ liên hệ tư vấn chi tiết hơn cho tổ hợp và ngành của bạn. Thông tin chỉ dùng để hỗ trợ học sinh, không chia sẻ cho bên thứ ba.</div>
         <div class="row2">
           <input type="text" id="sf-name" placeholder="Họ tên học sinh *">
           <input type="text" id="sf-phone" placeholder="Số điện thoại (HS hoặc PH) *">
@@ -888,7 +906,7 @@ a.footer-hl:hover{text-decoration:underline}
         </div>
         <div id="sf-summary" style="font-size:12px;color:var(--text3);margin-bottom:8px"></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="submitForm()">Gửi thông tin cho HNA →</button>
+          <button class="btn btn-primary" onclick="submitForm()">Gửi thông tin cho Alpha →</button>
           <button class="btn" onclick="document.getElementById('send-form').style.display='none'">Bỏ qua</button>
         </div>
         <div class="send-status" id="send-status"></div>
@@ -1136,7 +1154,7 @@ const NGANH=[
    warn:'Ngoài học lực, cần sức khỏe tốt, lý lịch trong sáng và vượt sơ tuyển thể lực riêng.',
    traits:['ky-luat','lanh-dao','thuc-hanh','giup-do']},
 
-  // ── NHÓM NGÀNH BỔ SUNG (từ 36 chân dung HNA) ──────────────────────
+  // ── NHÓM NGÀNH BỔ SUNG (từ 36 chân dung Alpha) ──────────────────────
 
   {id:'ke-toan',   icon:'🧾',ten:'Kế toán – Kiểm toán',
    mo:'Người cẩn thận, tỉ mỉ, có tư duy hệ thống và coi trọng sự chính xác trong từng con số.',
@@ -1837,7 +1855,7 @@ function buildDH(){
         ${n.warn?`<div style="margin:.25rem 1.25rem .5rem;padding:8px 12px;border-left:2px solid #e24b4a;background:#fff0f0;border-radius:0 8px 8px 0;font-size:12px;color:#a32d2d;line-height:1.5">⚠️ ${n.warn}</div>`:''}
         <div style="margin:.25rem 1.25rem .75rem;padding:9px 12px;background:#fff0f0;border-left:2px solid #e24b4a;border-radius:0 8px 8px 0;font-size:12px;color:#a32d2d;line-height:1.5">📋 <strong>Quy chế xét học bạ 2026:</strong> Tính cả <strong>6 học kỳ</strong>, đạt tối thiểu <strong>15/30 điểm</strong> ở 3 môn thi TN tương ứng.</div>
         <div class="dh-section">
-          <div class="dh-slabel">Tra cứu toàn bộ tổ hợp xét tuyển 2026 <span style="font-weight:400;color:var(--text3);font-size:10px">(242 mã — nguồn HNA)</span></div>
+          <div class="dh-slabel">Tra cứu toàn bộ tổ hợp xét tuyển 2026 <span style="font-weight:400;color:var(--text3);font-size:10px">(242 mã — nguồn Alpha)</span></div>
           <input type="text" class="tohop-lk-search" placeholder="Tìm mã tổ hợp hoặc môn (VD: A00, Tiếng Anh, GDKTPL, Tin học)..." oninput="tohopLookupInput(this.value)">
           <div id="tohop-lk-results"></div>
         </div>
@@ -1851,7 +1869,7 @@ function buildDH(){
           const hpList=allSchools.filter(s=>s.hp>0).map(s=>s.hp);
           const hpRange=hpList.length>0?{min:Math.min(...hpList),max:Math.max(...hpList)}:null;
           return`<div class="dh-stat-grid">
-            <div class="dh-stat"><div class="dh-stat-val">${diemRange?diemRange.min.toFixed(1)+'–'+diemRange.max.toFixed(1):'—'}</div><div class="dh-stat-lbl">Điểm chuẩn 2024</div></div>
+            <div class="dh-stat"><div class="dh-stat-val">${diemRange?diemRange.min.toFixed(1)+'–'+diemRange.max.toFixed(1):'—'}</div><div class="dh-stat-lbl">Điểm chuẩn 2025</div></div>
             <div class="dh-stat"><div class="dh-stat-val">${hpRange?hpRange.min+'–'+hpRange.max+'tr':'—'}</div><div class="dh-stat-lbl">Học phí/năm</div></div>
             <div class="dh-stat"><div class="dh-stat-val">${ch?ch.luong:'—'}</div><div class="dh-stat-lbl">Lương sau ra trường</div></div>
           </div>`;
@@ -1879,18 +1897,18 @@ function buildDH(){
             return`<div class="mien-col"><div class="mien-head ${colorClass}">${label}<span class="mien-count">${list.length}</span></div><div class="mien-list">${rows}</div></div>`;
           };
           return`<div class="dh-section">
-            <div class="dh-slabel" style="margin-bottom:.5rem">Trường đào tạo ngành này trên cả nước &nbsp;<span style="font-weight:400;color:var(--text3);font-size:10px">(${mienData.B.length+mienData.T.length+mienData.N.length}/207 trường) · ★ Khối · Điểm chuẩn 2024 · Chỉ tiêu (CT) · Học phí/năm</span></div>
+            <div class="dh-slabel" style="margin-bottom:.5rem">Trường đào tạo ngành này trên cả nước &nbsp;<span style="font-weight:400;color:var(--text3);font-size:10px">(${mienData.B.length+mienData.T.length+mienData.N.length}/207 trường) · ★ Khối · Điểm chuẩn 2025 · Chỉ tiêu (CT) · Học phí/năm</span></div>
             <div class="mien-grid">
               ${renderCol('🔵 Miền Bắc',mienData.B,'mien-bac')}
               ${renderCol('🟢 Miền Trung',mienData.T,'mien-trung')}
               ${renderCol('🟠 Miền Nam',mienData.N,'mien-nam')}
             </div>
-            <p style="font-size:10px;color:var(--text3);margin-top:6px">📍 = Đồng Nai/Lạc Hồng. Điểm chuẩn, chỉ tiêu, học phí 2024 — chỉ tham khảo định hướng, thay đổi theo đề án tuyển sinh hằng năm.</p>
+            <p style="font-size:10px;color:var(--text3);margin-top:6px">📍 = Đồng Nai/Lạc Hồng. Điểm chuẩn, chỉ tiêu, học phí 2025 — chỉ tham khảo định hướng, thay đổi theo đề án tuyển sinh hằng năm.</p>
           </div>`;
         })()}
         <div style="padding:.75rem 1.25rem">
-          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Học phí, chỉ tiêu cụ thể từng trường thay đổi theo đề án tuyển sinh hằng năm. Liên hệ HNA để được tư vấn cập nhật.</p>
-          <a href="tel:0969374411" class="dh-ts247-btn">📞 Liên hệ HNA tư vấn — 096 937 4411</a>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Học phí, chỉ tiêu cụ thể từng trường thay đổi theo đề án tuyển sinh hằng năm. Liên hệ Alpha để được tư vấn cập nhật.</p>
+          <a href="tel:0969374411" class="dh-ts247-btn">📞 Liên hệ Alpha tư vấn — 096 937 4411</a>
         </div>
         <div class="dh-section">
           <details class="dh-glossary">
@@ -1926,7 +1944,7 @@ function buildDH(){
       <div class="dh-tabpane" data-pane="nghe">
         ${ch?`<div class="dh-section"><div class="dh-slabel">Vị trí việc làm phổ biến</div><div>${ch.jobs.map(j=>`<div class="co-hoi-item">${j}</div>`).join('')}</div></div><div class="dh-section"><div class="dh-slabel">Thu nhập & nhu cầu thị trường</div><div class="luong-box"><div><div class="luong-val">${ch.luong}</div><div class="luong-lbl">Mức lương tham khảo</div></div><div style="flex:1;border-left:0.5px solid var(--border);padding-left:10px;font-size:12px;color:#27500a;line-height:1.5">${ch.nhu}</div></div></div>`:`<div class="dh-section"><p style="font-size:12px;color:var(--text3)">Đang cập nhật dữ liệu cơ hội nghề nghiệp cho ngành này.</p></div>`}
         <div style="padding:.75rem 1.25rem">
-          <a href="tel:0969374411" class="dh-ts247-btn">📞 Liên hệ HNA tư vấn ngành này — 096 937 4411</a>
+          <a href="tel:0969374411" class="dh-ts247-btn">📞 Liên hệ Alpha tư vấn ngành này — 096 937 4411</a>
         </div>
       </div>
     </div>`;
@@ -2065,7 +2083,7 @@ function searchSchool(val){
   if(found.length===0){
     box.innerHTML=`<div class="school-notfound">
       Không tìm thấy "<strong>${val}</strong>" trong dữ liệu.<br>
-      Xem bảng tổ hợp chung bên dưới để biết môn cần chọn, hoặc liên hệ HNA để được tư vấn trực tiếp cho trường của bạn.
+      Xem bảng tổ hợp chung bên dưới để biết môn cần chọn, hoặc liên hệ Alpha để được tư vấn trực tiếp cho trường của bạn.
     </div>`;
   } else {
     box.innerHTML=found.map(s=>{
@@ -2159,7 +2177,7 @@ function buildChung(){
 
   const cards=CHUNG_TABLE.map((r,i)=>{
     const isMain=r.dh===mainKey;
-    const detail=NGANH_DETAIL[r.dh]||{nganh_chi:r.nganh,truong:'Liên hệ HNA: 096 937 4411 để được tư vấn cụ thể'};
+    const detail=NGANH_DETAIL[r.dh]||{nganh_chi:r.nganh,truong:'Liên hệ Alpha: 096 937 4411 để được tư vấn cụ thể'};
     const uid=`acc-${i}`;
     return`<div class="acc-item${isMain?' acc-main':''}" id="${uid}">
       <button class="acc-head" onclick="toggleAcc('${uid}')" aria-expanded="false">
@@ -2435,7 +2453,7 @@ function renderTnResult(){
   }).filter(Boolean);
 
   if(cards.length===0){
-    resEl.innerHTML=`<div class="warn-box" style="margin-top:.75rem">Với 2 môn bạn chọn thi tốt nghiệp, chưa tạo được tổ hợp xét tuyển phổ biến nào. Hãy cân nhắc chọn lại hoặc liên hệ HNA để tư vấn.</div>`;
+    resEl.innerHTML=`<div class="warn-box" style="margin-top:.75rem">Với 2 môn bạn chọn thi tốt nghiệp, chưa tạo được tổ hợp xét tuyển phổ biến nào. Hãy cân nhắc chọn lại hoặc liên hệ Alpha để tư vấn.</div>`;
     return;
   }
 
@@ -2618,7 +2636,7 @@ function buildFlowSVG(){
   <text x="${C3x+C3w/2}" y="${thY+96}" text-anchor="middle" dominant-baseline="central"
     font-size="13" font-weight="600" fill="${CORAL_S}">${nganh.length>20?nganh.slice(0,20)+'…':nganh}</text>
   <text x="${C3x+C3w/2}" y="${thY+114}" text-anchor="middle" dominant-baseline="central"
-    font-size="10" fill="${CORAL_S}" opacity=".8">${n&&n.truong?n.truong.split(',').slice(0,2).join(',')+('…'):'Liên hệ HNA: 096 937 4411'}</text>
+    font-size="10" fill="${CORAL_S}" opacity=".8">${n&&n.truong?n.truong.split(',').slice(0,2).join(',')+('…'):'Liên hệ Alpha: 096 937 4411'}</text>
 
   <!-- NOTE -->
   <rect x="${C1x}" y="${svgH-48}" width="${C3x+C3w-C1x}" height="36" rx="7"
@@ -2667,11 +2685,11 @@ function checkMatch(){
     type='match-partial';icon='⚠️';title='Tổ hợp phù hợp một phần';
     detail=`Bạn đã có: <strong>${matched.map(id=>ALL_MONS.find(m=>m.id===id)?.label||id).join(', ')}</strong>.<br>
     Còn thiếu: <strong style="color:#a32d2d">${missing.map(id=>ALL_MONS.find(m=>m.id===id)?.label||id).join(', ')}</strong> để xét tuyển tổ hợp <strong>${mainTH}</strong> vào ngành <strong>${n.ten}</strong>.<br>
-    Nếu trường chưa có tổ hợp này, hãy liên hệ HNA để được tư vấn phương án thay thế.`;
+    Nếu trường chưa có tổ hợp này, hãy liên hệ Alpha để được tư vấn phương án thay thế.`;
   } else {
     type='match-no';icon='❌';title='Tổ hợp chưa phù hợp với ngành bạn chọn';
     detail=`Tổ hợp <strong>${monNames}</strong> chưa đáp ứng yêu cầu xét tuyển vào <strong>${n.ten}</strong> (cần tổ hợp ${mainTH}: ${n.dh[0].split(':')[1]?.trim()}).<br>
-    Đừng lo — vẫn còn nhiều phương án. Hãy để HNA tư vấn cụ thể cho bạn!`;
+    Đừng lo — vẫn còn nhiều phương án. Hãy để Alpha tư vấn cụ thể cho bạn!`;
   }
 
   document.getElementById('match-result').innerHTML=`
@@ -2701,7 +2719,7 @@ function submitForm(){
   if(!name||!phone){
     status.className='send-status send-err';
     status.style.display='block';
-    status.textContent='Vui lòng nhập họ tên và số điện thoại để HNA liên hệ hỗ trợ.';
+    status.textContent='Vui lòng nhập họ tên và số điện thoại để Alpha liên hệ hỗ trợ.';
     return;
   }
 
@@ -2716,12 +2734,12 @@ function submitForm(){
     traits:[...selT].join(', '),
   };
 
-  console.log('[HNA Data]',JSON.stringify(entry));
+  console.log('[Alpha Data]',JSON.stringify(entry));
 
   const GOOGLE_FORM_URL='https://docs.google.com/forms/d/e/REPLACE_WITH_YOUR_FORM_ID/formResponse';
   status.className='send-status send-ok';
   status.style.display='block';
-  status.innerHTML=`✅ <strong>Đã ghi nhận thông tin!</strong> HNA sẽ liên hệ <strong>${phone}</strong> trong vòng 24 giờ để tư vấn chi tiết.<br>
+  status.innerHTML=`✅ <strong>Đã ghi nhận thông tin!</strong> Alpha sẽ liên hệ <strong>${phone}</strong> trong vòng 24 giờ để tư vấn chi tiết.<br>
     <span style="font-size:11px;color:var(--text3)">Hoặc gọi ngay: <a href="tel:0969374411" style="color:var(--navy)">096 937 4411</a></span>`;
   document.querySelector('#send-form .btn-primary').disabled=true;
   document.querySelector('#send-form .btn-primary').style.opacity='.5';
@@ -2798,25 +2816,22 @@ function genProfile(){
   const tuChon=mons.filter(m=>!/^Toán$/i.test(m)&&!/(Ngữ\s*văn|^Văn$)/i.test(m));
   const tnText=tuChon.length?`Toán, Ngữ văn <span class="pf-must">(bắt buộc)</span> + ${tuChon.join(', ')} <span class="pf-pick">(tự chọn)</span>`:`Toán, Ngữ văn + 2 môn theo tổ hợp ngành`;
 
-  // Trường ước mơ / phù hợp / an toàn
+  // Trường theo 3 miền (bỏ qua miền không có trường cho ngành)
   const mien=NGANH_TRUONG_MIEN[target.id];
-  let schools=mien?[...mien.B,...mien.T,...mien.N].filter(s=>s.diem>0):[];
-  schools.sort((a,b)=>b.diem-a.diem);
-  const pick=(s)=>{if(!s)return null;const d=MA_DEAN[s.m]||MA_DEAN[s.m.replace(/\d+$/,'')]||'';return{t:s.t,diem:s.diem,th:s.th,d};};
-  const dream=pick(schools[0]);
-  const match=pick(schools[Math.floor(schools.length/2)]);
-  const safe=pick(schools[schools.length-1]);
+  const REGS=[{k:'B',label:'🔵 Miền Bắc',cls:'pf-sch-bac'},{k:'T',label:'🟢 Miền Trung',cls:'pf-sch-trung'},{k:'N',label:'🟠 Miền Nam',cls:'pf-sch-nam'}];
+  const regionCards=REGS.map(rg=>{
+    const list=((mien&&mien[rg.k])?mien[rg.k]:[]).filter(s=>s.diem>0).sort((a,b)=>b.diem-a.diem);
+    if(!list.length)return '';
+    const f=list[0];const d=MA_DEAN[f.m]||MA_DEAN[f.m.replace(/\d+$/,'')]||'';
+    const range=list.length>1?`${list[list.length-1].diem.toFixed(1)}–${f.diem.toFixed(1)}`:f.diem.toFixed(2);
+    return `<div class="pf-sch ${rg.cls}"><div class="pf-sch-label">${rg.label}</div><div class="pf-sch-name">${f.t}</div><div class="pf-sch-meta">Điểm chuẩn 2025: <b>${f.diem.toFixed(2)}</b> · Khối ${f.th}${d?` · <a href="${d}" target="_blank" rel="noopener" class="pf-sch-link">📄 Đề án</a>`:''}</div><div class="pf-sch-note">Trong miền: ${list.length} trường · điểm ${range}</div></div>`;
+  }).filter(Boolean);
 
   // Kỹ năng cần rèn luyện
   const skills=[...new Set(target.traits.map(t=>TRAIT_SKILL[t]).filter(Boolean))];
   const allSkills=[...skills,...KY_NANG_CHUNG];
 
-  const schoolCard=(label,cls,s,note)=>s?`<div class="pf-sch ${cls}">
-      <div class="pf-sch-label">${label}</div>
-      <div class="pf-sch-name">${s.t}</div>
-      <div class="pf-sch-meta">Điểm chuẩn 2024: <b>${s.diem.toFixed(2)}</b> · Khối ${s.th}${s.d?` · <a href="${s.d}" target="_blank" rel="noopener" class="pf-sch-link">📄 Đề án</a>`:''}</div>
-      <div class="pf-sch-note">${note}</div>
-    </div>`:`<div class="pf-sch ${cls}"><div class="pf-sch-label">${label}</div><div class="pf-sch-meta" style="color:var(--text3)">Đang cập nhật dữ liệu trường cho ngành này.</div></div>`;
+  
 
   const today=new Date();const td=`${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
 
@@ -2837,7 +2852,7 @@ function genProfile(){
 
     <div class="pf-sec">
       <div class="pf-sec-h">1 · Xu hướng nghề nghiệp đề xuất (5 nhóm ngành phù hợp nhất)</div>
-      ${!hasTraits?`<div class="pf-warn">⚠️ Bạn chưa hoàn thành Bước 1 (chọn đặc điểm bản thân) — danh sách dưới đây chỉ mang tính tham khảo. Hãy quay lại Bước 1 để có đề xuất chính xác.</div>`:''}
+      ${!hasTraits?`<div class="pf-warn">⚠️ Bạn chưa hoàn thành Bước 1 (chọn đặc điểm bản thân) — danh sách dưới đây chỉ mang tính tham khảo. Hãy quay lại Bước 1 để có đề xuất chính xác.</div>`:`<div class="pf-strengths"><span class="pf-str-h">Điểm mạnh em đã chọn:</span> ${[...selT].map(id=>(TRAITS.find(t=>t.id===id)||{}).label).filter(Boolean).map(l=>`<span class="pf-str-chip">${l}</span>`).join('')}</div>`}
       <ol class="pf-nganh-list">
         ${top5.map(n=>`<li><span class="pf-ng-icon">${n.icon}</span><span class="pf-ng-name">${n.ten}</span>${hasTraits&&n.s>0?`<span class="pf-ng-match">${n.s>=3?'Rất phù hợp':n.s>=2?'Phù hợp':'Tham khảo'}</span>`:''}</li>`).join('')}
       </ol>
@@ -2863,13 +2878,9 @@ function genProfile(){
     </div>
 
     <div class="pf-sec">
-      <div class="pf-sec-h">3 · Định hướng chọn trường (3 mức)</div>
-      <div class="pf-sch-grid">
-        ${schoolCard('🌟 Trường ƯỚC MƠ','pf-sch-dream',dream,'Mục tiêu phấn đấu — cần nỗ lực cao')}
-        ${schoolCard('✅ Trường PHÙ HỢP','pf-sch-match',match,'Vừa sức nếu giữ vững phong độ')}
-        ${schoolCard('🛡️ Trường AN TOÀN','pf-sch-safe',safe,'Phương án chắc chắn đỗ')}
-      </div>
-      <div class="pf-note">Điểm chuẩn 2024 chỉ để tham khảo định hướng, thay đổi theo đề án tuyển sinh hằng năm.</div>
+      <div class="pf-sec-h">3 · Trường đào tạo tiêu biểu theo miền</div>
+      ${regionCards.length?`<div class="pf-sch-grid">${regionCards.join('')}</div>
+      <div class="pf-note">Mỗi miền hiển thị trường tiêu biểu (điểm cao nhất) của ngành — bấm "Đề án" để xem đầy đủ. Điểm chuẩn 2025 chỉ để tham khảo định hướng, thay đổi theo đề án tuyển sinh hằng năm.</div>`:`<div class="pf-warn">Đang cập nhật dữ liệu trường đào tạo cho ngành này.</div>`}
     </div>
 
     <div class="pf-sec">
@@ -2880,7 +2891,7 @@ function genProfile(){
     <div class="pf-foot">
       <div>Hồ sơ lập ngày ${td} · <b>Hướng Nghiệp Alpha</b></div>
       <div>Hotline: 096 937 4411 | huongnghiepalpha@gmail.com | www.huongnghiepalpha.vn</div>
-      <div class="pf-sign">Chữ ký học sinh: ……………………… &nbsp;&nbsp; Phụ huynh: ……………………… &nbsp;&nbsp; Tư vấn viên HNA: ………………………</div>
+      <div class="pf-sign">Chữ ký học sinh: ……………………… &nbsp;&nbsp; Phụ huynh: ……………………… &nbsp;&nbsp; Tư vấn viên Alpha: ………………………</div>
     </div>
   </div>`;
 }
